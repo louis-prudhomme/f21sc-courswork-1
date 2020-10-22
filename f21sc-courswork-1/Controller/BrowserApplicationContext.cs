@@ -1,4 +1,6 @@
-﻿using f21sc_courswork_1.View;
+﻿using f21sc_courswork_1.Model;
+using f21sc_courswork_1.Utils;
+using f21sc_courswork_1.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,18 +13,18 @@ namespace f21sc_courswork_1.Controller
     class BrowserApplicationContext : ApplicationContext
     {
         /// <summary>
-        /// Main form
+        /// Main controller
         /// </summary>
-        private FormMain formMain;
+        private MainController mainController;
 
         /// <summary>
         /// Main constructor and real starting point of the application
         /// </summary>
         public BrowserApplicationContext()
         {
-            formMain = new FormMain();
-            formMain.FormClosed += new FormClosedEventHandler(OnFormClosed);
-            formMain.Show();
+            mainController = new MainController(new FormMain());
+            mainController.Show();
+            mainController.MainFormClosedEvent += new EventHandler(OnFormClosed);
         }
 
         /// <summary>
@@ -30,7 +32,7 @@ namespace f21sc_courswork_1.Controller
         /// </summary>
         /// <param name="sender">Should be <see cref="formMain"/></param>
         /// <param name="e">Event arguments</param>
-        private void OnFormClosed(object sender, FormClosedEventArgs e)
+        private void OnFormClosed(object sender, EventArgs e)
         {
             ExitThread();
         }

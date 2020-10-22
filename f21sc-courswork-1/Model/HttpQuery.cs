@@ -10,28 +10,26 @@ namespace f21sc_courswork_1.Model
     /// <summary>
     /// This class represents a user-issued HTTP request
     /// </summary>
-    class UserRequest
+    [Serializable]
+    class HttpQuery
     {
-        public UserRequest(string targetUrl)
-        {
-            TargetUrl = targetUrl;
-            IssuedAt = DateTime.Now;
-        }
-
         /// <summary>
         /// URL the user wants to access
         /// </summary>
-        public string TargetUrl { get; }
+        public Uri Uri { get; }
+        public string Host => Uri.Host;
+        public string Protocol => Uri.Scheme;
         /// <summary>
         /// Time at which the request was issued
         /// </summary>
         public DateTime IssuedAt { get; }
 
-        public int TimestampIssuedAt { 
-            get 
-            {
-                return TimeHelper.DateTimeToTimestamp(IssuedAt);
-            }        
-        }   
+        public int TimestampIssuedAt => TimeHelper.DateTimeToTimestamp(IssuedAt);
+        
+        public HttpQuery(string targetUrl)
+        {
+            Uri = new Uri(targetUrl);
+            IssuedAt = DateTime.Now;
+        }
     }
 }

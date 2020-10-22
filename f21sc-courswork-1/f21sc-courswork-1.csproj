@@ -47,8 +47,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\BrowserApplicationContext.cs" />
-    <Compile Include="Controller\ControllerMain.cs" />
-    <Compile Include="Model\UserRequest.cs" />
+    <Compile Include="Controller\IMainController.cs" />
+    <Compile Include="Controller\MainController.cs" />
+    <Compile Include="Model\UserHistory.cs" />
+    <Compile Include="Model\HttpAnswer.cs" />
+    <Compile Include="Model\HttpQuery.cs" />
+    <Compile Include="Events\UrlQueriedEvent.cs" />
+    <Compile Include="Utils\Backedup.cs" />
+    <Compile Include="Utils\Exceptions\BackerException.cs" />
+    <Compile Include="Utils\Exceptions\UnrecognizedHttpStatusCodeException.cs" />
+    <Compile Include="Utils\HttpQueryHelper.cs" />
+    <Compile Include="Utils\HttpStatusHelper.cs" />
+    <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\TimeHelper.cs" />
     <Compile Include="View\FormMain.cs">
       <SubType>Form</SubType>
@@ -58,6 +68,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\IMainView.cs" />
     <EmbeddedResource Include="View\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
