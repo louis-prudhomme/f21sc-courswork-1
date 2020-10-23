@@ -12,7 +12,7 @@ namespace f21sc_courswork_1.Model
     /// This class represents a user-issued HTTP request
     /// </summary>
     [Serializable]
-    class HttpQuery
+    public class HttpQuery
     {
         /// <summary>
         /// URL the user wants to access

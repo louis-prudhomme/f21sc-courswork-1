@@ -49,10 +49,11 @@
     <Compile Include="Controller\BrowserApplicationContext.cs" />
     <Compile Include="Controller\IMainController.cs" />
     <Compile Include="Controller\MainController.cs" />
-    <Compile Include="Model\UserHistory.cs" />
+    <Compile Include="Model\GlobalHistory.cs" />
     <Compile Include="Model\HttpAnswer.cs" />
     <Compile Include="Model\HttpQuery.cs" />
     <Compile Include="Events\UrlQueriedEvent.cs" />
+    <Compile Include="Model\LocalHistory.cs" />
     <Compile Include="Utils\Backer.cs" />
     <Compile Include="Utils\Exceptions\BackerException.cs" />
     <Compile Include="Utils\Exceptions\UnrecognizedHttpStatusCodeException.cs" />

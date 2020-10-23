@@ -38,6 +38,7 @@
             this.toolStripStatusLabelHttpStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.goToHomePageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,9 +53,8 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.makeThisSiteFavoriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonFav = new System.Windows.Forms.Button();
-            this.buttonReturn = new System.Windows.Forms.Button();
+            this.buttonBackward = new System.Windows.Forms.Button();
             this.buttonForward = new System.Windows.Forms.Button();
-            this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -158,22 +158,30 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // reloadToolStripMenuItem
+            // 
+            this.reloadToolStripMenuItem.Enabled = false;
+            this.reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
+            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.reloadToolStripMenuItem.Text = "Reload";
+            this.reloadToolStripMenuItem.Click += new System.EventHandler(this.reloadToolStripMenuItem_Click);
+            // 
             // goToHomePageToolStripMenuItem
             // 
             this.goToHomePageToolStripMenuItem.Name = "goToHomePageToolStripMenuItem";
-            this.goToHomePageToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.goToHomePageToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.goToHomePageToolStripMenuItem.Text = "Go to home page";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(163, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.AutoToolTip = true;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -190,6 +198,7 @@
             // 
             // recentToolStripMenuItem
             // 
+            this.recentToolStripMenuItem.Enabled = false;
             this.recentToolStripMenuItem.Name = "recentToolStripMenuItem";
             this.recentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.recentToolStripMenuItem.Text = "Recent";
@@ -256,15 +265,16 @@
             this.buttonFav.Text = "Make fav";
             this.buttonFav.UseVisualStyleBackColor = true;
             // 
-            // buttonReturn
+            // buttonBackward
             // 
-            this.buttonReturn.Enabled = false;
-            this.buttonReturn.Location = new System.Drawing.Point(174, 27);
-            this.buttonReturn.Name = "buttonReturn";
-            this.buttonReturn.Size = new System.Drawing.Size(23, 23);
-            this.buttonReturn.TabIndex = 5;
-            this.buttonReturn.Text = "←";
-            this.buttonReturn.UseVisualStyleBackColor = true;
+            this.buttonBackward.Enabled = false;
+            this.buttonBackward.Location = new System.Drawing.Point(174, 27);
+            this.buttonBackward.Name = "buttonBackward";
+            this.buttonBackward.Size = new System.Drawing.Size(23, 23);
+            this.buttonBackward.TabIndex = 5;
+            this.buttonBackward.Text = "←";
+            this.buttonBackward.UseVisualStyleBackColor = true;
+            this.buttonBackward.Click += new System.EventHandler(this.buttonReturn_Click);
             // 
             // buttonForward
             // 
@@ -275,14 +285,7 @@
             this.buttonForward.TabIndex = 6;
             this.buttonForward.Text = "→";
             this.buttonForward.UseVisualStyleBackColor = true;
-            // 
-            // reloadToolStripMenuItem
-            // 
-            this.reloadToolStripMenuItem.Enabled = false;
-            this.reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
-            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.reloadToolStripMenuItem.Text = "Reload";
-            this.reloadToolStripMenuItem.Click += new System.EventHandler(this.reloadToolStripMenuItem_Click);
+            this.buttonForward.Click += new System.EventHandler(this.buttonForward_Click);
             // 
             // FormMain
             // 
@@ -290,7 +293,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(539, 516);
             this.Controls.Add(this.buttonForward);
-            this.Controls.Add(this.buttonReturn);
+            this.Controls.Add(this.buttonBackward);
             this.Controls.Add(this.buttonFav);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -329,7 +332,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem historyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem recentToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem allHistoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem eraseHistoryToolStripMenuItem;
@@ -339,9 +341,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem makeThisSiteFavoriteToolStripMenuItem;
         private System.Windows.Forms.Button buttonFav;
-        private System.Windows.Forms.Button buttonReturn;
+        private System.Windows.Forms.Button buttonBackward;
         private System.Windows.Forms.Button buttonForward;
         private System.Windows.Forms.ToolStripMenuItem reloadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem recentToolStripMenuItem;
     }
 }
 
