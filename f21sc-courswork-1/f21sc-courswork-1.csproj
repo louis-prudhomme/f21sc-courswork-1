@@ -53,7 +53,7 @@
     <Compile Include="Model\HttpAnswer.cs" />
     <Compile Include="Model\HttpQuery.cs" />
     <Compile Include="Events\UrlQueriedEvent.cs" />
-    <Compile Include="Utils\Backedup.cs" />
+    <Compile Include="Utils\Backer.cs" />
     <Compile Include="Utils\Exceptions\BackerException.cs" />
     <Compile Include="Utils\Exceptions\UnrecognizedHttpStatusCodeException.cs" />
     <Compile Include="Utils\HttpQueryHelper.cs" />

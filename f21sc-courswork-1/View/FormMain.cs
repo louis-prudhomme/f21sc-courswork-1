@@ -22,6 +22,8 @@ namespace f21sc_courswork_1.View
 
         public event UrlQueriedEvent UrlQueriedEvent;
         public event EventHandler MainFormClosedEvent;
+        public event EventHandler ReloadAskedEvent;
+        public event EventHandler DeleteAllHistoryEvent;
 
         public void SetHtml(string html)
         {
@@ -72,6 +74,38 @@ namespace f21sc_courswork_1.View
             this.SetHtml(answer.Html);
             this.SetCode(answer.Code);
             this.SetStatus(answer.Status);
+        }
+
+        private void buttonReload_Click(object sender, EventArgs e)
+        {
+            this.ReloadAskedEvent(this, EventArgs.Empty);
+        }
+
+        public void EnableReload()
+        {
+            this.buttonReload.Enabled = true;
+            this.reloadToolStripMenuItem.Enabled = true;
+        }
+
+        public void DisableReload()
+        {
+            this.buttonReload.Enabled = false;
+            this.reloadToolStripMenuItem.Enabled = false;
+        }
+
+        private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.ReloadAskedEvent(this, EventArgs.Empty);
+        }
+
+        private void eraseHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.DeleteAllHistoryEvent(this, EventArgs.Empty);
+        }
+
+        public void UpdateUrl(string url)
+        {
+            this.textBoxUrlInput.Text = url;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace f21sc_courswork_1.Utils
     /// Will serialize or deserialize data of type <see cref="T"/> to the filesystem
     /// </summary>
     /// <typeparam name="T">Type of what has to be backed up</typeparam>
-    class Backedup<T>
+    class Backer<T>
     {
         /// <summary>
         /// Target to back up / read from filesystem
@@ -37,7 +37,7 @@ namespace f21sc_courswork_1.Utils
         /// </summary>
         private IFormatter formatter;
 
-        public Backedup(T target, string filename, IFormatter formatter)
+        public Backer(T target, string filename, IFormatter formatter)
         {
             this.Target = target;
             this.filename = filename;

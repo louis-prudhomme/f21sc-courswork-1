@@ -54,6 +54,7 @@
             this.buttonFav = new System.Windows.Forms.Button();
             this.buttonReturn = new System.Windows.Forms.Button();
             this.buttonForward = new System.Windows.Forms.Button();
+            this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -77,7 +78,7 @@
             this.textBoxUrlInput.Name = "textBoxUrlInput";
             this.textBoxUrlInput.Size = new System.Drawing.Size(138, 20);
             this.textBoxUrlInput.TabIndex = 0;
-            this.textBoxUrlInput.Text = "https://www.lingscars.com/";
+            this.textBoxUrlInput.Text = "lingscars.com";
             this.textBoxUrlInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxUrlInput_KeyDown);
             // 
             // richTextBoxHtmlDisplay
@@ -95,12 +96,14 @@
             // 
             // buttonReload
             // 
+            this.buttonReload.Enabled = false;
             this.buttonReload.Location = new System.Drawing.Point(12, 27);
             this.buttonReload.Name = "buttonReload";
             this.buttonReload.Size = new System.Drawing.Size(75, 23);
             this.buttonReload.TabIndex = 3;
             this.buttonReload.Text = "Reload";
             this.buttonReload.UseVisualStyleBackColor = true;
+            this.buttonReload.Click += new System.EventHandler(this.buttonReload_Click);
             // 
             // buttonHome
             // 
@@ -125,14 +128,12 @@
             // toolStripStatusLabelHttpStatusCode
             // 
             this.toolStripStatusLabelHttpStatusCode.Name = "toolStripStatusLabelHttpStatusCode";
-            this.toolStripStatusLabelHttpStatusCode.Size = new System.Drawing.Size(62, 17);
-            this.toolStripStatusLabelHttpStatusCode.Text = "Http Code";
+            this.toolStripStatusLabelHttpStatusCode.Size = new System.Drawing.Size(0, 17);
             // 
             // toolStripStatusLabelHttpStatus
             // 
             this.toolStripStatusLabelHttpStatus.Name = "toolStripStatusLabelHttpStatus";
-            this.toolStripStatusLabelHttpStatus.Size = new System.Drawing.Size(73, 17);
-            this.toolStripStatusLabelHttpStatus.Text = "Http Answer";
+            this.toolStripStatusLabelHttpStatus.Size = new System.Drawing.Size(0, 17);
             // 
             // menuStrip1
             // 
@@ -149,6 +150,7 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.reloadToolStripMenuItem,
             this.goToHomePageToolStripMenuItem,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
@@ -159,19 +161,19 @@
             // goToHomePageToolStripMenuItem
             // 
             this.goToHomePageToolStripMenuItem.Name = "goToHomePageToolStripMenuItem";
-            this.goToHomePageToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.goToHomePageToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.goToHomePageToolStripMenuItem.Text = "Go to home page";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(163, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.AutoToolTip = true;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -189,25 +191,26 @@
             // recentToolStripMenuItem
             // 
             this.recentToolStripMenuItem.Name = "recentToolStripMenuItem";
-            this.recentToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.recentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.recentToolStripMenuItem.Text = "Recent";
             // 
             // allHistoryToolStripMenuItem
             // 
             this.allHistoryToolStripMenuItem.Name = "allHistoryToolStripMenuItem";
-            this.allHistoryToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.allHistoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.allHistoryToolStripMenuItem.Text = "All history";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(137, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // eraseHistoryToolStripMenuItem
             // 
             this.eraseHistoryToolStripMenuItem.Name = "eraseHistoryToolStripMenuItem";
-            this.eraseHistoryToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.eraseHistoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.eraseHistoryToolStripMenuItem.Text = "Erase history";
+            this.eraseHistoryToolStripMenuItem.Click += new System.EventHandler(this.eraseHistoryToolStripMenuItem_Click);
             // 
             // favoritesToolStripMenuItem
             // 
@@ -273,6 +276,14 @@
             this.buttonForward.Text = "→";
             this.buttonForward.UseVisualStyleBackColor = true;
             // 
+            // reloadToolStripMenuItem
+            // 
+            this.reloadToolStripMenuItem.Enabled = false;
+            this.reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
+            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reloadToolStripMenuItem.Text = "Reload";
+            this.reloadToolStripMenuItem.Click += new System.EventHandler(this.reloadToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -330,6 +341,7 @@
         private System.Windows.Forms.Button buttonFav;
         private System.Windows.Forms.Button buttonReturn;
         private System.Windows.Forms.Button buttonForward;
+        private System.Windows.Forms.ToolStripMenuItem reloadToolStripMenuItem;
     }
 }
 
