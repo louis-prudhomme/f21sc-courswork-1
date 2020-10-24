@@ -31,6 +31,20 @@ namespace f21sc_courswork_1.Model
         /// Returns the next entry
         /// </summary>
         public HttpQuery Next { get => this.current.Next.Value; }
+
+        /// <summary>
+        /// Returns true if the history is empty
+        /// </summary>
+        public bool IsEmpty { get => this.Count == 0; }
+        /// <summary>
+        /// Returns the number of entries in the history
+        /// </summary>
+        public int Count { get => this.entries.Count; }
+
+        public Node<HttpQuery> CurrentNode => new Node<HttpQuery>(
+            this.HasPrevious ? this.Previous : null,
+            this.HasCurrent ? this.Current : null,
+            this.HasNext ? this.Next : null);
         /// <summary>
         /// Returns true if the history has a current entry
         /// </summary>
@@ -60,15 +74,6 @@ namespace f21sc_courswork_1.Model
         {
             this.current = this.current.Previous;
         }
-
-        /// <summary>
-        /// Returns true if the history is empty
-        /// </summary>
-        public bool IsEmpty { get => this.Count == 0; }
-        /// <summary>
-        /// Returns the number of entries in the history
-        /// </summary>
-        public int Count { get => this.entries.Count; }
 
         /// <summary>
         /// Removes all <see cref="HttpQuery"/> in the history

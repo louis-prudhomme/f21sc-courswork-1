@@ -11,8 +11,7 @@ namespace f21sc_courswork_1.Controller.HistoryPanel
     {
         event EventHandler FormHistoryPanelClosedEvent;
 
-        event HistoryEntryDeletedEvent HistoryEntryDeletedEvent;
-        event EventHandler HistoryDeletedEvent;
+        event EventHandler HistoryUpdatedEvent;
 
         void Show();
     }

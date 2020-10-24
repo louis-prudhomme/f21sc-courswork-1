@@ -6,14 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace f21sc_courswork_1.View
+namespace f21sc_courswork_1.View.HistoryPanel
 {
     interface IHistoryPanelView
     {
         event EventHandler HistoryPanelClosedEvent;
 
-        event HistoryEntryDeletedEvent HistoryEntryDeletedEvent;
-        event EventHandler HistoryDeletedEvent;
+        event HistoryEntriesDeletedEvent HistoryEntriesDeletedEvent;
+        event EventHandler HistoryWipedEvent;
+
+        void UpdateHistoryEntries(List<HttpQuery> entries);
 
         void Show();
     }

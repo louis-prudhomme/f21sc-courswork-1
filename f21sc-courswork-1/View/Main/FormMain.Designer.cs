@@ -217,24 +217,26 @@
             // 
             this.recentToolStripMenuItem.Enabled = false;
             this.recentToolStripMenuItem.Name = "recentToolStripMenuItem";
-            this.recentToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.recentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.recentToolStripMenuItem.Text = "Recent";
             // 
             // allHistoryToolStripMenuItem
             // 
             this.allHistoryToolStripMenuItem.Name = "allHistoryToolStripMenuItem";
-            this.allHistoryToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.allHistoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.allHistoryToolStripMenuItem.Text = "All history";
+            this.allHistoryToolStripMenuItem.Click += new System.EventHandler(this.allHistoryToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(137, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // eraseHistoryToolStripMenuItem
             // 
+            this.eraseHistoryToolStripMenuItem.Enabled = false;
             this.eraseHistoryToolStripMenuItem.Name = "eraseHistoryToolStripMenuItem";
-            this.eraseHistoryToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.eraseHistoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.eraseHistoryToolStripMenuItem.Text = "Erase history";
             this.eraseHistoryToolStripMenuItem.Click += new System.EventHandler(this.eraseHistoryToolStripMenuItem_Click);
             // 

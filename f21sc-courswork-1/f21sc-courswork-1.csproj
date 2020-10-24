@@ -47,15 +47,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\BrowserApplicationContext.cs" />
+    <Compile Include="Controller\HistoryPanel\HistoryPanelController.cs" />
+    <Compile Include="Controller\HistoryPanel\IHistoryPanelController.cs" />
     <Compile Include="Controller\InputHomeUrl\IInputHomeUrlController.cs" />
     <Compile Include="Controller\Main\IMainController.cs" />
     <Compile Include="Controller\InputHomeUrl\InputHomeUrlController.cs" />
     <Compile Include="Controller\Main\MainController.cs" />
+    <Compile Include="Events\HistoryEntriesDeletedEvent.cs" />
     <Compile Include="Model\GlobalHistory.cs" />
     <Compile Include="Model\HttpAnswer.cs" />
     <Compile Include="Model\HttpQuery.cs" />
     <Compile Include="Events\UrlSentEvent.cs" />
     <Compile Include="Model\LocalHistory.cs" />
+    <Compile Include="Model\Node.cs" />
     <Compile Include="Utils\Backer.cs" />
     <Compile Include="Utils\Exceptions\BackerException.cs" />
     <Compile Include="Utils\Exceptions\UnrecognizedHttpStatusCodeException.cs" />
@@ -63,7 +67,13 @@
     <Compile Include="Utils\HttpStatusHelper.cs" />
     <Compile Include="Utils\HttpUriHelper.cs" />
     <Compile Include="Utils\Logger.cs" />
-    <Compile Include="Utils\TimeHelper.cs" />
+    <Compile Include="View\HistoryPanel\FormHistoryPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\HistoryPanel\FormHistoryPanel.Designer.cs">
+      <DependentUpon>FormHistoryPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\HistoryPanel\IHistoryPanelView.cs" />
     <Compile Include="View\InputHomeUrl\FormInputHomeUrl.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +90,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\InputHomeUrl\IInputHomeUrlView.cs" />
     <Compile Include="View\Main\IMainView.cs" />
+    <EmbeddedResource Include="View\HistoryPanel\FormHistoryPanel.resx">
+      <DependentUpon>FormHistoryPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\InputHomeUrl\FormInputHomeUrl.resx">
       <DependentUpon>FormInputHomeUrl.cs</DependentUpon>
     </EmbeddedResource>

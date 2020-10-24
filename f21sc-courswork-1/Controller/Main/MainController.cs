@@ -20,23 +20,27 @@ namespace f21sc_courswork_1.Controller.Main
 
         public event EventHandler MainFormClosedEvent;
         public event EventHandler HomeUrlInputAskedEvent;
+        public event EventHandler HistoryPanelAskedEvent;
+        public event EventHandler GlobalHistoryUpdatedEvent;
 
-        public MainController(IMainView view)
+        public MainController(IMainView view, GlobalHistory globalHistory)
         {
             this.view = view;
+
             this.localHistory = new LocalHistory();
-            this.globalHistory = new GlobalHistory();
+            this.globalHistory = globalHistory;
 
             this.view.UrlSentEvent += this.UrlQueriedEventHandlerAsync;
             this.view.ReloadAskedEvent += this.ReloadQueriedEventHandler;
 
-            this.view.DeleteAllHistoryEvent += this.DeleteAllHistoryEventHandler;
+            this.view.WipeHistoryEvent += this.WipeHistoryEventHandler;
 
             this.view.BackwardAskedEvent += this.BackwardAskedEventHandlerAsync;
             this.view.ForwardAskedEvent += this.ForwardAskedEventHandlerAsync;
 
             this.view.MainFormClosedEvent += (o, i) => this.MainFormClosedEvent(this, EventArgs.Empty);
             this.view.HomeUrlInputAskedEvent += (o, i) => this.HomeUrlInputAskedEvent(this, EventArgs.Empty);
+            this.view.HistoryPanelAskedEvent += (o, i) => this.HistoryPanelAskedEvent(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -45,16 +49,17 @@ namespace f21sc_courswork_1.Controller.Main
         /// <param name="query">Query to add</param>
         private void AddToHistory(HttpQuery query)
         {
-            // if the requested url is the same as the current one, do nothing history-wise
-            if(this.localHistory.HasCurrent && this.localHistory.Current.Uri == query.Uri)
+            if (this.globalHistory.IsEmpty || this.globalHistory.Last.Uri != query.Uri)
             {
-                return;
+                this.globalHistory.Add(query);
+            }
+            // if the requested url is the same as the current one, do nothing history-wise
+            if(!this.localHistory.HasCurrent || this.localHistory.Current.Uri != query.Uri)
+            {
+                this.localHistory.Add(query);
             }
 
-            this.localHistory.Add(query);
-            this.globalHistory.Add(query);
-
-            this.HistoryFallouts();
+            this.UpdateHistory();
         }
 
         /// <summary>
@@ -64,16 +69,16 @@ namespace f21sc_courswork_1.Controller.Main
         /// <param name="e">Empty</param>
         private async void UrlQueriedEventHandlerAsync(object sender, UrlSentEventArgs e)
         {
-            Uri uri;
-            if (HttpUriHelper.TryCreateHttpUri(e.Url, out uri))
+            if (HttpUriHelper.TryCreateHttpUri(e.Url, out Uri uri))
             {
                 HttpQuery query = new HttpQuery(uri);
 
                 this.AddToHistory(query);
-                this.HistoryFallouts();
+                this.UpdateHistory();
 
                 await Task.Factory.StartNew(() => this.LoadPageAsync(query));
-            } else
+            }
+            else
             {
                 this.view.DisplayErrorDialog("Invalid URL");
             }
@@ -88,7 +93,7 @@ namespace f21sc_courswork_1.Controller.Main
         private async void BackwardAskedEventHandlerAsync(object sender, EventArgs e)
         {
             this.localHistory.Backward();
-            this.HistoryFallouts();
+            this.UpdateHistory();
 
             await Task.Factory.StartNew(() => this.LoadPageAsync(this.localHistory.Current));
         }
@@ -102,25 +107,9 @@ namespace f21sc_courswork_1.Controller.Main
         private async void ForwardAskedEventHandlerAsync(object sender, EventArgs e)
         {
             this.localHistory.Forward();
-            this.HistoryFallouts();
+            this.UpdateHistory();
 
             await Task.Factory.StartNew(() => this.LoadPageAsync(this.localHistory.Current));
-        }
-
-        /// <summary>
-        /// Handles history changes fallouts
-        /// </summary>
-        private void HistoryFallouts()
-        {
-            this.view.ShouldEnableBackward(this.localHistory.HasPrevious);
-            this.view.ShouldEnableForward(this.localHistory.HasNext);
-            this.view.ShouldEnableReload(this.localHistory.HasCurrent);
-            this.view.ShouldEnableRecent(!this.localHistory.IsEmpty);
-
-            if (!this.localHistory.IsEmpty)
-            {
-                this.view.UpdateRecent(this.globalHistory.LastFive());
-            }
         }
 
         /// <summary>
@@ -129,17 +118,31 @@ namespace f21sc_courswork_1.Controller.Main
         /// <param name="query"><see cref="HttpQuery"/> to execute</param>
         private async void LoadPageAsync(HttpQuery query)
         {
-            this.view.UpdateUrl(query.Uri.ToString());
-
-            this.view.SetHttpAnswer(HttpAnswer.FetchingAnswer());
+            this.view.SetCurrentState(HttpAnswer.MakeFetchingAnswer(), this.localHistory.CurrentNode);
+            
+            HttpAnswer answer;
             try
             {
-                this.view.SetHttpAnswer(await HttpQueryHelper.ExecuteAsync(query));
+                answer = await HttpQueryHelper.ExecuteAsync(query);
             } catch (HttpRequestException)
             {
                 this.view.DisplayErrorDialog("Could not reach host " + query.Host);
-                this.view.SetHttpAnswer(HttpAnswer.ErrorAnswer());
+                answer = HttpAnswer.MakeErrorAnswer();
             }
+
+            query.Title = answer.Title;
+            query.StatusCode = answer.StatusCode;
+            this.view.SetCurrentState(answer, this.localHistory.CurrentNode);
+        }
+
+        /// <summary>
+        /// Handles history changes fallouts
+        /// </summary>
+        public void UpdateHistory()
+        {
+            this.view.UpdateRecent(this.globalHistory.LastFive());
+
+            this.GlobalHistoryUpdatedEvent(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -157,12 +160,11 @@ namespace f21sc_courswork_1.Controller.Main
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Empty</param>
-        private void DeleteAllHistoryEventHandler(object sender, EventArgs e)
+        private void WipeHistoryEventHandler(object sender, EventArgs e)
         {
             this.globalHistory.RemoveAll();
-            this.localHistory.RemoveAll();
 
-            this.HistoryFallouts();
+            this.UpdateHistory();
         }
 
         /// <summary>

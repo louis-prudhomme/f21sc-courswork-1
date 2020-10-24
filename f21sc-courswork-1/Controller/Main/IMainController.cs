@@ -10,7 +10,10 @@ namespace f21sc_courswork_1.Controller.Main
     {
         event EventHandler MainFormClosedEvent;
         event EventHandler HomeUrlInputAskedEvent;
+        event EventHandler HistoryPanelAskedEvent;
+        event EventHandler GlobalHistoryUpdatedEvent;
 
         void ShouldBeEnabled(bool should);
+        void UpdateHistory();
     }
 }

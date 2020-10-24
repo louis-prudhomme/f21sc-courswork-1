@@ -1,21 +1,18 @@
 ﻿using f21sc_courswork_1.Utils.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace f21sc_courswork_1.Utils
 {
     class HttpStatusHelper
     {
+        public const int FATAL_ERROR_CODE = -1;
+
         /// <summary>
-        /// Maps a HTTP status code to the corresponding status
+        /// Maps a <see cref="HttpStatusCode> to the corresponding status
         /// </summary>
         /// <param name="code">HTTP status code</param>
         /// <returns>Matching HTTP status</returns>
-        public static string HttpStatus(int code)
+        public static string HttpStatusOf(int code)
         {
             switch (code)
             {
@@ -31,7 +28,7 @@ namespace f21sc_courswork_1.Utils
                     return "I’m a teapot";
                 case 0:
                     return "Fetching…";
-                case -1:
+                case FATAL_ERROR_CODE:
                     return "Something wrong happened.";
                 default:
                     throw new UnrecognizedHttpStatusCodeException(code);
@@ -39,23 +36,33 @@ namespace f21sc_courswork_1.Utils
         }
 
         /// <summary>
-        /// Maps a HTTP status code to the corresponding status
+        /// Maps a status code to the corresponding status
         /// </summary>
         /// <param name="code">HTTP status code</param>
-        /// <returns>Matching HTTP status</returns>
-        public static string HttpStatus(HttpStatusCode code)
+        /// <returns>status</returns>
+        public static string HttpStatusOf(HttpStatusCode code)
         {
-            return HttpStatus((int)code);
+            return HttpStatusOf((int)code);
         }
 
         /// <summary>
-        /// Maps a HTTP status code to the corresponding code
+        /// Maps a <see cref="HttpStatusCode"/> to the corresponding code
         /// </summary>
         /// <param name="code">HTTP status code</param>
         /// <returns>Matching HTTP status</returns>
-        public static int HttpCode(HttpStatusCode code)
+        public static int HttpCodeOf(HttpStatusCode code)
         {
             return (int)code;
+        }
+
+        /// <summary>
+        /// Indicates whether the provided status code is an error code or not
+        /// </summary>
+        /// <param name="code">status to test</param>
+        /// <returns>True if the code is equal to <see cref="FATAL_ERROR_CODE"/> or superior to 400</returns>
+        public static bool IsAnErrorCode(int code)
+        {
+            return (int)code == FATAL_ERROR_CODE || (int)code >= 400;
         }
     }
 }

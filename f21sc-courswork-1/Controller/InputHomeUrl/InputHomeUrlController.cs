@@ -1,21 +1,16 @@
 ﻿using f21sc_courswork_1.Event;
-using f21sc_courswork_1.Model;
 using f21sc_courswork_1.Utils;
 using f21sc_courswork_1.View;
 using f21sc_courswork_1.View.InputHomeUrl;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace f21sc_courswork_1.Controller.InputHomeUrl
 {
     class InputHomeUrlController : IInputHomeUrlController
     {
-        private readonly FormInputHomeUrl view;
+        private readonly IInputHomeUrlView view;
 
-        public InputHomeUrlController(FormInputHomeUrl view)
+        public InputHomeUrlController(IInputHomeUrlView view)
         {
             this.view = view;
 
@@ -46,13 +41,11 @@ namespace f21sc_courswork_1.Controller.InputHomeUrl
 
         public void UrlInputFormCanceledEventHandler(object sender, EventArgs e)
         {
-            this.view.Dispose();
             this.UrlInputFormCanceledEvent(this, EventArgs.Empty);
         }
 
         public void UrlInputFormSubmittedEventHandler(object sender, UrlSentEventArgs e)
         {
-            this.view.Dispose();
             this.UrlInputFormSubmittedEvent(this, e);
         }
     }

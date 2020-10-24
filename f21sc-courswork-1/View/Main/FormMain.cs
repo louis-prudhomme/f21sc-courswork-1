@@ -16,49 +16,97 @@ namespace f21sc_courswork_1.View
 
         public event EventHandler MainFormClosedEvent;
         public event EventHandler HomeUrlInputAskedEvent;
+        public event EventHandler HistoryPanelAskedEvent;
 
         public event UrlSentEvent UrlSentEvent;
         public event EventHandler ReloadAskedEvent;
         
-        public event EventHandler DeleteAllHistoryEvent;
+        public event EventHandler WipeHistoryEvent;
         public event EventHandler BackwardAskedEvent;
         public event EventHandler ForwardAskedEvent;
 
-        public void SetHtml(string html)
-        {
-            if (this.richTextBoxHtmlDisplay.InvokeRequired)
-            {
-                this.richTextBoxHtmlDisplay.Invoke(new Action(() => this.richTextBoxHtmlDisplay.Text = html));
-            } else {
-                this.richTextBoxHtmlDisplay.Text = html;
-            }
-        }
-
-        public void SetStatus(string status)
-        {
-            this.toolStripStatusLabelHttpStatus.Text = status;
-        }
-
-        public void SetCode(int statusCode)
-        {
-            this.toolStripStatusLabelHttpStatusCode.Text = statusCode.ToString();
-        }
-
-        public void SetTitle(string title)
+        public void SetCurrentState(HttpAnswer answer, Node<HttpQuery> current)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Action(() => this.Text = title));
-            } else
-            {
-                this.Text = title;
+                this.textBoxUrlInput.Invoke(new Action(() => this.UpdateControls(answer, current)));
             }
+            else
+            {
+                this.UpdateControls(answer, current);
+            }
+        }
+
+        private void UpdateControls(HttpAnswer answer, Node<HttpQuery> current)
+        {
+            this.Text = "Browser – " + answer.Title;
+            this.richTextBoxHtmlDisplay.Text = answer.Html;
+
+            this.toolStripStatusLabelHttpStatusCode.Text = current.Center.StatusCode.ToString();
+            this.toolStripStatusLabelHttpStatus.Text = current.Center.Status;
+
+            this.buttonReload.Enabled = current.HasCenter;
+
+            this.UpdateNavigationControls(this.buttonBackward, current.Left);
+            this.UpdateNavigationControls(this.buttonForward, current.Right);
+            this.textBoxUrlInput.Text = current.Center.Uri.AbsoluteUri;
+        }
+
+        private void UpdateNavigationControls(Button navigationControl, HttpQuery query)
+        {
+            navigationControl.Enabled = query != null;
+            if (query != null)
+            {
+                new ToolTip().SetToolTip(navigationControl, query.Title);
+            }
+        }
+
+        public void UpdateRecent(List<HttpQuery> recentQueries)
+        {
+            if (this.menuStripUp.InvokeRequired)
+            {
+                this.menuStripUp.Invoke(new Action(() =>
+                {
+                    this.recentToolStripMenuItem.DropDownItems.Clear();
+                    this.recentToolStripMenuItem.DropDownItems.AddRange(recentQueries.Select(query => this.MakeRecentToolStripItem(query)).ToArray());
+                    this.ShouldHistoryControlsBeEnabled(this.recentToolStripMenuItem.DropDownItems.Count > 0);
+                }));
+            }
+            else
+            {
+                this.recentToolStripMenuItem.DropDownItems.Clear();
+                this.recentToolStripMenuItem.DropDownItems.AddRange(recentQueries.Select(query => this.MakeRecentToolStripItem(query)).ToArray());
+                this.ShouldHistoryControlsBeEnabled(this.recentToolStripMenuItem.DropDownItems.Count > 0);
+            }
+        }
+
+        private void ShouldHistoryControlsBeEnabled(bool should)
+        {
+            this.recentToolStripMenuItem.Enabled = should;
+            this.eraseHistoryToolStripMenuItem.Enabled = should;
+        }
+
+        private ToolStripMenuItem MakeRecentToolStripItem(HttpQuery recent)
+        {
+            ToolStripMenuItem toolStrip = new ToolStripMenuItem(recent.Host)
+            {
+                Tag = recent.Uri,
+                ToolTipText = String.Format("Consulted on the {0} at {1}", recent.IssuedAt.ToString("dd/MM"), recent.IssuedAt.ToString("HH:mm")),
+                Name = recent.TimestampIssuedAt.ToString()
+            };
+            toolStrip.Click += this.recentToolStripMenuItem_Click;
+
+            return toolStrip;
+        }
+
+        public void ShouldBeEnabled(bool should)
+        {
+            this.Enabled = should;
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
             this.UrlSentEvent(this, new UrlSentEventArgs(this.textBoxUrlInput.Text));
-
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -79,14 +127,6 @@ namespace f21sc_courswork_1.View
             }
         }
 
-        public void SetHttpAnswer(HttpAnswer answer)
-        {
-            this.SetHtml(answer.Html);
-            this.SetTitle("Browser – " + answer.Title);
-            this.SetCode(answer.Code);
-            this.SetStatus(answer.Status);
-        }
-
         private void buttonReload_Click(object sender, EventArgs e)
         {
             this.ReloadAskedEvent(this, EventArgs.Empty);
@@ -103,19 +143,16 @@ namespace f21sc_courswork_1.View
 
         private void eraseHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.DeleteAllHistoryEvent(this, EventArgs.Empty);
+            DialogResult confirmResult = MessageBox.Show("Do you really want to wipe your history out ?" +
+                " This cannot be reverted and it will not affect your current navigation.", "Confirm history deletion", MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes)
+            {
+                this.WipeHistoryEvent(this, EventArgs.Empty);
+            }
         }
-
-        public void UpdateUrl(string url)
+        public void DisplayErrorDialog(string text)
         {
-            if (this.textBoxUrlInput.InvokeRequired)
-            {
-                this.textBoxUrlInput.Invoke(new Action(() => this.textBoxUrlInput.Text = url));
-            }
-            else
-            {
-                this.textBoxUrlInput.Text = url;
-            }
+            MessageBox.Show(text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void buttonReturn_Click(object sender, EventArgs e)
@@ -128,69 +165,15 @@ namespace f21sc_courswork_1.View
             this.ForwardAskedEvent(this, EventArgs.Empty);
         }
 
-        public void UpdateRecent(List<HttpQuery> recentQueries)
-        {
-            if (this.menuStripUp.InvokeRequired)
-            {
-                this.menuStripUp.Invoke(new Action(() =>
-                {
-                    this.recentToolStripMenuItem.DropDownItems.Clear();
-                    this.recentToolStripMenuItem.DropDownItems.AddRange(recentQueries.Select(query => this.MakeRecentToolStripItem(query)).ToArray());
-                }));
-            } else
-            {
-                this.recentToolStripMenuItem.DropDownItems.Clear();
-                this.recentToolStripMenuItem.DropDownItems.AddRange(recentQueries.Select(query => this.MakeRecentToolStripItem(query)).ToArray());
-            }
-        }
-
-        private ToolStripMenuItem MakeRecentToolStripItem(HttpQuery recent)
-        {
-            ToolStripMenuItem toolStrip = new ToolStripMenuItem(recent.Host)
-            {
-                Tag = recent.Uri,
-                ToolTipText = String.Format("Consulted on the {0} at {1}", recent.IssuedAt.ToString("dd/MM"), recent.IssuedAt.ToString("HH:mm")),
-                Name = recent.TimestampIssuedAt.ToString()
-            };
-            toolStrip.Click += this.recentToolStripMenuItem_Click;
-
-            return toolStrip;
-        }
-
-        public void ShouldEnableRecent(bool should)
-        {
-            this.recentToolStripMenuItem.Enabled = should;
-        }
-
-        public void ShouldEnableReload(bool should)
-        {
-            this.buttonReload.Enabled = should;
-            this.reloadToolStripMenuItem.Enabled = should;
-        }
-
-        public void ShouldEnableBackward(bool should)
-        {
-            this.buttonBackward.Enabled = should;
-        }
-
-        public void ShouldEnableForward(bool should)
-        {
-            this.buttonForward.Enabled = should;
-        }
-
-        public void ShouldBeEnabled(bool should)
-        {
-            this.Enabled = should;
-        }
-
         private void personalizeHomeURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.HomeUrlInputAskedEvent(this, EventArgs.Empty);
         }
 
-        public void DisplayErrorDialog(string text)
+
+        private void allHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            this.HistoryPanelAskedEvent(this, EventArgs.Empty);
         }
     }
 }
