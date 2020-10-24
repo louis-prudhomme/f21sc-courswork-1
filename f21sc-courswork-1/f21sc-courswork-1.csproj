@@ -54,6 +54,7 @@
     <Compile Include="Controller\InputHomeUrl\InputHomeUrlController.cs" />
     <Compile Include="Controller\Main\MainController.cs" />
     <Compile Include="Events\HistoryEntriesDeletedEvent.cs" />
+    <Compile Include="Events\UrlInputFormSubmittedEvent.cs" />
     <Compile Include="Model\GlobalHistory.cs" />
     <Compile Include="Model\HttpAnswer.cs" />
     <Compile Include="Model\HttpQuery.cs" />

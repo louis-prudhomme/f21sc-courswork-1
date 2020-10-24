@@ -20,7 +20,7 @@ namespace f21sc_courswork_1.Controller.InputHomeUrl
         }
 
         public event EventHandler UrlInputFormCanceledEvent;
-        public event UrlSentEvent UrlInputFormSubmittedEvent;
+        public event UrlInputFormSubmittedEvent UrlInputFormSubmittedEvent;
 
         public void Show()
         {
@@ -29,9 +29,10 @@ namespace f21sc_courswork_1.Controller.InputHomeUrl
 
         public void UrlSentEventHandler(object sender, UrlSentEventArgs e)
         {
-            if (HttpUriHelper.IsValidHttpUri(e.Url))
+            if (HttpUriHelper.TryCreateHttpUri(e.Url, out Uri uri))
             {
                 this.view.ShouldEnableOk(true);
+                this.view.UpdateUrl(uri.AbsoluteUri);
                 this.view.SetUrlFeedback("The URL has been sucessfully verified !");
             } else
             {
@@ -44,7 +45,7 @@ namespace f21sc_courswork_1.Controller.InputHomeUrl
             this.UrlInputFormCanceledEvent(this, EventArgs.Empty);
         }
 
-        public void UrlInputFormSubmittedEventHandler(object sender, UrlSentEventArgs e)
+        public void UrlInputFormSubmittedEventHandler(object sender, UrlInputFormSubmittedEventArgs e)
         {
             this.UrlInputFormSubmittedEvent(this, e);
         }

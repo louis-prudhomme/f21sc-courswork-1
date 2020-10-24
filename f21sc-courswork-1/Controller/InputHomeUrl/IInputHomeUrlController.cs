@@ -12,6 +12,6 @@ namespace f21sc_courswork_1.Controller.InputHomeUrl
         void Show();
 
         event EventHandler UrlInputFormCanceledEvent;
-        event UrlSentEvent UrlInputFormSubmittedEvent;
+        event UrlInputFormSubmittedEvent UrlInputFormSubmittedEvent;
     }
 }

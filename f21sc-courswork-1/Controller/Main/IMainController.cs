@@ -14,6 +14,8 @@ namespace f21sc_courswork_1.Controller.Main
         event EventHandler GlobalHistoryUpdatedEvent;
 
         void ShouldBeEnabled(bool should);
+        void UpdateHomeUri(Uri homeUri);
         void UpdateHistory();
+        void Show();
     }
 }

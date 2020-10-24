@@ -13,7 +13,8 @@ namespace f21sc_courswork_1.View
 
         event UrlSentEvent UrlSentEvent;
         event EventHandler ReloadAskedEvent;
-        
+        event EventHandler HomeAskedEvent;
+
         event EventHandler WipeHistoryEvent;
 
         event EventHandler BackwardAskedEvent;

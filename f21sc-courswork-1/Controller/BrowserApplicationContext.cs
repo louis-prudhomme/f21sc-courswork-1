@@ -3,15 +3,10 @@ using f21sc_courswork_1.Controller.InputHomeUrl;
 using f21sc_courswork_1.Controller.Main;
 using f21sc_courswork_1.Event;
 using f21sc_courswork_1.Model;
-using f21sc_courswork_1.Utils;
 using f21sc_courswork_1.View;
 using f21sc_courswork_1.View.HistoryPanel;
 using f21sc_courswork_1.View.InputHomeUrl;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace f21sc_courswork_1.Controller
@@ -21,20 +16,21 @@ namespace f21sc_courswork_1.Controller
         /// <summary>
         /// Main form controller
         /// </summary>
-        private readonly MainController mainController;
+        private readonly IMainController mainController;
         /// <summary>
         /// Controller for the home url input 
         /// </summary>
-        private InputHomeUrlController urlController;
+        private IInputHomeUrlController urlController;
         /// <summary>
         /// Controller for the history panel 
         /// </summary>
-        private HistoryPanelController historyController;
+        private IHistoryPanelController historyController;
 
         /// <summary>
         /// History of the user 
         /// </summary>
         private readonly GlobalHistory globalHistory;
+        private Uri userHomePageUri;
 
         //todo move history here
 
@@ -43,8 +39,10 @@ namespace f21sc_courswork_1.Controller
         /// </summary>
         public BrowserApplicationContext()
         {
+            this.userHomePageUri = new Uri("http://www.lingscars.com");
             this.globalHistory = new GlobalHistory();
-            this.mainController = new MainController(new FormMain(), this.globalHistory);
+
+            this.mainController = new MainController(new FormMain(), this.globalHistory, this.userHomePageUri);
 
             this.mainController.MainFormClosedEvent += this.MainFormClosedEventHandler;
             this.mainController.HomeUrlInputAskedEvent += this.HomeUrlInputAskedEventHandler;
@@ -99,8 +97,10 @@ namespace f21sc_courswork_1.Controller
             this.mainController.ShouldBeEnabled(true);
         }
 
-        private void HomeUrlSubmittedEventHandler(object sender, UrlSentEventArgs e)
+        private void HomeUrlSubmittedEventHandler(object sender, UrlInputFormSubmittedEventArgs e)
         {
+            this.userHomePageUri = e.Uri;
+            this.mainController.UpdateHomeUri(this.userHomePageUri);
             this.mainController.ShouldBeEnabled(true);
         }
 

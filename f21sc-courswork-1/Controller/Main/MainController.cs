@@ -3,6 +3,7 @@ using f21sc_courswork_1.Model;
 using f21sc_courswork_1.Utils;
 using f21sc_courswork_1.View;
 using System;
+using System.Drawing.Text;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -14,6 +15,8 @@ namespace f21sc_courswork_1.Controller.Main
     class MainController : IMainController
     {
         private readonly IMainView view;
+
+        private Uri homeUri;
         
         private readonly LocalHistory localHistory;
         private readonly GlobalHistory globalHistory;
@@ -23,15 +26,17 @@ namespace f21sc_courswork_1.Controller.Main
         public event EventHandler HistoryPanelAskedEvent;
         public event EventHandler GlobalHistoryUpdatedEvent;
 
-        public MainController(IMainView view, GlobalHistory globalHistory)
+        public MainController(IMainView view, GlobalHistory globalHistory, Uri homeUri)
         {
             this.view = view;
 
             this.localHistory = new LocalHistory();
             this.globalHistory = globalHistory;
+            this.homeUri = homeUri;
 
             this.view.UrlSentEvent += this.UrlQueriedEventHandlerAsync;
             this.view.ReloadAskedEvent += this.ReloadQueriedEventHandler;
+            this.view.HomeAskedEvent += this.HomeAskedEventHandler;
 
             this.view.WipeHistoryEvent += this.WipeHistoryEventHandler;
 
@@ -49,17 +54,17 @@ namespace f21sc_courswork_1.Controller.Main
         /// <param name="query">Query to add</param>
         private void AddToHistory(HttpQuery query)
         {
+            // if the requested url is the same as the current one, do nothing history-wise
             if (this.globalHistory.IsEmpty || this.globalHistory.Last.Uri != query.Uri)
             {
                 this.globalHistory.Add(query);
+                this.UpdateHistory();
             }
-            // if the requested url is the same as the current one, do nothing history-wise
             if(!this.localHistory.HasCurrent || this.localHistory.Current.Uri != query.Uri)
             {
                 this.localHistory.Add(query);
             }
 
-            this.UpdateHistory();
         }
 
         /// <summary>
@@ -136,7 +141,7 @@ namespace f21sc_courswork_1.Controller.Main
         }
 
         /// <summary>
-        /// Handles history changes fallouts
+        /// Handles global history changes fallouts
         /// </summary>
         public void UpdateHistory()
         {
@@ -182,6 +187,16 @@ namespace f21sc_courswork_1.Controller.Main
         public void ShouldBeEnabled(bool should)
         {
             this.view.ShouldBeEnabled(should);
+        }
+
+        public void UpdateHomeUri(Uri homeUri)
+        {
+            this.homeUri = homeUri;
+        }
+
+        private async void HomeAskedEventHandler(object sender, EventArgs e) 
+        {
+            await Task.Factory.StartNew(() => this.UrlQueriedEventHandlerAsync(sender, new UrlSentEventArgs(this.homeUri.AbsoluteUri)));
         }
     }
 }

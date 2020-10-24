@@ -12,8 +12,8 @@ namespace f21sc_courswork_1.View.InputHomeUrl
         }
 
         public event EventHandler UrlInputFormCanceledEvent;
-        public event UrlSentEvent UrlInputFormSubmittedEvent;
         public event UrlSentEvent UrlSentEvent;
+        public event UrlInputFormSubmittedEvent UrlInputFormSubmittedEvent;
 
         public void SetUrlFeedback(string feedback)
         {
@@ -39,16 +39,33 @@ namespace f21sc_courswork_1.View.InputHomeUrl
         private void textBoxInputUrl_TextChanged(object sender, EventArgs e)
         {
             this.buttonTestUrl.Enabled = this.textBoxInputUrl.Text.Length > 0;
+            this.buttonOk.Enabled = false;
         }
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
-            this.UrlInputFormSubmittedEvent(this, new UrlSentEventArgs(this.textBoxInputUrl.Text));
+            this.UrlInputFormSubmittedEvent(this, new UrlInputFormSubmittedEventArgs(new Uri(this.textBoxInputUrl.Text)));
+            this.Close();
         }
 
         private void buttonTestUrl_Click(object sender, EventArgs e)
         {
             this.UrlSentEvent(this, new UrlSentEventArgs(this.textBoxInputUrl.Text));
+        }
+
+        public void UpdateUrl(string url)
+        {
+            this.textBoxInputUrl.Text = url;
+            this.buttonOk.Enabled = true;
+        }
+
+        private void textBoxInputUrl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.UrlSentEvent(this, new UrlSentEventArgs(this.textBoxInputUrl.Text));
+                this.labelFeedback.Focus();
+            }
         }
     }
 }

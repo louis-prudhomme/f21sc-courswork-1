@@ -42,6 +42,7 @@
             this.textBoxInputUrl.Size = new System.Drawing.Size(269, 20);
             this.textBoxInputUrl.TabIndex = 0;
             this.textBoxInputUrl.TextChanged += new System.EventHandler(this.textBoxInputUrl_TextChanged);
+            this.textBoxInputUrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxInputUrl_KeyDown);
             // 
             // buttonTestUrl
             // 

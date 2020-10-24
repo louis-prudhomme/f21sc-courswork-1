@@ -24,6 +24,7 @@ namespace f21sc_courswork_1.View
         public event EventHandler WipeHistoryEvent;
         public event EventHandler BackwardAskedEvent;
         public event EventHandler ForwardAskedEvent;
+        public event EventHandler HomeAskedEvent;
 
         public void SetCurrentState(HttpAnswer answer, Node<HttpQuery> current)
         {
@@ -174,6 +175,16 @@ namespace f21sc_courswork_1.View
         private void allHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.HistoryPanelAskedEvent(this, EventArgs.Empty);
+        }
+
+        private void buttonHome_Click(object sender, EventArgs e)
+        {
+            this.HomeAskedEvent(this, EventArgs.Empty);
+        }
+
+        private void goToHomePageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.HomeAskedEvent(this, EventArgs.Empty);
         }
     }
 }
