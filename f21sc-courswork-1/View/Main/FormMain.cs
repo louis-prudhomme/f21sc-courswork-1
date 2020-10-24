@@ -9,8 +9,11 @@ namespace f21sc_courswork_1.View
 {
     public partial class FormMain : Form, IMainView
     {
+        private List<ToolTip> generatedToolTips;
         public FormMain()
         {
+            this.generatedToolTips = new List<ToolTip>();
+
             InitializeComponent();
         }
 
@@ -26,6 +29,12 @@ namespace f21sc_courswork_1.View
         public event EventHandler ForwardAskedEvent;
         public event EventHandler HomeAskedEvent;
 
+
+        /// <summary>
+        /// Will trigger an update of the view controls 
+        /// </summary>
+        /// <param name="answer">State of the HTML displayer</param>
+        /// <param name="current">State of the navigation</param>
         public void SetCurrentState(HttpAnswer answer, Node<HttpQuery> current)
         {
             if (this.InvokeRequired)
@@ -38,6 +47,11 @@ namespace f21sc_courswork_1.View
             }
         }
 
+        /// <summary>
+        /// Updates a lot of controls with the received information ; does the heavy-lifting for <see cref="SetCurrentState(HttpAnswer, Node{HttpQuery})"/>
+        /// </summary>
+        /// <param name="answer">State of the HTML displayer</param>
+        /// <param name="current">State of the navigation</param>
         private void UpdateControls(HttpAnswer answer, Node<HttpQuery> current)
         {
             this.Text = "Browser – " + answer.Title;
@@ -47,21 +61,33 @@ namespace f21sc_courswork_1.View
             this.toolStripStatusLabelHttpStatus.Text = current.Center.Status;
 
             this.buttonReload.Enabled = current.HasCenter;
+            this.reloadToolStripMenuItem.Enabled = current.HasCenter;
 
             this.UpdateNavigationControls(this.buttonBackward, current.Left);
             this.UpdateNavigationControls(this.buttonForward, current.Right);
             this.textBoxUrlInput.Text = current.Center.Uri.AbsoluteUri;
         }
 
+        /// <summary>
+        /// Updates one navigation control at a time with the related <see cref="HttpQuery"/>
+        /// </summary>
+        /// <param name="navigationControl">Either the backward or the forward <see cref="Button"/></param>
+        /// <param name="query">Current corresponding <see cref="HttpQuery"/> or null</param>
         private void UpdateNavigationControls(Button navigationControl, HttpQuery query)
         {
             navigationControl.Enabled = query != null;
             if (query != null)
             {
-                new ToolTip().SetToolTip(navigationControl, query.Title);
+                this.generatedToolTips.ForEach(tooltip => tooltip.Dispose());
+                this.generatedToolTips.Add(new ToolTip());
+                this.generatedToolTips[this.generatedToolTips.Count - 1].SetToolTip(navigationControl, query.Title);
             }
         }
 
+        /// <summary>
+        /// Updates the recent history toolstrip with the five last <see cref="HttpQuery"/> issued by the user
+        /// </summary>
+        /// <param name="recentQueries">Five last <see cref="HttpQuery"/> issued by the user</param>
         public void UpdateRecent(List<HttpQuery> recentQueries)
         {
             if (this.menuStripUp.InvokeRequired)
@@ -81,19 +107,29 @@ namespace f21sc_courswork_1.View
             }
         }
 
+        /// <summary>
+        /// Updates the history-related controls
+        /// </summary>
+        /// <param name="should">Whether the controls should be activated or not</param>
         private void ShouldHistoryControlsBeEnabled(bool should)
         {
             this.recentToolStripMenuItem.Enabled = should;
+            this.allHistoryToolStripMenuItem.Enabled = should;
             this.eraseHistoryToolStripMenuItem.Enabled = should;
         }
 
-        private ToolStripMenuItem MakeRecentToolStripItem(HttpQuery recent)
+        /// <summary>
+        /// Generates a new <see cref="ToolStripMenuItem"/> with an history entry
+        /// </summary>
+        /// <param name="entry"><see cref="HttpQuery"/> representing the history entry</param>
+        /// <returns>New <see cref="ToolStripMenuItem"/></returns>
+        private ToolStripMenuItem MakeRecentToolStripItem(HttpQuery entry)
         {
-            ToolStripMenuItem toolStrip = new ToolStripMenuItem(recent.Host)
+            ToolStripMenuItem toolStrip = new ToolStripMenuItem(entry.IssuedAt.ToString("HH:mm") + " - " + entry.Title)
             {
-                Tag = recent.Uri,
-                ToolTipText = String.Format("Consulted on the {0} at {1}", recent.IssuedAt.ToString("dd/MM"), recent.IssuedAt.ToString("HH:mm")),
-                Name = recent.TimestampIssuedAt.ToString()
+                Tag = entry.Uri.ToString(),
+                ToolTipText = entry.Uri.AbsoluteUri,
+                Name = entry.TimestampIssuedAt.ToString()
             };
             toolStrip.Click += this.recentToolStripMenuItem_Click;
 

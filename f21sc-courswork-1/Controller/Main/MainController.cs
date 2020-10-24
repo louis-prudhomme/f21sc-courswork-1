@@ -58,7 +58,6 @@ namespace f21sc_courswork_1.Controller.Main
             if (this.globalHistory.IsEmpty || this.globalHistory.Last.Uri != query.Uri)
             {
                 this.globalHistory.Add(query);
-                this.UpdateHistory();
             }
             if(!this.localHistory.HasCurrent || this.localHistory.Current.Uri != query.Uri)
             {
@@ -77,9 +76,7 @@ namespace f21sc_courswork_1.Controller.Main
             if (HttpUriHelper.TryCreateHttpUri(e.Url, out Uri uri))
             {
                 HttpQuery query = new HttpQuery(uri);
-
                 this.AddToHistory(query);
-                this.UpdateHistory();
 
                 await Task.Factory.StartNew(() => this.LoadPageAsync(query));
             }
@@ -98,7 +95,6 @@ namespace f21sc_courswork_1.Controller.Main
         private async void BackwardAskedEventHandlerAsync(object sender, EventArgs e)
         {
             this.localHistory.Backward();
-            this.UpdateHistory();
 
             await Task.Factory.StartNew(() => this.LoadPageAsync(this.localHistory.Current));
         }
@@ -112,7 +108,6 @@ namespace f21sc_courswork_1.Controller.Main
         private async void ForwardAskedEventHandlerAsync(object sender, EventArgs e)
         {
             this.localHistory.Forward();
-            this.UpdateHistory();
 
             await Task.Factory.StartNew(() => this.LoadPageAsync(this.localHistory.Current));
         }
@@ -137,6 +132,7 @@ namespace f21sc_courswork_1.Controller.Main
 
             query.Title = answer.Title;
             query.StatusCode = answer.StatusCode;
+            this.UpdateHistory();
             this.view.SetCurrentState(answer, this.localHistory.CurrentNode);
         }
 

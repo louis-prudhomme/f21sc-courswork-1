@@ -32,8 +32,6 @@ namespace f21sc_courswork_1.Controller
         private readonly GlobalHistory globalHistory;
         private Uri userHomePageUri;
 
-        //todo move history here
-
         /// <summary>
         /// Main constructor and real starting point of the application
         /// </summary>
