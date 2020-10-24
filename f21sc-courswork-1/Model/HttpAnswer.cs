@@ -16,6 +16,13 @@ namespace f21sc_courswork_1.Model
 
         public string Title { get; }
 
+        public HttpAnswer(string html, string title, int code)
+        {
+            Html = html.Length == 0 ? "<No HTML>" : html;
+            Title = title.Length == 0 ? "Empty page" : title;
+            this.Code = code;
+        }
+
         public HttpAnswer(string html, string title, HttpStatusCode code)
         {
             Html = html.Length == 0 ? "<No HTML>" : html;
@@ -24,12 +31,21 @@ namespace f21sc_courswork_1.Model
         }
 
         /// <summary>
+        /// Constructs a fetching answer for feedback purposes
+        /// </summary>
+        /// <returns></returns>
+        public static HttpAnswer FetchingAnswer()
+        {
+            return new HttpAnswer("Fetching…", "Fetching…", 0);
+        }
+
+        /// <summary>
         /// Constructs a blank answer for feedback purposes
         /// </summary>
         /// <returns></returns>
-        public static HttpAnswer BlankAnswer()
+        public static HttpAnswer ErrorAnswer()
         {
-            return new HttpAnswer("Fetching…", "Fetching…", 0);
+            return new HttpAnswer("A problem occured", "Could not reach host", -1);
         }
     }
 }

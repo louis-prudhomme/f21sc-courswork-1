@@ -1,4 +1,7 @@
-﻿using f21sc_courswork_1.Model;
+﻿using f21sc_courswork_1.Controller.InputHomeUrl;
+using f21sc_courswork_1.Controller.Main;
+using f21sc_courswork_1.Event;
+using f21sc_courswork_1.Model;
 using f21sc_courswork_1.Utils;
 using f21sc_courswork_1.View;
 using System;
@@ -13,9 +16,15 @@ namespace f21sc_courswork_1.Controller
     class BrowserApplicationContext : ApplicationContext
     {
         /// <summary>
-        /// Main controller
+        /// Main form controller
         /// </summary>
         private MainController mainController;
+        /// <summary>
+        /// Controller for the home url input 
+        /// </summary>
+        private InputHomeUrlController urlController;
+
+        //todo move history here
 
         /// <summary>
         /// Main constructor and real starting point of the application
@@ -23,8 +32,11 @@ namespace f21sc_courswork_1.Controller
         public BrowserApplicationContext()
         {
             mainController = new MainController(new FormMain());
+
+            mainController.MainFormClosedEvent += this.MainFormClosedEventHandler;
+            mainController.HomeUrlInputAskedEvent += this.HomeUrlInputAskedEventHandler;
+         
             mainController.Show();
-            mainController.MainFormClosedEvent += new EventHandler(OnFormClosed);
         }
 
         /// <summary>
@@ -32,9 +44,30 @@ namespace f21sc_courswork_1.Controller
         /// </summary>
         /// <param name="sender">Should be <see cref="formMain"/></param>
         /// <param name="e">Event arguments</param>
-        private void OnFormClosed(object sender, EventArgs e)
+        private void MainFormClosedEventHandler(object sender, EventArgs e)
         {
             ExitThread();
+        }
+
+        private void HomeUrlInputAskedEventHandler(object sender, EventArgs e)
+        {
+            this.mainController.ShouldBeEnabled(false);
+
+            this.urlController = new InputHomeUrlController(new FormInputHomeUrl());
+            this.urlController.UrlInputFormCanceledEvent += this.HomeUrlCancelledEventHandler;
+            this.urlController.UrlInputFormSubmittedEvent += this.HomeUrlSubmittedEventHandler;
+            
+            this.urlController.Show();
+        }
+
+        private void HomeUrlCancelledEventHandler(object sender, EventArgs e)
+        {
+            this.mainController.ShouldBeEnabled(true);
+        }
+
+        private void HomeUrlSubmittedEventHandler(object sender, UrlSentEventArgs e)
+        {
+            this.mainController.ShouldBeEnabled(true);
         }
 
         /// <summary>

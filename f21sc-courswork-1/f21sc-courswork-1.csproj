@@ -47,30 +47,43 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\BrowserApplicationContext.cs" />
-    <Compile Include="Controller\IMainController.cs" />
-    <Compile Include="Controller\MainController.cs" />
+    <Compile Include="Controller\InputHomeUrl\IInputHomeUrlController.cs" />
+    <Compile Include="Controller\Main\IMainController.cs" />
+    <Compile Include="Controller\InputHomeUrl\InputHomeUrlController.cs" />
+    <Compile Include="Controller\Main\MainController.cs" />
     <Compile Include="Model\GlobalHistory.cs" />
     <Compile Include="Model\HttpAnswer.cs" />
     <Compile Include="Model\HttpQuery.cs" />
-    <Compile Include="Events\UrlQueriedEvent.cs" />
+    <Compile Include="Events\UrlSentEvent.cs" />
     <Compile Include="Model\LocalHistory.cs" />
     <Compile Include="Utils\Backer.cs" />
     <Compile Include="Utils\Exceptions\BackerException.cs" />
     <Compile Include="Utils\Exceptions\UnrecognizedHttpStatusCodeException.cs" />
     <Compile Include="Utils\HttpQueryHelper.cs" />
     <Compile Include="Utils\HttpStatusHelper.cs" />
+    <Compile Include="Utils\HttpUriHelper.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\TimeHelper.cs" />
-    <Compile Include="View\FormMain.cs">
+    <Compile Include="View\InputHomeUrl\FormInputHomeUrl.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\FormMain.Designer.cs">
+    <Compile Include="View\InputHomeUrl\FormInputHomeUrl.Designer.cs">
+      <DependentUpon>FormInputHomeUrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Main\FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Main\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\IMainView.cs" />
-    <EmbeddedResource Include="View\FormMain.resx">
+    <Compile Include="View\InputHomeUrl\IInputHomeUrlView.cs" />
+    <Compile Include="View\Main\IMainView.cs" />
+    <EmbeddedResource Include="View\InputHomeUrl\FormInputHomeUrl.resx">
+      <DependentUpon>FormInputHomeUrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Main\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

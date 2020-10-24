@@ -3,10 +3,10 @@ using f21sc_courswork_1.Model;
 using f21sc_courswork_1.Utils;
 using f21sc_courswork_1.View;
 using System;
-using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace f21sc_courswork_1.Controller
+namespace f21sc_courswork_1.Controller.Main
 {
     /// <summary>
     /// Class to control the main view
@@ -19,6 +19,7 @@ namespace f21sc_courswork_1.Controller
         private readonly GlobalHistory globalHistory;
 
         public event EventHandler MainFormClosedEvent;
+        public event EventHandler HomeUrlInputAskedEvent;
 
         public MainController(IMainView view)
         {
@@ -26,7 +27,7 @@ namespace f21sc_courswork_1.Controller
             this.localHistory = new LocalHistory();
             this.globalHistory = new GlobalHistory();
 
-            this.view.UrlQueriedEvent += this.UrlQueriedEventHandlerAsync;
+            this.view.UrlSentEvent += this.UrlQueriedEventHandlerAsync;
             this.view.ReloadAskedEvent += this.ReloadQueriedEventHandler;
 
             this.view.DeleteAllHistoryEvent += this.DeleteAllHistoryEventHandler;
@@ -35,6 +36,7 @@ namespace f21sc_courswork_1.Controller
             this.view.ForwardAskedEvent += this.ForwardAskedEventHandlerAsync;
 
             this.view.MainFormClosedEvent += (o, i) => this.MainFormClosedEvent(this, EventArgs.Empty);
+            this.view.HomeUrlInputAskedEvent += (o, i) => this.HomeUrlInputAskedEvent(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace f21sc_courswork_1.Controller
         private void AddToHistory(HttpQuery query)
         {
             // if the requested url is the same as the current one, do nothing history-wise
-            if(this.localHistory.HasCurrent && this.localHistory.Current == query)
+            if(this.localHistory.HasCurrent && this.localHistory.Current.Uri == query.Uri)
             {
                 return;
             }
@@ -52,16 +54,7 @@ namespace f21sc_courswork_1.Controller
             this.localHistory.Add(query);
             this.globalHistory.Add(query);
 
-            this.view.DisableForward();
-            if (this.localHistory.Count == 2)
-            {
-                this.view.EnableBackward();
-            }
-
-            if (this.globalHistory.Count == 1)
-            {
-                this.view.EnableReload();
-            }
+            this.HistoryFallouts();
         }
 
         /// <summary>
@@ -69,12 +62,21 @@ namespace f21sc_courswork_1.Controller
         /// </summary>
         /// <param name="sender">Arguments containing the target URL</param>
         /// <param name="e">Empty</param>
-        private async void UrlQueriedEventHandlerAsync(object sender, UrlQueriedEventArgs e)
+        private async void UrlQueriedEventHandlerAsync(object sender, UrlSentEventArgs e)
         {
-            HttpQuery query = HttpQueryHelper.Make(e.Url);
+            Uri uri;
+            if (HttpUriHelper.TryCreateHttpUri(e.Url, out uri))
+            {
+                HttpQuery query = new HttpQuery(uri);
 
-            this.AddToHistory(query);
-            await Task.Factory.StartNew(() => this.LoadPageAsync(query));
+                this.AddToHistory(query);
+                this.HistoryFallouts();
+
+                await Task.Factory.StartNew(() => this.LoadPageAsync(query));
+            } else
+            {
+                this.view.DisplayErrorDialog("Invalid URL");
+            }
         }
 
         /// <summary>
@@ -86,14 +88,9 @@ namespace f21sc_courswork_1.Controller
         private async void BackwardAskedEventHandlerAsync(object sender, EventArgs e)
         {
             this.localHistory.Backward();
-
-            if (!this.localHistory.HasPrevious)
-            {
-                this.view.DisableBackward();
-            }
+            this.HistoryFallouts();
 
             await Task.Factory.StartNew(() => this.LoadPageAsync(this.localHistory.Current));
-            this.view.EnableForward();
         }
 
         /// <summary>
@@ -105,14 +102,25 @@ namespace f21sc_courswork_1.Controller
         private async void ForwardAskedEventHandlerAsync(object sender, EventArgs e)
         {
             this.localHistory.Forward();
-
-            if (!this.localHistory.HasNext)
-            {
-                this.view.DisableForward();
-            }
+            this.HistoryFallouts();
 
             await Task.Factory.StartNew(() => this.LoadPageAsync(this.localHistory.Current));
-            this.view.EnableBackward();
+        }
+
+        /// <summary>
+        /// Handles history changes fallouts
+        /// </summary>
+        private void HistoryFallouts()
+        {
+            this.view.ShouldEnableBackward(this.localHistory.HasPrevious);
+            this.view.ShouldEnableForward(this.localHistory.HasNext);
+            this.view.ShouldEnableReload(this.localHistory.HasCurrent);
+            this.view.ShouldEnableRecent(!this.localHistory.IsEmpty);
+
+            if (!this.localHistory.IsEmpty)
+            {
+                this.view.UpdateRecent(this.globalHistory.LastFive());
+            }
         }
 
         /// <summary>
@@ -123,10 +131,15 @@ namespace f21sc_courswork_1.Controller
         {
             this.view.UpdateUrl(query.Uri.ToString());
 
-            this.view.UpdateRecent(this.globalHistory.LastFive());
-
-            this.view.SetHttpAnswer(HttpAnswer.BlankAnswer());
-            this.view.SetHttpAnswer(await HttpQueryHelper.ExecuteAsync(query));
+            this.view.SetHttpAnswer(HttpAnswer.FetchingAnswer());
+            try
+            {
+                this.view.SetHttpAnswer(await HttpQueryHelper.ExecuteAsync(query));
+            } catch (HttpRequestException)
+            {
+                this.view.DisplayErrorDialog("Could not reach host " + query.Host);
+                this.view.SetHttpAnswer(HttpAnswer.ErrorAnswer());
+            }
         }
 
         /// <summary>
@@ -147,7 +160,9 @@ namespace f21sc_courswork_1.Controller
         private void DeleteAllHistoryEventHandler(object sender, EventArgs e)
         {
             this.globalHistory.RemoveAll();
-            this.view.DisableReload();
+            this.localHistory.RemoveAll();
+
+            this.HistoryFallouts();
         }
 
         /// <summary>
@@ -156,6 +171,15 @@ namespace f21sc_courswork_1.Controller
         public void Show()
         {
             this.view.Show();
+        }
+
+        /// <summary>
+        /// Blocks or unblocks the view
+        /// </summary>
+        /// <param name="should"></param>
+        public void ShouldBeEnabled(bool should)
+        {
+            this.view.ShouldBeEnabled(should);
         }
     }
 }

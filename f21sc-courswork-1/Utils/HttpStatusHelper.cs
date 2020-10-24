@@ -31,6 +31,8 @@ namespace f21sc_courswork_1.Utils
                     return "I’m a teapot";
                 case 0:
                     return "Fetching…";
+                case -1:
+                    return "Something wrong happened.";
                 default:
                     throw new UnrecognizedHttpStatusCodeException(code);
             }

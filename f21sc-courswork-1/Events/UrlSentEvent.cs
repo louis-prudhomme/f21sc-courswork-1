@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace f21sc_courswork_1.Event
 {
-    public delegate void UrlQueriedEvent(object source, UrlQueriedEventArgs e);
+    public delegate void UrlSentEvent(object source, UrlSentEventArgs e);
     
-    public class UrlQueriedEventArgs : EventArgs
+    public class UrlSentEventArgs : EventArgs
     {
         public string Url { get; }
         public DateTime queried { get; }
 
-        public UrlQueriedEventArgs(string url)
+        public UrlSentEventArgs(string url)
         {
             Url = url;
             queried = DateTime.Now;

@@ -9,11 +9,11 @@ namespace f21sc_courswork_1.Model
     /// </summary>
     class GlobalHistory
     {
-        private readonly SortedDictionary<int, HttpQuery> entries;
+        private readonly SortedDictionary<long, HttpQuery> entries;
 
         public GlobalHistory()
         {
-            this.entries = new SortedDictionary<int, HttpQuery>(Comparer<int>.Create((a, b) => b.CompareTo(a)));
+            this.entries = new SortedDictionary<long, HttpQuery>(Comparer<long>.Create((a, b) => b.CompareTo(a)));
         }
 
         /// <summary>

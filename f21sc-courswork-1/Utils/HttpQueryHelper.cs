@@ -14,12 +14,6 @@ namespace f21sc_courswork_1.Utils
     {
         private static readonly HttpClient client = new HttpClient();
 
-
-        public static HttpQuery Make(string uri)
-        {
-            return new HttpQuery(uri);
-        }
-
         /// <summary>
         /// Executes the query asynchronously and returns the corresponding answer
         /// </summary>

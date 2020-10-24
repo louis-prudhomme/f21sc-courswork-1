@@ -20,7 +20,8 @@ namespace f21sc_courswork_1.Utils
         /// <returns>Timestamp in the form of a <see cref="Int32"/></returns>
         public static int DateTimeToTimestamp(DateTime dateTime)
         {
-            return (int)dateTime.Subtract(Epoch).TotalSeconds;
+            TimeSpan timeBetween = dateTime.Subtract(Epoch);
+            return (int)timeBetween.TotalSeconds;
         }
     }
 }

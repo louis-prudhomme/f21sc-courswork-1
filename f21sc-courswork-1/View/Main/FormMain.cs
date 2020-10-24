@@ -15,8 +15,9 @@ namespace f21sc_courswork_1.View
         }
 
         public event EventHandler MainFormClosedEvent;
+        public event EventHandler HomeUrlInputAskedEvent;
 
-        public event UrlQueriedEvent UrlQueriedEvent;
+        public event UrlSentEvent UrlSentEvent;
         public event EventHandler ReloadAskedEvent;
         
         public event EventHandler DeleteAllHistoryEvent;
@@ -56,7 +57,7 @@ namespace f21sc_courswork_1.View
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            this.UrlQueriedEvent(this, new UrlQueriedEventArgs(this.textBoxUrlInput.Text));
+            this.UrlSentEvent(this, new UrlSentEventArgs(this.textBoxUrlInput.Text));
 
         }
 
@@ -74,7 +75,7 @@ namespace f21sc_courswork_1.View
         {
             if (e.KeyCode == Keys.Enter)
             {
-                this.UrlQueriedEvent(this, new UrlQueriedEventArgs(this.textBoxUrlInput.Text));
+                this.UrlSentEvent(this, new UrlSentEventArgs(this.textBoxUrlInput.Text));
             }
         }
 
@@ -90,19 +91,6 @@ namespace f21sc_courswork_1.View
         {
             this.ReloadAskedEvent(this, EventArgs.Empty);
         }
-
-        public void EnableReload()
-        {
-            this.buttonReload.Enabled = true;
-            this.reloadToolStripMenuItem.Enabled = true;
-        }
-
-        public void DisableReload()
-        {
-            this.buttonReload.Enabled = false;
-            this.reloadToolStripMenuItem.Enabled = false;
-        }
-
         private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.ReloadAskedEvent(this, EventArgs.Empty);
@@ -110,7 +98,7 @@ namespace f21sc_courswork_1.View
 
         private void recentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.UrlQueriedEvent(this, new UrlQueriedEventArgs(((ToolStripMenuItem)sender).Text));
+            this.UrlSentEvent(this, new UrlSentEventArgs(((ToolStripMenuItem)sender).Text));
         }
 
         private void eraseHistoryToolStripMenuItem_Click(object sender, EventArgs e)
@@ -140,38 +128,18 @@ namespace f21sc_courswork_1.View
             this.ForwardAskedEvent(this, EventArgs.Empty);
         }
 
-        public void DisableBackward()
-        {
-            this.buttonBackward.Enabled = false;
-        }
-
-        public void EnableBackward()
-        {
-            this.buttonBackward.Enabled = true;
-        }
-
-        public void DisableForward()
-        {
-            this.buttonForward.Enabled = false;
-        }
-
-        public void EnableForward()
-        {
-            this.buttonForward.Enabled = true;
-        }
-
         public void UpdateRecent(List<HttpQuery> recentQueries)
         {
-            if (this.menuStrip1.InvokeRequired)
+            if (this.menuStripUp.InvokeRequired)
             {
-                this.menuStrip1.Invoke(new Action(() =>
+                this.menuStripUp.Invoke(new Action(() =>
                 {
-                    this.recentToolStripMenuItem.Enabled = recentQueries.Count > 0;
                     this.recentToolStripMenuItem.DropDownItems.Clear();
                     this.recentToolStripMenuItem.DropDownItems.AddRange(recentQueries.Select(query => this.MakeRecentToolStripItem(query)).ToArray());
                 }));
             } else
             {
+                this.recentToolStripMenuItem.DropDownItems.Clear();
                 this.recentToolStripMenuItem.DropDownItems.AddRange(recentQueries.Select(query => this.MakeRecentToolStripItem(query)).ToArray());
             }
         }
@@ -187,6 +155,42 @@ namespace f21sc_courswork_1.View
             toolStrip.Click += this.recentToolStripMenuItem_Click;
 
             return toolStrip;
+        }
+
+        public void ShouldEnableRecent(bool should)
+        {
+            this.recentToolStripMenuItem.Enabled = should;
+        }
+
+        public void ShouldEnableReload(bool should)
+        {
+            this.buttonReload.Enabled = should;
+            this.reloadToolStripMenuItem.Enabled = should;
+        }
+
+        public void ShouldEnableBackward(bool should)
+        {
+            this.buttonBackward.Enabled = should;
+        }
+
+        public void ShouldEnableForward(bool should)
+        {
+            this.buttonForward.Enabled = should;
+        }
+
+        public void ShouldBeEnabled(bool should)
+        {
+            this.Enabled = should;
+        }
+
+        private void personalizeHomeURLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.HomeUrlInputAskedEvent(this, EventArgs.Empty);
+        }
+
+        public void DisplayErrorDialog(string text)
+        {
+            MessageBox.Show(text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }
