@@ -1,8 +1,9 @@
-﻿using f21sc_courswork_1.Utils;
+﻿using f21sc_courswork_1.Model.HttpCommunications;
+using f21sc_courswork_1.Utils;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace f21sc_courswork_1.Model
+namespace f21sc_courswork_1.Model.History
 {
     /// <summary>
     /// Models user global navigation history

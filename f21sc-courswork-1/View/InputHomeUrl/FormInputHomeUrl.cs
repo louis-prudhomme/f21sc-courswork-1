@@ -56,7 +56,9 @@ namespace f21sc_courswork_1.View.InputHomeUrl
         public void UpdateUrl(string url)
         {
             this.textBoxInputUrl.Text = url;
+
             this.buttonOk.Enabled = true;
+            this.buttonOk.Focus();
         }
 
         private void textBoxInputUrl_KeyDown(object sender, KeyEventArgs e)

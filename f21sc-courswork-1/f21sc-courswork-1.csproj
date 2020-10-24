@@ -55,11 +55,11 @@
     <Compile Include="Controller\Main\MainController.cs" />
     <Compile Include="Events\HistoryEntriesDeletedEvent.cs" />
     <Compile Include="Events\UrlInputFormSubmittedEvent.cs" />
-    <Compile Include="Model\GlobalHistory.cs" />
-    <Compile Include="Model\HttpAnswer.cs" />
-    <Compile Include="Model\HttpQuery.cs" />
+    <Compile Include="Model\History\GlobalHistory.cs" />
+    <Compile Include="Model\HttpCommunications\HttpAnswer.cs" />
+    <Compile Include="Model\HttpCommunications\HttpQuery.cs" />
     <Compile Include="Events\UrlSentEvent.cs" />
-    <Compile Include="Model\LocalHistory.cs" />
+    <Compile Include="Model\History\LocalHistory.cs" />
     <Compile Include="Model\Node.cs" />
     <Compile Include="Utils\Backer.cs" />
     <Compile Include="Utils\Exceptions\BackerException.cs" />

@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace f21sc_courswork_1.Model
+namespace f21sc_courswork_1.Model.HttpCommunications
 {
     public class HttpAnswer
     {

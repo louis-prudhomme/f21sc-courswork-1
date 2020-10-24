@@ -3,6 +3,7 @@ using f21sc_courswork_1.Controller.InputHomeUrl;
 using f21sc_courswork_1.Controller.Main;
 using f21sc_courswork_1.Event;
 using f21sc_courswork_1.Model;
+using f21sc_courswork_1.Model.History;
 using f21sc_courswork_1.View;
 using f21sc_courswork_1.View.HistoryPanel;
 using f21sc_courswork_1.View.InputHomeUrl;
