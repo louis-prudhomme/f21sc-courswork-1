@@ -2,7 +2,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace f21sc_courswork_1.View
+namespace f21sc_courswork_1.View.InputHomeUrl
 {
     public partial class FormInputHomeUrl : Form, IInputHomeUrlView
     {

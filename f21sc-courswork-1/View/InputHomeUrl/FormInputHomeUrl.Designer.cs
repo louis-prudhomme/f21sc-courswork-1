@@ -1,4 +1,4 @@
-﻿namespace f21sc_courswork_1.View
+﻿namespace f21sc_courswork_1.View.InputHomeUrl
 {
     partial class FormInputHomeUrl
     {
