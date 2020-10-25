@@ -21,6 +21,14 @@ namespace f21sc_coursework_1.View.InputHomeUrl
             this.labelFeedback.Text = feedback;
         }
 
+        public void UpdateUrl(string url)
+        {
+            this.textBoxInputUrl.Text = url;
+
+            this.buttonOk.Enabled = true;
+            this.buttonOk.Focus();
+        }
+
         public void ShouldEnableOk(bool should)
         {
             this.buttonOk.Enabled = should;
@@ -51,14 +59,6 @@ namespace f21sc_coursework_1.View.InputHomeUrl
         private void buttonTestUrl_Click(object sender, EventArgs e)
         {
             this.UrlSentEvent(this, new UrlSentEventArgs(this.textBoxInputUrl.Text));
-        }
-
-        public void UpdateUrl(string url)
-        {
-            this.textBoxInputUrl.Text = url;
-
-            this.buttonOk.Enabled = true;
-            this.buttonOk.Focus();
         }
 
         private void textBoxInputUrl_KeyDown(object sender, KeyEventArgs e)

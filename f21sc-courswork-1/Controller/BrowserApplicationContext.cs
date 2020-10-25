@@ -4,12 +4,12 @@ using f21sc_coursework_1.Controller.InputHomeUrl;
 using f21sc_coursework_1.Controller.Main;
 using f21sc_coursework_1.Event;
 using f21sc_coursework_1.Model;
-using f21sc_coursework_1.Model.Favorites;
 using f21sc_coursework_1.Model.History;
 using f21sc_coursework_1.View;
 using f21sc_coursework_1.View.FavoritesPanel;
 using f21sc_coursework_1.View.HistoryPanel;
 using f21sc_coursework_1.View.InputHomeUrl;
+using f21sc_courswork_1.Model.Favorites;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -46,9 +46,9 @@ namespace f21sc_coursework_1.Controller
         /// </summary>
         public BrowserApplicationContext()
         {
-            this.user = new UserProfile(new GlobalHistory(), new Uri("http://www.lingscars.com"), new List<Fav>());
+            this.user = new UserProfile(new GlobalHistory(), new Uri("http://www.lingscars.com"), new FavoritesRepository());
 
-            this.mainController = new MainController(new FormMain(), this.user.History, this.user.HomePage);
+            this.mainController = new MainController(new FormMain(), this.user);
 
             this.mainController.MainFormClosedEvent += this.MainFormClosedEventHandler;
             this.mainController.HomeUrlInputAskedEvent += this.HomeUrlInputAskedEventHandler;
@@ -56,6 +56,7 @@ namespace f21sc_coursework_1.Controller
             this.mainController.FavoritesPanelAskedEvent += this.FavoritesPanelAskedEventHandler;
 
             this.mainController.GlobalHistoryUpdatedEvent += this.HistoryUpdatedEventHandler;
+            this.mainController.FavoritesUpdatedEvent += this.FavoritesUpdateEventHandler;
 
             this.mainController.Show();
         }

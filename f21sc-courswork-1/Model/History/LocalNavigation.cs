@@ -3,15 +3,13 @@ using System.Collections.Generic;
 
 namespace f21sc_coursework_1.Model.History
 {
-    class LocalHistory
+    class LocalNavigation
     {
         private LinkedListNode<HttpQuery> current;
         private readonly LinkedList<HttpQuery> entries;
 
-        public LocalHistory()
+        public LocalNavigation()
         {
-            // todo add home page
-            // add current ?
             this.entries = new LinkedList<HttpQuery>();
         }
 

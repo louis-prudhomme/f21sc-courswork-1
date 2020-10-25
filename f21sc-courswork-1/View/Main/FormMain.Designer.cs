@@ -164,20 +164,20 @@
             // 
             this.reloadToolStripMenuItem.Enabled = false;
             this.reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
-            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.reloadToolStripMenuItem.Text = "Reload";
             this.reloadToolStripMenuItem.Click += new System.EventHandler(this.reloadToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(107, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.AutoToolTip = true;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -219,27 +219,27 @@
             // 
             this.recentToolStripMenuItem.Enabled = false;
             this.recentToolStripMenuItem.Name = "recentToolStripMenuItem";
-            this.recentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.recentToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.recentToolStripMenuItem.Text = "Recent";
             // 
             // allHistoryToolStripMenuItem
             // 
             this.allHistoryToolStripMenuItem.Enabled = false;
             this.allHistoryToolStripMenuItem.Name = "allHistoryToolStripMenuItem";
-            this.allHistoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.allHistoryToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.allHistoryToolStripMenuItem.Text = "All history";
             this.allHistoryToolStripMenuItem.Click += new System.EventHandler(this.allHistoryToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(137, 6);
             // 
             // eraseHistoryToolStripMenuItem
             // 
             this.eraseHistoryToolStripMenuItem.Enabled = false;
             this.eraseHistoryToolStripMenuItem.Name = "eraseHistoryToolStripMenuItem";
-            this.eraseHistoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.eraseHistoryToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.eraseHistoryToolStripMenuItem.Text = "Erase history";
             this.eraseHistoryToolStripMenuItem.Click += new System.EventHandler(this.eraseHistoryToolStripMenuItem_Click);
             // 
@@ -265,10 +265,10 @@
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(186, 6);
             // 
-            // makeThisSiteFavoriteToolStripMenuItem
+            // favToolStripMenuItem
             // 
             this.favToolStripMenuItem.Enabled = false;
-            this.favToolStripMenuItem.Name = "makeThisSiteFavoriteToolStripMenuItem";
+            this.favToolStripMenuItem.Name = "favToolStripMenuItem";
             this.favToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.favToolStripMenuItem.Text = "Make this site favorite";
             // 
@@ -282,7 +282,6 @@
             this.buttonFav.TabIndex = 2;
             this.buttonFav.Text = "Make fav";
             this.buttonFav.UseVisualStyleBackColor = true;
-            this.buttonFav.Click += new System.EventHandler(this.buttonFav_Click);
             // 
             // buttonBackward
             // 

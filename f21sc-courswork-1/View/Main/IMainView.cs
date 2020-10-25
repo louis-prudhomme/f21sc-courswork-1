@@ -1,4 +1,6 @@
 ﻿using f21sc_coursework_1.Event;
+using f21sc_coursework_1.Events;
+using f21sc_coursework_1.Events.Favorites;
 using f21sc_coursework_1.Model;
 using f21sc_coursework_1.Model.HttpCommunications;
 using System;
@@ -23,10 +25,14 @@ namespace f21sc_coursework_1.View
         event EventHandler BackwardAskedEvent;
         event EventHandler ForwardAskedEvent;
 
+        event FavAddedEvent FavAddedEvent;
+        event FavRemovedEvent FavRemovedEvent;
+
         void DisplayErrorDialog(string text);
         void SetCurrentState(HttpAnswer answer, Node<HttpQuery> current);
         void UpdateRecent(List<HttpQuery> recent);
         void ShouldBeEnabled(bool should);
+        void IsCurrentAFav(bool isFav);
 
         void Show();
     }

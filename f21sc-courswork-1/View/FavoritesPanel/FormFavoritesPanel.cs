@@ -1,5 +1,6 @@
 ﻿using f21sc_coursework_1.Events;
-using f21sc_coursework_1.Model.Favorites;
+using f21sc_coursework_1.Events.Favorites;
+using f21sc_courswork_1.Model.Favorites;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -43,7 +44,7 @@ namespace f21sc_coursework_1.View.FavoritesPanel
             this.listBoxFavorites.BeginUpdate();
             if (favorites.Count != 0)
             {
-                this.listBoxFavorites.Items.AddRange(favorites.ToArray());
+                this.listBoxFavorites.Items.AddRange(favorites.ToList().ToArray());
                 this.ShouldEnableFavoritesDependantControls(true);
             }
             else

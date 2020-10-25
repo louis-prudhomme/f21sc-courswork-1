@@ -1,6 +1,8 @@
 ﻿using f21sc_coursework_1.Event;
+using f21sc_coursework_1.Events.Favorites;
 using f21sc_coursework_1.Model;
 using f21sc_coursework_1.Model.HttpCommunications;
+using f21sc_courswork_1.Model.Favorites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +37,9 @@ namespace f21sc_coursework_1.View
 
         public event EventHandler BackwardAskedEvent;
         public event EventHandler ForwardAskedEvent;
+
+        public event FavAddedEvent FavAddedEvent;
+        public event FavRemovedEvent FavRemovedEvent;
 
 
         /// <summary>
@@ -250,14 +255,50 @@ namespace f21sc_coursework_1.View
             this.HomeAskedEvent(this, EventArgs.Empty);
         }
 
-        private void buttonFav_Click(object sender, EventArgs e)
+        private void AddFavoriteEventHandler(object sender, EventArgs e)
         {
+            this.FavAddedEvent(this, new FavAddedEventArgs(new Fav(new Uri(this.textBoxUrlInput.Text), this.textBoxUrlInput.Text)));
+        }
 
+        private void RemoveFavoriteEventHandler(object sender, EventArgs e)
+        {
+            this.FavRemovedEvent(this, new FavRemovedEventArgs(this.textBoxUrlInput.Text));
         }
 
         private void seeAllFavoritesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.FavoritesPanelAskedEvent(this, EventArgs.Empty);
+        }
+
+        public void IsCurrentAFav(bool isFav)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => this.UpdateFavoritesControls(isFav)));
+            } else
+            {
+                this.UpdateFavoritesControls(isFav);
+            }
+        }
+
+        private void UpdateFavoritesControls(bool isFav)
+        {
+            this.buttonFav.Text = !isFav ? "Make fav" : "Unfav";
+            this.favToolStripMenuItem.Text = !isFav ? "Add to favorites" : "Remove from favorites";
+
+            this.buttonFav.Click -= isFav ?
+                new EventHandler(this.AddFavoriteEventHandler) :
+                new EventHandler(this.RemoveFavoriteEventHandler);
+            this.buttonFav.Click += isFav ?
+                new EventHandler(this.RemoveFavoriteEventHandler) :
+                new EventHandler(this.AddFavoriteEventHandler);
+
+            this.favToolStripMenuItem.Click -= isFav ?
+                new EventHandler(this.AddFavoriteEventHandler) :
+                new EventHandler(this.RemoveFavoriteEventHandler);
+            this.favToolStripMenuItem.Click += isFav ?
+                new EventHandler(this.RemoveFavoriteEventHandler) :
+                new EventHandler(this.AddFavoriteEventHandler);
         }
     }
 }

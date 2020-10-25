@@ -1,5 +1,5 @@
-﻿using f21sc_coursework_1.Model.Favorites;
-using f21sc_coursework_1.Model.History;
+﻿using f21sc_coursework_1.Model.History;
+using f21sc_courswork_1.Model.Favorites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace f21sc_coursework_1.Model
 {
+    [Serializable]
     class UserProfile
     {
         /// <summary>
@@ -23,9 +24,9 @@ namespace f21sc_coursework_1.Model
         /// <summary>
         /// User’s list of <see cref="Fav"/>
         /// </summary>
-        public List<Fav> Favorites { get; }
+        public FavoritesRepository Favorites { get; }
 
-        public UserProfile(GlobalHistory history, Uri homePage, List<Fav> favorites)
+        public UserProfile(GlobalHistory history, Uri homePage, FavoritesRepository favorites)
         {
             this.History = history;
             this.HomePage = homePage;

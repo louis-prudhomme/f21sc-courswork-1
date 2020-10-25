@@ -11,6 +11,7 @@ namespace f21sc_coursework_1.Controller.Main
         event EventHandler FavoritesPanelAskedEvent;
 
         event EventHandler GlobalHistoryUpdatedEvent;
+        event EventHandler FavoritesUpdatedEvent;
 
         void ShouldBeEnabled(bool should);
         void UpdateHomeUri(Uri homeUri);
