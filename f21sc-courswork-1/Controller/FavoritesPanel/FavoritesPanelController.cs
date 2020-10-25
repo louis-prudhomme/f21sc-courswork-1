@@ -1,13 +1,10 @@
-﻿using f21sc_courswork_1.Events;
-using f21sc_courswork_1.Model.Favorites;
-using f21sc_courswork_1.View.FavoritesPanel;
+﻿using f21sc_coursework_1.Events;
+using f21sc_coursework_1.Model.Favorites;
+using f21sc_coursework_1.View.FavoritesPanel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace f21sc_courswork_1.Controller.FavoritesPanel
+namespace f21sc_coursework_1.Controller.FavoritesPanel
 {
     class FavoritesPanelController : IFavoritesPanelController
     {

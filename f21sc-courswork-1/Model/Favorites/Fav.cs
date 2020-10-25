@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace f21sc_courswork_1.Model.Favorites
+namespace f21sc_coursework_1.Model.Favorites
 {
     public class Fav
     {

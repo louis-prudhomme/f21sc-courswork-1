@@ -1,4 +1,4 @@
-﻿namespace f21sc_courswork_1.View.HistoryPanel
+﻿namespace f21sc_coursework_1.View.HistoryPanel
 {
     partial class FormHistoryPanel
     {
@@ -137,6 +137,7 @@
             this.Controls.Add(this.buttonFav);
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.listBoxHistory);
+            this.MinimumSize = new System.Drawing.Size(400, 400);
             this.Name = "FormHistoryPanel";
             this.Text = "History panel";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormHistoryPanel_FormClosed);

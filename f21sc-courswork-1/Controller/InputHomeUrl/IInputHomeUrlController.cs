@@ -1,7 +1,7 @@
-﻿using f21sc_courswork_1.Event;
+﻿using f21sc_coursework_1.Event;
 using System;
 
-namespace f21sc_courswork_1.Controller.InputHomeUrl
+namespace f21sc_coursework_1.Controller.InputHomeUrl
 {
     interface IInputHomeUrlController
     {

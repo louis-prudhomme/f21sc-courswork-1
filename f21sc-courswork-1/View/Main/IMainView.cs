@@ -1,10 +1,10 @@
-﻿using f21sc_courswork_1.Event;
-using f21sc_courswork_1.Model;
-using f21sc_courswork_1.Model.HttpCommunications;
+﻿using f21sc_coursework_1.Event;
+using f21sc_coursework_1.Model;
+using f21sc_coursework_1.Model.HttpCommunications;
 using System;
 using System.Collections.Generic;
 
-namespace f21sc_courswork_1.View
+namespace f21sc_coursework_1.View
 {
     interface IMainView
     {

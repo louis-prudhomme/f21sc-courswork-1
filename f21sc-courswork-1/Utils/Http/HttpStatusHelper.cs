@@ -1,7 +1,7 @@
-﻿using f21sc_courswork_1.Utils.Http.Exceptions;
+﻿using f21sc_coursework_1.Utils.Http.Exceptions;
 using System.Net;
 
-namespace f21sc_courswork_1.Utils.Http
+namespace f21sc_coursework_1.Utils.Http
 {
     class HttpStatusHelper
     {

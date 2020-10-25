@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace f21sc_courswork_1.Controller.HistoryPanel
+namespace f21sc_coursework_1.Controller.HistoryPanel
 {
     interface IHistoryPanelController
     {

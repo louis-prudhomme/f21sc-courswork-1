@@ -1,12 +1,12 @@
-﻿using f21sc_courswork_1.Events;
-using f21sc_courswork_1.Model.Favorites;
+﻿using f21sc_coursework_1.Events;
+using f21sc_coursework_1.Model.Favorites;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace f21sc_courswork_1.View.FavoritesPanel
+namespace f21sc_coursework_1.View.FavoritesPanel
 {
     public partial class FormFavoritesPanel : Form, IFavoritesPanelView
     {
@@ -71,7 +71,10 @@ namespace f21sc_courswork_1.View.FavoritesPanel
 
         private void buttonRemove_Click(object sender, EventArgs e)
         {
-            this.FavoritesDeletedEvent(this, new FavoritesDeletedEventArgs(this.listBoxFavorites.SelectedItems.Cast<Fav>().ToList()));
+            this.FavoritesDeletedEvent(this, new FavoritesDeletedEventArgs(this.listBoxFavorites
+                .SelectedItems
+                .Cast<Fav>()
+                .ToList()));
         }
 
         private void listBoxFavorites_SelectedValueChanged(object sender, EventArgs e)

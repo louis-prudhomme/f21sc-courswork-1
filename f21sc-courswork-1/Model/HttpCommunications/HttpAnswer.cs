@@ -1,7 +1,7 @@
-﻿using f21sc_courswork_1.Utils.Http;
+﻿using f21sc_coursework_1.Utils.Http;
 using System.Net;
 
-namespace f21sc_courswork_1.Model.HttpCommunications
+namespace f21sc_coursework_1.Model.HttpCommunications
 {
     public class HttpAnswer
     {

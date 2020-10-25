@@ -1,13 +1,13 @@
-﻿using f21sc_courswork_1.Event;
-using f21sc_courswork_1.Model.History;
-using f21sc_courswork_1.Model.HttpCommunications;
-using f21sc_courswork_1.Utils.Http;
-using f21sc_courswork_1.View;
+﻿using f21sc_coursework_1.Event;
+using f21sc_coursework_1.Model.History;
+using f21sc_coursework_1.Model.HttpCommunications;
+using f21sc_coursework_1.Utils.Http;
+using f21sc_coursework_1.View;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace f21sc_courswork_1.Controller.Main
+namespace f21sc_coursework_1.Controller.Main
 {
     /// <summary>
     /// Class to control the main view

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace f21sc_courswork_1.Utils.Http.Exceptions
+namespace f21sc_coursework_1.Utils.Http.Exceptions
 {
     class UnrecognizedHttpStatusCodeException : Exception
     {

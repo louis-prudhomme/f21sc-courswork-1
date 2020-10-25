@@ -1,9 +1,9 @@
-﻿using f21sc_courswork_1.Model.HttpCommunications;
+﻿using f21sc_coursework_1.Model.HttpCommunications;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace f21sc_courswork_1.Utils.Http
+namespace f21sc_coursework_1.Utils.Http
 {
     class HttpQueryHelper
     {

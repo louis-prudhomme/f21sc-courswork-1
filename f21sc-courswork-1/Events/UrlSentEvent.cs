@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace f21sc_courswork_1.Event
+namespace f21sc_coursework_1.Event
 {
     public delegate void UrlSentEvent(object source, UrlSentEventArgs e);
 

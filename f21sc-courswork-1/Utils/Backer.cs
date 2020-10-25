@@ -1,9 +1,9 @@
-﻿using f21sc_courswork_1.Utils.Exceptions;
+﻿using f21sc_coursework_1.Utils.Exceptions;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Threading;
 
-namespace f21sc_courswork_1.Utils
+namespace f21sc_coursework_1.Utils
 {
     /// <summary>
     /// Will serialize or deserialize data of type <see cref="T"/> to the filesystem

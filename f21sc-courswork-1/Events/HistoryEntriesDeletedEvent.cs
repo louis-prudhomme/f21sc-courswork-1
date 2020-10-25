@@ -1,8 +1,8 @@
-﻿using f21sc_courswork_1.Model.HttpCommunications;
+﻿using f21sc_coursework_1.Model.HttpCommunications;
 using System;
 using System.Collections.Generic;
 
-namespace f21sc_courswork_1.Event
+namespace f21sc_coursework_1.Event
 {
     public delegate void HistoryEntriesDeletedEvent(object source, HistoryEntriesDeletedEventArgs e);
 

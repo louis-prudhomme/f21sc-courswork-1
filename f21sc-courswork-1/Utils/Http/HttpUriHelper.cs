@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace f21sc_courswork_1.Utils.Http
+namespace f21sc_coursework_1.Utils.Http
 {
     class HttpUriHelper
     {

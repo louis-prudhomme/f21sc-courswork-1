@@ -1,8 +1,8 @@
-﻿using f21sc_courswork_1.Event;
+﻿using f21sc_coursework_1.Event;
 using System;
 using System.Windows.Forms;
 
-namespace f21sc_courswork_1.View.InputHomeUrl
+namespace f21sc_coursework_1.View.InputHomeUrl
 {
     public partial class FormInputHomeUrl : Form, IInputHomeUrlView
     {

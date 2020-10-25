@@ -1,7 +1,7 @@
-﻿using f21sc_courswork_1.Model.HttpCommunications;
+﻿using f21sc_coursework_1.Model.HttpCommunications;
 using System.Collections.Generic;
 
-namespace f21sc_courswork_1.Model.History
+namespace f21sc_coursework_1.Model.History
 {
     class LocalHistory
     {

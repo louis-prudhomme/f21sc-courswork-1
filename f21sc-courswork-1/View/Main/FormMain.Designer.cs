@@ -1,4 +1,4 @@
-﻿namespace f21sc_courswork_1.View
+﻿namespace f21sc_coursework_1.View
 {
     partial class FormMain
     {
@@ -52,7 +52,7 @@
             this.favoritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.seeAllFavoritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.makeThisSiteFavoriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.favToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonFav = new System.Windows.Forms.Button();
             this.buttonBackward = new System.Windows.Forms.Button();
             this.buttonForward = new System.Windows.Forms.Button();
@@ -248,7 +248,7 @@
             this.favoritesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.seeAllFavoritesToolStripMenuItem,
             this.toolStripSeparator3,
-            this.makeThisSiteFavoriteToolStripMenuItem});
+            this.favToolStripMenuItem});
             this.favoritesToolStripMenuItem.Name = "favoritesToolStripMenuItem";
             this.favoritesToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
             this.favoritesToolStripMenuItem.Text = "Favorites";
@@ -267,10 +267,10 @@
             // 
             // makeThisSiteFavoriteToolStripMenuItem
             // 
-            this.makeThisSiteFavoriteToolStripMenuItem.Enabled = false;
-            this.makeThisSiteFavoriteToolStripMenuItem.Name = "makeThisSiteFavoriteToolStripMenuItem";
-            this.makeThisSiteFavoriteToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.makeThisSiteFavoriteToolStripMenuItem.Text = "Make this site favorite";
+            this.favToolStripMenuItem.Enabled = false;
+            this.favToolStripMenuItem.Name = "makeThisSiteFavoriteToolStripMenuItem";
+            this.favToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.favToolStripMenuItem.Text = "Make this site favorite";
             // 
             // buttonFav
             // 
@@ -356,7 +356,7 @@
         private System.Windows.Forms.ToolStripMenuItem favoritesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem seeAllFavoritesToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripMenuItem makeThisSiteFavoriteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem favToolStripMenuItem;
         private System.Windows.Forms.Button buttonFav;
         private System.Windows.Forms.Button buttonBackward;
         private System.Windows.Forms.Button buttonForward;

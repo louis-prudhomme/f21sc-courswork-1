@@ -1,24 +1,26 @@
-﻿using f21sc_courswork_1.Controller.FavoritesPanel;
-using f21sc_courswork_1.Controller.HistoryPanel;
-using f21sc_courswork_1.Controller.InputHomeUrl;
-using f21sc_courswork_1.Controller.Main;
-using f21sc_courswork_1.Event;
-using f21sc_courswork_1.Model.Favorites;
-using f21sc_courswork_1.Model.History;
-using f21sc_courswork_1.View;
-using f21sc_courswork_1.View.FavoritesPanel;
-using f21sc_courswork_1.View.HistoryPanel;
-using f21sc_courswork_1.View.InputHomeUrl;
+﻿using f21sc_coursework_1.Controller.FavoritesPanel;
+using f21sc_coursework_1.Controller.HistoryPanel;
+using f21sc_coursework_1.Controller.InputHomeUrl;
+using f21sc_coursework_1.Controller.Main;
+using f21sc_coursework_1.Event;
+using f21sc_coursework_1.Model;
+using f21sc_coursework_1.Model.Favorites;
+using f21sc_coursework_1.Model.History;
+using f21sc_coursework_1.View;
+using f21sc_coursework_1.View.FavoritesPanel;
+using f21sc_coursework_1.View.HistoryPanel;
+using f21sc_coursework_1.View.InputHomeUrl;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace f21sc_courswork_1.Controller
+namespace f21sc_coursework_1.Controller
 {
     class BrowserApplicationContext : ApplicationContext
     {
         /// <summary>
         /// Main form controller
+        /// Is readonly because it is always present
         /// </summary>
         private readonly IMainController mainController;
         /// <summary>
@@ -35,30 +37,18 @@ namespace f21sc_courswork_1.Controller
         private IFavoritesPanelController favoritesController;
 
         /// <summary>
-        /// History of the user 
+        /// Represents the user data
         /// </summary>
-        private readonly GlobalHistory globalHistory;
-
-        /// <summary>
-        /// <see cref="Uri"/> of the user’s home page
-        /// </summary>
-        private Uri userHomePageUri;
-
-        /// <summary>
-        /// List of the user <see cref="Fav"/>
-        /// </summary>
-        private List<Fav> userFavorites;
+        private readonly UserProfile user;
 
         /// <summary>
         /// Main constructor and real starting point of the application
         /// </summary>
         public BrowserApplicationContext()
         {
-            this.userHomePageUri = new Uri("http://www.lingscars.com");
-            this.globalHistory = new GlobalHistory();
-            this.userFavorites = new List<Fav>();
+            this.user = new UserProfile(new GlobalHistory(), new Uri("http://www.lingscars.com"), new List<Fav>());
 
-            this.mainController = new MainController(new FormMain(), this.globalHistory, this.userHomePageUri);
+            this.mainController = new MainController(new FormMain(), this.user.History, this.user.HomePage);
 
             this.mainController.MainFormClosedEvent += this.MainFormClosedEventHandler;
             this.mainController.HomeUrlInputAskedEvent += this.HomeUrlInputAskedEventHandler;
@@ -80,6 +70,10 @@ namespace f21sc_courswork_1.Controller
             ExitThread();
         }
 
+        /* ==================================
+         * INPUT HOME URL CONTROLLER
+         * ==================================*/
+
         private void HomeUrlInputAskedEventHandler(object sender, EventArgs e)
         {
             this.mainController.ShouldBeEnabled(false);
@@ -91,12 +85,30 @@ namespace f21sc_courswork_1.Controller
             this.urlController.Show();
         }
 
+        private void HomeUrlCancelledEventHandler(object sender, EventArgs e)
+        {
+            this.urlController = null;
+            this.mainController.ShouldBeEnabled(true);
+        }
+
+        private void HomeUrlSubmittedEventHandler(object sender, UrlInputFormSubmittedEventArgs e)
+        {
+            this.user.HomePage = e.Uri;
+            this.mainController.UpdateHomeUri(this.user.HomePage);
+            this.mainController.ShouldBeEnabled(true);
+        }
+
+        /* ==================================
+         * FAVORITES PANEL CONTROLLER
+         * ==================================*/
+
         private void FavoritesPanelAskedEventHandler(object sender, EventArgs e)
         {
             this.mainController.ShouldBeEnabled(false);
 
-            this.favoritesController = new FavoritesPanelController(new FormFavoritesPanel(), this.userFavorites);
+            this.favoritesController = new FavoritesPanelController(new FormFavoritesPanel(), this.user.Favorites);
             this.favoritesController.FavoritesPanelFormClosedEvent += this.FavoritesPanelClosedEventHandler;
+            this.favoritesController.FavoritesUpdatedEvent += this.FavoritesUpdateEventHandler;
 
             this.favoritesController.Show();
         }
@@ -107,11 +119,15 @@ namespace f21sc_courswork_1.Controller
             this.mainController.ShouldBeEnabled(true);
         }
 
+        /* ==================================
+         * HISTORY PANEL CONTROLLER
+         * ==================================*/
+
         private void HistoryPanelAskedEventHandler(object sender, EventArgs e)
         {
             this.mainController.ShouldBeEnabled(false);
 
-            this.historyController = new HistoryPanelController(new FormHistoryPanel(), this.globalHistory);
+            this.historyController = new HistoryPanelController(new FormHistoryPanel(), this.user.History);
             this.historyController.FormHistoryPanelClosedEvent += this.HistoryPanelClosedEventHandler;
             this.historyController.HistoryUpdatedEvent += this.HistoryUpdatedEventHandler;
 
@@ -125,20 +141,16 @@ namespace f21sc_courswork_1.Controller
             this.mainController.UpdateHistory();
         }
 
-        private void HomeUrlCancelledEventHandler(object sender, EventArgs e)
-        {
-            this.urlController = null;
-            this.mainController.ShouldBeEnabled(true);
-        }
-
-        private void HomeUrlSubmittedEventHandler(object sender, UrlInputFormSubmittedEventArgs e)
-        {
-            this.userHomePageUri = e.Uri;
-            this.mainController.UpdateHomeUri(this.userHomePageUri);
-            this.mainController.ShouldBeEnabled(true);
-        }
+        /* ==================================
+         * USER FILES UPDATES
+         * ==================================*/
 
         private void HistoryUpdatedEventHandler(object sender, EventArgs e)
+        {
+            // todo
+        }
+
+        private void FavoritesUpdateEventHandler(object sender, EventArgs e)
         {
             // todo
         }

@@ -1,4 +1,4 @@
-﻿namespace f21sc_courswork_1.View.FavoritesPanel
+﻿namespace f21sc_coursework_1.View.FavoritesPanel
 {
     partial class FormFavoritesPanel
     {
@@ -44,7 +44,7 @@
             this.listBoxFavorites.IntegralHeight = false;
             this.listBoxFavorites.Location = new System.Drawing.Point(12, 12);
             this.listBoxFavorites.Name = "listBoxFavorites";
-            this.listBoxFavorites.Size = new System.Drawing.Size(227, 341);
+            this.listBoxFavorites.Size = new System.Drawing.Size(227, 337);
             this.listBoxFavorites.TabIndex = 1;
             this.listBoxFavorites.SelectedValueChanged += new System.EventHandler(this.listBoxFavorites_SelectedValueChanged);
             // 
@@ -62,8 +62,8 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonClose.Location = new System.Drawing.Point(245, 330);
+            this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonClose.Location = new System.Drawing.Point(245, 326);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(132, 23);
             this.buttonClose.TabIndex = 3;
@@ -107,6 +107,7 @@
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonRemove);
             this.Controls.Add(this.listBoxFavorites);
+            this.MinimumSize = new System.Drawing.Size(400, 400);
             this.Name = "FormFavoritesPanel";
             this.Text = "Favorites panel";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormFavoritesPanel_FormClosed);

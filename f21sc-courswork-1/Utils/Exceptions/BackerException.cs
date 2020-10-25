@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace f21sc_courswork_1.Utils.Exceptions
+namespace f21sc_coursework_1.Utils.Exceptions
 {
     /// <summary>
     /// Exception made for the <see cref="Backer{T}"/> class.

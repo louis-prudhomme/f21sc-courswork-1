@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace f21sc_courswork_1.Utils
+namespace f21sc_coursework_1.Utils
 {
     /// <summary>
     /// Class dedicated to log what happens in the program, especially in the technical flow (eg not the user actions)

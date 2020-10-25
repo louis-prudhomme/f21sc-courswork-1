@@ -1,4 +1,4 @@
-﻿namespace f21sc_courswork_1.View.InputHomeUrl
+﻿namespace f21sc_coursework_1.View.InputHomeUrl
 {
     partial class FormInputHomeUrl
     {
@@ -57,8 +57,9 @@
             // 
             // buttonOk
             // 
+            this.buttonOk.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.buttonOk.Enabled = false;
-            this.buttonOk.Location = new System.Drawing.Point(115, 54);
+            this.buttonOk.Location = new System.Drawing.Point(114, 56);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 2;
@@ -68,7 +69,8 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(196, 54);
+            this.buttonCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.buttonCancel.Location = new System.Drawing.Point(195, 56);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 3;
@@ -89,13 +91,18 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(374, 89);
+            this.ClientSize = new System.Drawing.Size(374, 91);
             this.Controls.Add(this.labelFeedback);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.buttonTestUrl);
             this.Controls.Add(this.textBoxInputUrl);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(390, 130);
+            this.MinimumSize = new System.Drawing.Size(390, 130);
             this.Name = "FormInputHomeUrl";
+            this.ShowInTaskbar = false;
             this.Text = "Personalize Home URL";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormInputHomeUrl_FormClosed);
             this.ResumeLayout(false);

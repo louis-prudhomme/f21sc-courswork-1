@@ -1,8 +1,8 @@
-﻿using f21sc_courswork_1.Controller;
+﻿using f21sc_coursework_1.Controller;
 using System;
 using System.Windows.Forms;
 
-namespace f21sc_courswork_1
+namespace f21sc_coursework_1
 {
     static class Program
     {

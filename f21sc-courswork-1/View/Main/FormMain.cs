@@ -1,12 +1,12 @@
-﻿using f21sc_courswork_1.Event;
-using f21sc_courswork_1.Model;
-using f21sc_courswork_1.Model.HttpCommunications;
+﻿using f21sc_coursework_1.Event;
+using f21sc_coursework_1.Model;
+using f21sc_coursework_1.Model.HttpCommunications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace f21sc_courswork_1.View
+namespace f21sc_coursework_1.View
 {
     public partial class FormMain : Form, IMainView
     {
@@ -67,10 +67,11 @@ namespace f21sc_courswork_1.View
             this.toolStripStatusLabelHttpStatusCode.Text = current.Center.StatusCode.ToString();
             this.toolStripStatusLabelHttpStatus.Text = current.Center.Status;
 
-            this.buttonReload.Enabled = current.HasCenter;
             this.buttonFav.Enabled = current.HasCenter;
+            this.buttonReload.Enabled = current.HasCenter;
+
+            this.favToolStripMenuItem.Enabled = current.HasCenter;
             this.reloadToolStripMenuItem.Enabled = current.HasCenter;
-            this.favoritesToolStripMenuItem.Enabled = current.HasCenter;
 
             this.generatedToolTips.ForEach(tooltip => tooltip.Dispose());
             this.UpdateNavigationControls(this.buttonBackward, current.Left);
@@ -89,7 +90,8 @@ namespace f21sc_courswork_1.View
             if (query != null)
             {
                 this.generatedToolTips.Add(new ToolTip());
-                this.generatedToolTips[this.generatedToolTips.Count - 1].SetToolTip(navigationControl, query.Title);
+                this.generatedToolTips[this.generatedToolTips.Count - 1]
+                    .SetToolTip(navigationControl, query.Title);
             }
         }
 
@@ -104,14 +106,20 @@ namespace f21sc_courswork_1.View
                 this.menuStripUp.Invoke(new Action(() =>
                 {
                     this.recentToolStripMenuItem.DropDownItems.Clear();
-                    this.recentToolStripMenuItem.DropDownItems.AddRange(recentQueries.Select(query => this.MakeRecentToolStripItem(query)).ToArray());
+                    this.recentToolStripMenuItem.DropDownItems
+                        .AddRange(recentQueries
+                        .Select(query => this.MakeRecentToolStripItem(query))
+                        .ToArray());
                     this.ShouldHistoryControlsBeEnabled(this.recentToolStripMenuItem.DropDownItems.Count > 0);
                 }));
             }
             else
             {
                 this.recentToolStripMenuItem.DropDownItems.Clear();
-                this.recentToolStripMenuItem.DropDownItems.AddRange(recentQueries.Select(query => this.MakeRecentToolStripItem(query)).ToArray());
+                this.recentToolStripMenuItem.DropDownItems
+                    .AddRange(recentQueries
+                    .Select(query => this.MakeRecentToolStripItem(query))
+                    .ToArray());
                 this.ShouldHistoryControlsBeEnabled(this.recentToolStripMenuItem.DropDownItems.Count > 0);
             }
         }
@@ -195,7 +203,9 @@ namespace f21sc_courswork_1.View
         {
             DialogResult confirmResult = MessageBox.Show("Do you really want to wipe your history out ?" +
                 " This cannot be reverted and it will not affect your current navigation.",
-                "Confirm history deletion", MessageBoxButtons.YesNo);
+                "Confirm history deletion",
+                MessageBoxButtons.YesNo);
+
             if (confirmResult == DialogResult.Yes)
             {
                 this.WipeHistoryEvent(this, EventArgs.Empty);
@@ -203,7 +213,10 @@ namespace f21sc_courswork_1.View
         }
         public void DisplayErrorDialog(string text)
         {
-            MessageBox.Show(text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(text,
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
 
         private void buttonReturn_Click(object sender, EventArgs e)

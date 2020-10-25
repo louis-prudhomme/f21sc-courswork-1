@@ -1,8 +1,8 @@
-﻿using f21sc_courswork_1.Model.Favorites;
+﻿using f21sc_coursework_1.Model.Favorites;
 using System;
 using System.Collections.Generic;
 
-namespace f21sc_courswork_1.Events
+namespace f21sc_coursework_1.Events
 {
     public delegate void FavoritesDeletedEvent(object source, FavoritesDeletedEventArgs e);
 

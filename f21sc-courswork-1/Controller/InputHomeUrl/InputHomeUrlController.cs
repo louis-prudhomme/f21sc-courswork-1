@@ -1,9 +1,9 @@
-﻿using f21sc_courswork_1.Event;
-using f21sc_courswork_1.Utils.Http;
-using f21sc_courswork_1.View;
+﻿using f21sc_coursework_1.Event;
+using f21sc_coursework_1.Utils.Http;
+using f21sc_coursework_1.View;
 using System;
 
-namespace f21sc_courswork_1.Controller.InputHomeUrl
+namespace f21sc_coursework_1.Controller.InputHomeUrl
 {
     class InputHomeUrlController : IInputHomeUrlController
     {
