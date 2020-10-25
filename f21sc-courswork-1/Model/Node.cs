@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace f21sc_courswork_1.Model
+﻿namespace f21sc_courswork_1.Model
 {
     public class Node<T>
     {
@@ -21,6 +15,6 @@ namespace f21sc_courswork_1.Model
 
         public bool HasLeft => this.Left != null;
         public bool HasCenter => this.Center != null;
-        public bool HasRight => this.Right!= null;
+        public bool HasRight => this.Right != null;
     }
 }

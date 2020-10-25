@@ -1,7 +1,6 @@
 ﻿using f21sc_courswork_1.Event;
-using f21sc_courswork_1.Utils;
+using f21sc_courswork_1.Utils.Http;
 using f21sc_courswork_1.View;
-using f21sc_courswork_1.View.InputHomeUrl;
 using System;
 
 namespace f21sc_courswork_1.Controller.InputHomeUrl
@@ -34,7 +33,8 @@ namespace f21sc_courswork_1.Controller.InputHomeUrl
                 this.view.ShouldEnableOk(true);
                 this.view.UpdateUrl(uri.AbsoluteUri);
                 this.view.SetUrlFeedback("The URL has been sucessfully verified !");
-            } else
+            }
+            else
             {
                 this.view.SetUrlFeedback("Please input a valid URL.");
             }

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace f21sc_courswork_1.Utils
 {
@@ -44,7 +39,8 @@ namespace f21sc_courswork_1.Utils
         /// <summary>
         /// Enum for log types
         /// </summary>
-        private enum LogType {
+        private enum LogType
+        {
             INFOS,
             ERROR,
         }

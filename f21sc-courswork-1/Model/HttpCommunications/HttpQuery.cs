@@ -1,11 +1,5 @@
-﻿using f21sc_courswork_1.Utils;
+﻿using f21sc_courswork_1.Utils.Http;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace f21sc_courswork_1.Model.HttpCommunications
 {
@@ -19,7 +13,7 @@ namespace f21sc_courswork_1.Model.HttpCommunications
         /// URL the user wants to access
         /// </summary>
         public Uri Uri { get; }
-        
+
         /// <summary>
         /// Host targeted by the <see cref="HttpQuery"/>
         /// </summary>
@@ -63,8 +57,8 @@ namespace f21sc_courswork_1.Model.HttpCommunications
         /// Is used has a timestamp to sort <see cref="HttpQuery"/>, including in <see cref="GlobalHistory"/>
         /// </summary>
         public long TimestampIssuedAt => this.IssuedAt.Ticks;
-        
-        public HttpQuery(Uri uri) 
+
+        public HttpQuery(Uri uri)
         {
             this.IssuedAt = DateTime.Now;
             this.Uri = uri;

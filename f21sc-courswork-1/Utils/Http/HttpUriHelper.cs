@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace f21sc_courswork_1.Utils
+namespace f21sc_courswork_1.Utils.Http
 {
     class HttpUriHelper
     {
-
         /// <summary>
         /// If an URI is considered incorrect by <see cref="Uri.IsWellFormedUriString(string, UriKind)"/>, tries to append http:// or www. to it
         /// </summary>

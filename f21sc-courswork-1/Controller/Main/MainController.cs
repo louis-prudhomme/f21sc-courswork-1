@@ -1,11 +1,9 @@
 ﻿using f21sc_courswork_1.Event;
-using f21sc_courswork_1.Model;
 using f21sc_courswork_1.Model.History;
 using f21sc_courswork_1.Model.HttpCommunications;
-using f21sc_courswork_1.Utils;
+using f21sc_courswork_1.Utils.Http;
 using f21sc_courswork_1.View;
 using System;
-using System.Drawing.Text;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -19,14 +17,16 @@ namespace f21sc_courswork_1.Controller.Main
         private readonly IMainView view;
 
         private Uri homeUri;
-        
+
         private readonly LocalHistory localHistory;
         private readonly GlobalHistory globalHistory;
 
         public event EventHandler MainFormClosedEvent;
+        public event EventHandler GlobalHistoryUpdatedEvent;
+
         public event EventHandler HomeUrlInputAskedEvent;
         public event EventHandler HistoryPanelAskedEvent;
-        public event EventHandler GlobalHistoryUpdatedEvent;
+        public event EventHandler FavoritesPanelAskedEvent;
 
         public MainController(IMainView view, GlobalHistory globalHistory, Uri homeUri)
         {
@@ -45,9 +45,11 @@ namespace f21sc_courswork_1.Controller.Main
             this.view.BackwardAskedEvent += this.BackwardAskedEventHandlerAsync;
             this.view.ForwardAskedEvent += this.ForwardAskedEventHandlerAsync;
 
-            this.view.MainFormClosedEvent += (o, i) => this.MainFormClosedEvent(this, EventArgs.Empty);
-            this.view.HomeUrlInputAskedEvent += (o, i) => this.HomeUrlInputAskedEvent(this, EventArgs.Empty);
-            this.view.HistoryPanelAskedEvent += (o, i) => this.HistoryPanelAskedEvent(this, EventArgs.Empty);
+            this.view.MainFormClosedEvent += (s, e) => this.MainFormClosedEvent(this, EventArgs.Empty);
+
+            this.view.HomeUrlInputAskedEvent += (s, e) => this.HomeUrlInputAskedEvent(this, EventArgs.Empty);
+            this.view.HistoryPanelAskedEvent += (s, e) => this.HistoryPanelAskedEvent(this, EventArgs.Empty);
+            this.view.FavoritesPanelAskedEvent += (s, e) => this.FavoritesPanelAskedEvent(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -61,7 +63,7 @@ namespace f21sc_courswork_1.Controller.Main
             {
                 this.globalHistory.Add(query);
             }
-            if(!this.localHistory.HasCurrent || this.localHistory.Current.Uri != query.Uri)
+            if (!this.localHistory.HasCurrent || this.localHistory.Current.Uri != query.Uri)
             {
                 this.localHistory.Add(query);
             }
@@ -121,12 +123,13 @@ namespace f21sc_courswork_1.Controller.Main
         private async void LoadPageAsync(HttpQuery query)
         {
             this.view.SetCurrentState(HttpAnswer.MakeFetchingAnswer(), this.localHistory.CurrentNode);
-            
+
             HttpAnswer answer;
             try
             {
                 answer = await HttpQueryHelper.ExecuteAsync(query);
-            } catch (HttpRequestException)
+            }
+            catch (HttpRequestException)
             {
                 this.view.DisplayErrorDialog("Could not reach host " + query.Host);
                 answer = HttpAnswer.MakeErrorAnswer();
@@ -192,7 +195,7 @@ namespace f21sc_courswork_1.Controller.Main
             this.homeUri = homeUri;
         }
 
-        private async void HomeAskedEventHandler(object sender, EventArgs e) 
+        private async void HomeAskedEventHandler(object sender, EventArgs e)
         {
             await Task.Factory.StartNew(() => this.UrlQueriedEventHandlerAsync(sender, new UrlSentEventArgs(this.homeUri.AbsoluteUri)));
         }

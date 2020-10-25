@@ -10,25 +10,31 @@ namespace f21sc_courswork_1.View
 {
     public partial class FormMain : Form, IMainView
     {
-        private List<ToolTip> generatedToolTips;
+        /// <summary>
+        /// List of the <see cref="ToolTip"/> generated in <see cref="MakeRecentToolStripItem(HttpQuery)"/>
+        /// </summary>
+        private readonly List<ToolTip> generatedToolTips;
+
         public FormMain()
         {
-            this.generatedToolTips = new List<ToolTip>();
-
             InitializeComponent();
+            this.generatedToolTips = new List<ToolTip>();
         }
 
         public event EventHandler MainFormClosedEvent;
+
         public event EventHandler HomeUrlInputAskedEvent;
         public event EventHandler HistoryPanelAskedEvent;
+        public event EventHandler FavoritesPanelAskedEvent;
 
         public event UrlSentEvent UrlSentEvent;
         public event EventHandler ReloadAskedEvent;
-        
+
         public event EventHandler WipeHistoryEvent;
+        public event EventHandler HomeAskedEvent;
+
         public event EventHandler BackwardAskedEvent;
         public event EventHandler ForwardAskedEvent;
-        public event EventHandler HomeAskedEvent;
 
 
         /// <summary>
@@ -62,8 +68,11 @@ namespace f21sc_courswork_1.View
             this.toolStripStatusLabelHttpStatus.Text = current.Center.Status;
 
             this.buttonReload.Enabled = current.HasCenter;
+            this.buttonFav.Enabled = current.HasCenter;
             this.reloadToolStripMenuItem.Enabled = current.HasCenter;
+            this.favoritesToolStripMenuItem.Enabled = current.HasCenter;
 
+            this.generatedToolTips.ForEach(tooltip => tooltip.Dispose());
             this.UpdateNavigationControls(this.buttonBackward, current.Left);
             this.UpdateNavigationControls(this.buttonForward, current.Right);
             this.textBoxUrlInput.Text = current.Center.Uri.AbsoluteUri;
@@ -79,7 +88,6 @@ namespace f21sc_courswork_1.View
             navigationControl.Enabled = query != null;
             if (query != null)
             {
-                this.generatedToolTips.ForEach(tooltip => tooltip.Dispose());
                 this.generatedToolTips.Add(new ToolTip());
                 this.generatedToolTips[this.generatedToolTips.Count - 1].SetToolTip(navigationControl, query.Title);
             }
@@ -137,6 +145,10 @@ namespace f21sc_courswork_1.View
             return toolStrip;
         }
 
+        /// <summary>
+        /// Whether the form should be enabled or not
+        /// </summary>
+        /// <param name="should"></param>
         public void ShouldBeEnabled(bool should)
         {
             this.Enabled = should;
@@ -182,7 +194,8 @@ namespace f21sc_courswork_1.View
         private void eraseHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult confirmResult = MessageBox.Show("Do you really want to wipe your history out ?" +
-                " This cannot be reverted and it will not affect your current navigation.", "Confirm history deletion", MessageBoxButtons.YesNo);
+                " This cannot be reverted and it will not affect your current navigation.",
+                "Confirm history deletion", MessageBoxButtons.YesNo);
             if (confirmResult == DialogResult.Yes)
             {
                 this.WipeHistoryEvent(this, EventArgs.Empty);
@@ -222,6 +235,16 @@ namespace f21sc_courswork_1.View
         private void goToHomePageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.HomeAskedEvent(this, EventArgs.Empty);
+        }
+
+        private void buttonFav_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void seeAllFavoritesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.FavoritesPanelAskedEvent(this, EventArgs.Empty);
         }
     }
 }

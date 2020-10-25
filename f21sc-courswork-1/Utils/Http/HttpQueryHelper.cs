@@ -1,15 +1,9 @@
-﻿using f21sc_courswork_1.Model;
-using f21sc_courswork_1.Model.HttpCommunications;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using f21sc_courswork_1.Model.HttpCommunications;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace f21sc_courswork_1.Utils
+namespace f21sc_courswork_1.Utils.Http
 {
     class HttpQueryHelper
     {
@@ -24,7 +18,7 @@ namespace f21sc_courswork_1.Utils
         {
             HttpResponseMessage response = await client.GetAsync(query.Uri);
             string html = await response.Content.ReadAsStringAsync();
-            
+
             return new HttpAnswer(html, ExtractHtmlTitle(html), response.StatusCode);
         }
 
@@ -32,7 +26,7 @@ namespace f21sc_courswork_1.Utils
         /// Extracts the title from the HTML page
         /// </summary>
         /// <param name="html">HTML page</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="string"/> representing the title of the HTML page</returns>
         private static string ExtractHtmlTitle(string html)
         {
             return Regex.Match(html, @"\<title\b[^>]*\>\s*(?<Title>[\s\S]*?)\</title\>", RegexOptions.IgnoreCase).Groups["Title"].Value;

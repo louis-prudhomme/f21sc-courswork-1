@@ -43,10 +43,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listBoxHistory.FormattingEnabled = true;
+            this.listBoxHistory.IntegralHeight = false;
             this.listBoxHistory.Location = new System.Drawing.Point(12, 12);
             this.listBoxHistory.Name = "listBoxHistory";
             this.listBoxHistory.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listBoxHistory.Size = new System.Drawing.Size(227, 329);
+            this.listBoxHistory.Size = new System.Drawing.Size(227, 341);
             this.listBoxHistory.TabIndex = 0;
             this.listBoxHistory.SelectedValueChanged += new System.EventHandler(this.listBoxHistory_SelectedValueChanged);
             // 
@@ -93,6 +94,7 @@
             this.buttonWipeHistory.Name = "buttonWipeHistory";
             this.buttonWipeHistory.Size = new System.Drawing.Size(132, 23);
             this.buttonWipeHistory.TabIndex = 4;
+            this.buttonWipeHistory.TabStop = false;
             this.buttonWipeHistory.Text = "Delete all history";
             this.buttonWipeHistory.UseVisualStyleBackColor = true;
             this.buttonWipeHistory.Click += new System.EventHandler(this.buttonDeleteAllHistory_Click);
@@ -105,6 +107,7 @@
             this.buttonDeselectAll.Name = "buttonDeselectAll";
             this.buttonDeselectAll.Size = new System.Drawing.Size(132, 23);
             this.buttonDeselectAll.TabIndex = 6;
+            this.buttonDeselectAll.TabStop = false;
             this.buttonDeselectAll.Text = "Deselect all";
             this.buttonDeselectAll.UseVisualStyleBackColor = true;
             this.buttonDeselectAll.Click += new System.EventHandler(this.buttonDeselectAll_Click);
@@ -117,6 +120,7 @@
             this.buttonSelectAll.Name = "buttonSelectAll";
             this.buttonSelectAll.Size = new System.Drawing.Size(132, 23);
             this.buttonSelectAll.TabIndex = 5;
+            this.buttonSelectAll.TabStop = false;
             this.buttonSelectAll.Text = "Select all";
             this.buttonSelectAll.UseVisualStyleBackColor = true;
             this.buttonSelectAll.Click += new System.EventHandler(this.buttonSelectAll_Click);

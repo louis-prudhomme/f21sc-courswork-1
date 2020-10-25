@@ -54,11 +54,22 @@ namespace f21sc_courswork_1.View.HistoryPanel
             {
                 this.listBoxHistory.Items.AddRange(entries.ToArray());
                 this.ShouldEnableHistoryDependantControls(true);
-            } else
+            }
+            else
             {
                 this.listBoxHistory.Items.Add("No history");
                 this.ShouldEnableHistoryDependantControls(false);
             }
+        }
+
+        private void SetAllSelected(bool selection)
+        {
+            this.listBoxHistory.BeginUpdate();
+            for (int i = 0; i < this.listBoxHistory.Items.Count; i++)
+            {
+                this.listBoxHistory.SetSelected(i, selection);
+            }
+            this.listBoxHistory.EndUpdate();
         }
 
         private void ShouldEnableHistoryDependantControls(bool should)
@@ -87,16 +98,6 @@ namespace f21sc_courswork_1.View.HistoryPanel
         private void buttonDeselectAll_Click(object sender, EventArgs e)
         {
             this.SetAllSelected(false);
-        }
-
-        private void SetAllSelected(bool selection)
-        {
-            this.listBoxHistory.BeginUpdate();
-            for (int i = 0; i < this.listBoxHistory.Items.Count; i++)
-            {
-                this.listBoxHistory.SetSelected(i, selection);
-            }
-            this.listBoxHistory.EndUpdate();
         }
     }
 }

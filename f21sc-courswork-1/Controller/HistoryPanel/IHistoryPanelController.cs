@@ -1,9 +1,4 @@
-﻿using f21sc_courswork_1.Event;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace f21sc_courswork_1.Controller.HistoryPanel
 {

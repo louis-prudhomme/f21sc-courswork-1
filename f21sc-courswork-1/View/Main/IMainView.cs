@@ -9,6 +9,8 @@ namespace f21sc_courswork_1.View
     interface IMainView
     {
         event EventHandler MainFormClosedEvent;
+
+        event EventHandler FavoritesPanelAskedEvent;
         event EventHandler HomeUrlInputAskedEvent;
         event EventHandler HistoryPanelAskedEvent;
 

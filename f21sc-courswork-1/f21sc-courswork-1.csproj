@@ -47,14 +47,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\BrowserApplicationContext.cs" />
+    <Compile Include="Controller\FavoritesPanel\FavoritesPanelController.cs" />
+    <Compile Include="Controller\FavoritesPanel\IFavoritesPanelController.cs" />
     <Compile Include="Controller\HistoryPanel\HistoryPanelController.cs" />
     <Compile Include="Controller\HistoryPanel\IHistoryPanelController.cs" />
     <Compile Include="Controller\InputHomeUrl\IInputHomeUrlController.cs" />
     <Compile Include="Controller\Main\IMainController.cs" />
     <Compile Include="Controller\InputHomeUrl\InputHomeUrlController.cs" />
     <Compile Include="Controller\Main\MainController.cs" />
+    <Compile Include="Events\FavoritesDeletedEvent.cs" />
     <Compile Include="Events\HistoryEntriesDeletedEvent.cs" />
     <Compile Include="Events\UrlInputFormSubmittedEvent.cs" />
+    <Compile Include="Model\Favorites\Fav.cs" />
     <Compile Include="Model\History\GlobalHistory.cs" />
     <Compile Include="Model\HttpCommunications\HttpAnswer.cs" />
     <Compile Include="Model\HttpCommunications\HttpQuery.cs" />
@@ -63,11 +67,18 @@
     <Compile Include="Model\Node.cs" />
     <Compile Include="Utils\Backer.cs" />
     <Compile Include="Utils\Exceptions\BackerException.cs" />
-    <Compile Include="Utils\Exceptions\UnrecognizedHttpStatusCodeException.cs" />
-    <Compile Include="Utils\HttpQueryHelper.cs" />
-    <Compile Include="Utils\HttpStatusHelper.cs" />
-    <Compile Include="Utils\HttpUriHelper.cs" />
+    <Compile Include="Utils\Http\Exception\UnrecognizedHttpStatusCodeException.cs" />
+    <Compile Include="Utils\Http\HttpQueryHelper.cs" />
+    <Compile Include="Utils\Http\HttpStatusHelper.cs" />
+    <Compile Include="Utils\Http\HttpUriHelper.cs" />
     <Compile Include="Utils\Logger.cs" />
+    <Compile Include="View\FavoritesPanel\FormFavoritesPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\FavoritesPanel\FormFavoritesPanel.Designer.cs">
+      <DependentUpon>FormFavoritesPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\FavoritesPanel\IFavoritesPanelView.cs" />
     <Compile Include="View\HistoryPanel\FormHistoryPanel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +102,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\InputHomeUrl\IInputHomeUrlView.cs" />
     <Compile Include="View\Main\IMainView.cs" />
+    <EmbeddedResource Include="View\FavoritesPanel\FormFavoritesPanel.resx">
+      <DependentUpon>FormFavoritesPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\HistoryPanel\FormHistoryPanel.resx">
       <DependentUpon>FormHistoryPanel.cs</DependentUpon>
     </EmbeddedResource>

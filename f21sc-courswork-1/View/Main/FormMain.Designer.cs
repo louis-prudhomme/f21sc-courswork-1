@@ -164,20 +164,20 @@
             // 
             this.reloadToolStripMenuItem.Enabled = false;
             this.reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
-            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reloadToolStripMenuItem.Text = "Reload";
             this.reloadToolStripMenuItem.Click += new System.EventHandler(this.reloadToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(107, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.AutoToolTip = true;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -219,26 +219,27 @@
             // 
             this.recentToolStripMenuItem.Enabled = false;
             this.recentToolStripMenuItem.Name = "recentToolStripMenuItem";
-            this.recentToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.recentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.recentToolStripMenuItem.Text = "Recent";
             // 
             // allHistoryToolStripMenuItem
             // 
+            this.allHistoryToolStripMenuItem.Enabled = false;
             this.allHistoryToolStripMenuItem.Name = "allHistoryToolStripMenuItem";
-            this.allHistoryToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.allHistoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.allHistoryToolStripMenuItem.Text = "All history";
             this.allHistoryToolStripMenuItem.Click += new System.EventHandler(this.allHistoryToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(137, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // eraseHistoryToolStripMenuItem
             // 
             this.eraseHistoryToolStripMenuItem.Enabled = false;
             this.eraseHistoryToolStripMenuItem.Name = "eraseHistoryToolStripMenuItem";
-            this.eraseHistoryToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.eraseHistoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.eraseHistoryToolStripMenuItem.Text = "Erase history";
             this.eraseHistoryToolStripMenuItem.Click += new System.EventHandler(this.eraseHistoryToolStripMenuItem_Click);
             // 
@@ -257,6 +258,7 @@
             this.seeAllFavoritesToolStripMenuItem.Name = "seeAllFavoritesToolStripMenuItem";
             this.seeAllFavoritesToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.seeAllFavoritesToolStripMenuItem.Text = "See all favorites";
+            this.seeAllFavoritesToolStripMenuItem.Click += new System.EventHandler(this.seeAllFavoritesToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -265,6 +267,7 @@
             // 
             // makeThisSiteFavoriteToolStripMenuItem
             // 
+            this.makeThisSiteFavoriteToolStripMenuItem.Enabled = false;
             this.makeThisSiteFavoriteToolStripMenuItem.Name = "makeThisSiteFavoriteToolStripMenuItem";
             this.makeThisSiteFavoriteToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.makeThisSiteFavoriteToolStripMenuItem.Text = "Make this site favorite";
@@ -272,12 +275,14 @@
             // buttonFav
             // 
             this.buttonFav.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonFav.Enabled = false;
             this.buttonFav.Location = new System.Drawing.Point(457, 27);
             this.buttonFav.Name = "buttonFav";
             this.buttonFav.Size = new System.Drawing.Size(75, 23);
             this.buttonFav.TabIndex = 2;
             this.buttonFav.Text = "Make fav";
             this.buttonFav.UseVisualStyleBackColor = true;
+            this.buttonFav.Click += new System.EventHandler(this.buttonFav_Click);
             // 
             // buttonBackward
             // 
