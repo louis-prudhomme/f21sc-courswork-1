@@ -30,7 +30,7 @@ namespace f21sc_coursework_1.Model
         {
             this.History = new GlobalHistory();
             this.Favorites = new FavoritesRepository();
-            this.HomePage = new Uri("http://www.lingscars.com/");
+            this.HomePage = null;
         }
 
         public UserProfile(GlobalHistory history, Uri homePage, FavoritesRepository favorites)

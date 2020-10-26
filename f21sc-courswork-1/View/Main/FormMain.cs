@@ -99,6 +99,7 @@ namespace f21sc_coursework_1.View
         public void UpdateHomeUrl(bool hasHomeUrl)
         {
             this.buttonHome.Enabled = hasHomeUrl;
+            this.personalizeHomeURLToolStripMenuItem.Text = hasHomeUrl ? "Edit home URL" : "Create home URL";
         }
 
         /* ==================================

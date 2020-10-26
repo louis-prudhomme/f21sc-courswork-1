@@ -41,7 +41,11 @@ namespace f21sc_coursework_1.Controller.Main
             this.view.BackwardAskedEvent += this.BackwardAskedEventHandlerAsync;
             this.view.ForwardAskedEvent += this.ForwardAskedEventHandlerAsync;
 
-            this.HomeAskedEventHandler(this, EventArgs.Empty);
+            if (this.user.HomePage != null)
+            {
+                this.HomeAskedEventHandler(this, EventArgs.Empty);
+            }
+            this.view.UpdateHomeUrl(this.user.HomePage != null);
 
             this.view.ViewClosedEvent += (s, e) => this.ViewClosedEvent(this, EventArgs.Empty);
 

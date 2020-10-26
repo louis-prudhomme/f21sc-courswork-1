@@ -16,25 +16,25 @@
 # Introduction
 
 # Requirements’ checklist
-- [ ] Sending HTTP request messages
-- [ ] Receiving HTTP response messages
-  - [ ] Display received HTML
-  - [ ] Display received HTTP response status code (code and status)
-- [ ] Reload current page
-- [ ] Home page
-  - [ ] Create home page URL
-  - [ ] Edit home page URL
-  - [ ] Home page URL persisted
-- [ ] Favourites
-  - [ ] Add a favorite (composed of a name and an URL)
-  - [ ] Delete favourites
-  - [ ] Modify favourites
-  - [ ] Request a favorite by click
-  - [ ] Favourites persisted
-- [ ] History
-  - [ ] Next and previous pages navigation
-  - [ ] Jump to page by click
-  - [ ] History persisted
+- [x] Sending HTTP request messages
+- [x] Receiving HTTP response messages
+  - [x] Display received HTML
+  - [x] Display received HTTP response status code (code and status)
+- [x] Reload current page
+- [x] Home page
+  - [x] Create home page URL
+  - [x] Edit home page URL
+  - [x] Home page URL persisted
+- [x] Favourites
+  - [x] Add a favorite (composed of a name and an URL)
+  - [x] Delete favourites
+  - [x] Modify favourites
+  - [x] Request a favorite by click
+  - [x] Favourites persisted
+- [x] History
+  - [x] Next and previous pages navigation
+  - [x] Jump to page by click
+  - [x] History persisted
 
 # Design considerations
 

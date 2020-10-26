@@ -149,6 +149,7 @@ namespace f21sc_coursework_1.Controller
         private void HomeUrlSubmittedEventHandler(object sender, UrlSentEventArgs e)
         {
             this.User.HomePage = e.Uri;
+            this.mainController.UpdateHomeUrl();
             this.mainController.ShouldBeEnabled(true);
         }
 
