@@ -51,6 +51,7 @@
     <Compile Include="Controller\FavoritesPanel\IFavoritesPanelController.cs" />
     <Compile Include="Controller\HistoryPanel\HistoryPanelController.cs" />
     <Compile Include="Controller\HistoryPanel\IHistoryPanelController.cs" />
+    <Compile Include="Controller\IController.cs" />
     <Compile Include="Controller\InputFavInfos\IInputFavInfosController.cs" />
     <Compile Include="Controller\InputFavInfos\InputFavInfosController.cs" />
     <Compile Include="Controller\InputHomeUrl\IInputHomeUrlController.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Events\Favorites\FavoriteModifiedEvent.cs" />
     <Compile Include="Events\Favorites\FavoritesDeletedEvent.cs" />
     <Compile Include="Events\HistoryEntriesDeletedEvent.cs" />
+    <Compile Include="Events\JumpAskedEvent.cs" />
     <Compile Include="Model\Favorites\Exceptions\FavDoesntExistException.cs" />
     <Compile Include="Model\Favorites\Exceptions\FavAlreadyExistsException.cs" />
     <Compile Include="Model\Favorites\Fav.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="View\InputHomeUrl\FormInputHomeUrl.Designer.cs">
       <DependentUpon>FormInputHomeUrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\IView.cs" />
     <Compile Include="View\Main\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>

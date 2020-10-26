@@ -1,5 +1,6 @@
 ﻿using f21sc_coursework_1.Events.Favorites;
 using f21sc_coursework_1.View.FavoritesPanel;
+using f21sc_courswork_1.Events;
 using f21sc_courswork_1.Model.Favorites;
 using f21sc_courswork_1.Model.Favorites.Exceptions;
 using System;
@@ -23,7 +24,8 @@ namespace f21sc_coursework_1.Controller.FavoritesPanel
             this.view.FavoritesDeletedEvent += this.FavoritesDeletedEventHandler;
 
             this.view.FavoriteModifiedEvent += (s, e) => this.FavoriteModifiedEvent(this, e);
-            this.view.FavoritesPanelFormClosedEvent += (s, e) => this.FavoritesPanelFormClosedEvent(this, EventArgs.Empty);
+            this.view.ViewClosedEvent += (s, e) => this.ViewClosedEvent(this, EventArgs.Empty);
+            this.view.JumpAskedEvent += (s, e) => this.JumpAskedEvent(this, e);
         }
 
         /// <summary>
@@ -71,6 +73,14 @@ namespace f21sc_coursework_1.Controller.FavoritesPanel
             this.view.ShouldBeEnabled(should);
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void Close()
+        {
+            this.view.Close();
+        }
+
         /* ==================================
          * EVENTS
          * ==================================*/
@@ -78,7 +88,7 @@ namespace f21sc_coursework_1.Controller.FavoritesPanel
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public event EventHandler FavoritesPanelFormClosedEvent;
+        public event EventHandler ViewClosedEvent;
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
@@ -87,5 +97,9 @@ namespace f21sc_coursework_1.Controller.FavoritesPanel
         /// <inheritdoc/>
         /// </summary>
         public event EventHandler FavoritesUpdatedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event JumpAskedEvent JumpAskedEvent;
     }
 }

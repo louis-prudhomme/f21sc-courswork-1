@@ -1,6 +1,7 @@
 ﻿using f21sc_coursework_1.Events;
 using f21sc_coursework_1.Model.History;
 using f21sc_coursework_1.View.HistoryPanel;
+using f21sc_courswork_1.Events;
 using System;
 
 namespace f21sc_coursework_1.Controller.HistoryPanel
@@ -23,7 +24,8 @@ namespace f21sc_coursework_1.Controller.HistoryPanel
             this.view.HistoryWipedEvent += this.HistoryWipedEventHandler;
             this.view.HistoryEntriesDeletedEvent += this.HistoryEntriesDeletedEventHandler;
 
-            this.view.HistoryPanelClosedEvent += (o, e) => this.FormHistoryPanelClosedEvent(this, EventArgs.Empty);
+            this.view.ViewClosedEvent += (s, e) => this.ViewClosedEvent(this, EventArgs.Empty);
+            this.view.JumpAskedEvent += (s, e) => this.JumpAskedEvent(this, e);
         }
 
         /// <summary>
@@ -58,6 +60,23 @@ namespace f21sc_coursework_1.Controller.HistoryPanel
             this.view.Show();
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void Close()
+        {
+            this.view.Close();
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="should"></param>
+        public void ShouldBeEnabled(bool should)
+        {
+            throw new NotImplementedException();
+        }
+
         /* ==================================
          * EVENTS
          * ==================================*/
@@ -65,10 +84,14 @@ namespace f21sc_coursework_1.Controller.HistoryPanel
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public event EventHandler FormHistoryPanelClosedEvent;
+        public event EventHandler ViewClosedEvent;
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         public event EventHandler HistoryUpdatedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event JumpAskedEvent JumpAskedEvent;
     }
 }

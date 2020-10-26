@@ -34,6 +34,7 @@
             this.buttonWipeHistory = new System.Windows.Forms.Button();
             this.buttonDeselectAll = new System.Windows.Forms.Button();
             this.buttonSelectAll = new System.Windows.Forms.Button();
+            this.buttonJump = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBoxHistory
@@ -49,6 +50,7 @@
             this.listBoxHistory.Size = new System.Drawing.Size(227, 341);
             this.listBoxHistory.TabIndex = 0;
             this.listBoxHistory.SelectedValueChanged += new System.EventHandler(this.listBoxHistory_SelectedValueChanged);
+            this.listBoxHistory.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxHistory_MouseDoubleClick);
             // 
             // buttonDelete
             // 
@@ -113,12 +115,25 @@
             this.buttonSelectAll.UseVisualStyleBackColor = true;
             this.buttonSelectAll.Click += new System.EventHandler(this.buttonSelectAll_Click);
             // 
+            // buttonJump
+            // 
+            this.buttonJump.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonJump.Enabled = false;
+            this.buttonJump.Location = new System.Drawing.Point(245, 301);
+            this.buttonJump.Name = "buttonJump";
+            this.buttonJump.Size = new System.Drawing.Size(132, 23);
+            this.buttonJump.TabIndex = 7;
+            this.buttonJump.Text = "Jump to";
+            this.buttonJump.UseVisualStyleBackColor = true;
+            this.buttonJump.Click += new System.EventHandler(this.buttonJump_Click);
+            // 
             // FormHistoryPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonClose;
             this.ClientSize = new System.Drawing.Size(384, 361);
+            this.Controls.Add(this.buttonJump);
             this.Controls.Add(this.buttonDeselectAll);
             this.Controls.Add(this.buttonSelectAll);
             this.Controls.Add(this.buttonWipeHistory);
@@ -141,5 +156,6 @@
         private System.Windows.Forms.Button buttonWipeHistory;
         private System.Windows.Forms.Button buttonDeselectAll;
         private System.Windows.Forms.Button buttonSelectAll;
+        private System.Windows.Forms.Button buttonJump;
     }
 }

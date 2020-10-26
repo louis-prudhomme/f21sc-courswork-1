@@ -13,18 +13,29 @@ namespace f21sc_courswork_1.View.InputFavInfos
             InitializeComponent();
         }
 
+        /* ==================================
+         * INHERITED METHODS
+         * ==================================*/
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public event EventHandler FavInputCancelledEvent;
+        /// <param name="error"></param>
+        public void ErrorDialog(string error)
+        {
+            MessageBox.Show(error,
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+        }
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public event FavSubmittedEvent FavInputSubmittedEvent;
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public event UrlSentEvent UrlSentEvent;
+        public void ShouldBeEnabled(bool should)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// <inheritdoc/>
@@ -42,18 +53,6 @@ namespace f21sc_courswork_1.View.InputFavInfos
         }
 
         /// <summary>
-        /// Displays an error dialog using <see cref="MessageBox"/>
-        /// </summary>
-        /// <param name="error">Error description to display</param>
-        public void ErrorDialog(string error)
-        {
-            MessageBox.Show(error,
-                "Error",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
-        }
-
-        /// <summary>
         /// <inheritdoc/>
         /// </summary>
         public void PresetFav(string name, string url)
@@ -61,6 +60,10 @@ namespace f21sc_courswork_1.View.InputFavInfos
             this.textBoxUrl.Text = url;
             this.textBoxName.Text = name;
         }
+
+        /* ==================================
+         * CONTROL LISTENERS
+         * ==================================*/
 
         /// <summary>
         /// When the text of the textBox URL changes, disable the submission control
@@ -76,7 +79,7 @@ namespace f21sc_courswork_1.View.InputFavInfos
 
         private void FormInputFavInfos_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.FavInputCancelledEvent(this, EventArgs.Empty);
+            this.ViewClosedEvent(this, EventArgs.Empty);
         }
 
         private void buttonTest_Click(object sender, EventArgs e)
@@ -94,5 +97,22 @@ namespace f21sc_courswork_1.View.InputFavInfos
         {
             this.Close();
         }
+
+        /* ==================================
+         * EVENTS
+         * ==================================*/
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler ViewClosedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event FavSubmittedEvent FavInputSubmittedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event UrlSentEvent UrlSentEvent;
     }
 }

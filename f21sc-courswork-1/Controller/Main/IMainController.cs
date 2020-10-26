@@ -1,15 +1,11 @@
 ﻿using f21sc_coursework_1.Events.Favorites;
+using f21sc_courswork_1.Controller;
 using System;
 
 namespace f21sc_coursework_1.Controller.Main
 {
-    interface IMainController
+    interface IMainController : IController
     {
-        /// <summary>
-        /// Raised when the main form is closed
-        /// </summary>
-        event EventHandler MainFormClosedEvent;
-
         /// <summary>
         /// Raised when the user asks to alter the home url
         /// </summary>
@@ -36,7 +32,11 @@ namespace f21sc_coursework_1.Controller.Main
         /// </summary>
         event EventHandler FavoritesUpdatedEvent;
 
-        void ShouldBeEnabled(bool should);
+        /// <summary>
+        /// Orders the controller to load a page
+        /// </summary>
+        /// <param name="should"></param>
+        void InitiateJump(Uri target);
         /// <summary>
         /// Orders the controller to prompt an error dialog
         /// </summary>
@@ -50,8 +50,8 @@ namespace f21sc_coursework_1.Controller.Main
         /// </summary>
         void UpdateFavorites();
         /// <summary>
-        /// Orders the controller to show its view
+        /// Orders the controller to update the home url
         /// </summary>
-        void Show();
+        void UpdateHomeUrl();
     }
 }

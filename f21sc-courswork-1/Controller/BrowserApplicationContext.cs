@@ -13,6 +13,8 @@ using f21sc_coursework_1.View;
 using f21sc_coursework_1.View.FavoritesPanel;
 using f21sc_coursework_1.View.HistoryPanel;
 using f21sc_coursework_1.View.InputHomeUrl;
+using f21sc_courswork_1.Controller;
+using f21sc_courswork_1.Events;
 using f21sc_courswork_1.Model.Favorites;
 using f21sc_courswork_1.View.InputFavInfos;
 using System;
@@ -66,7 +68,7 @@ namespace f21sc_coursework_1.Controller
             this.ThreadExit += this.OnApplicationExit;
 
             this.mainController = new MainController(new FormMain(), this.User);
-            this.mainController.MainFormClosedEvent += this.MainFormClosedEventHandler;
+            this.mainController.ViewClosedEvent += this.MainFormClosedEventHandler;
             this.mainController.GlobalHistoryUpdatedEvent += this.UserDataUpdated;
             this.mainController.FavoritesUpdatedEvent += this.UserDataUpdated;
 
@@ -79,6 +81,10 @@ namespace f21sc_coursework_1.Controller
             this.mainController.Show();
         }
 
+        /* ==================================
+         * MAIN CONTROLLER
+         * ==================================*/
+
         /// <summary>
         /// Exit the whole application if the <see cref="formMain"/> is closed
         /// </summary>
@@ -87,6 +93,18 @@ namespace f21sc_coursework_1.Controller
         private void MainFormClosedEventHandler(object sender, EventArgs e)
         {
             ExitThread();
+        }
+
+        /// <summary>
+        /// Handles the jump to an URL initiated by the user through either <see cref="IHistoryPanelController"/> or <see cref="IFavoritesPanelController"/>
+        /// </summary>
+        /// <param name="sender">Sender of the event</param>
+        /// <param name="e">Contains the URL to jump to</param>
+        private void JumpAskedEventHandler(object sender, JumpAskedEventArgs e)
+        {
+            IController origin = (IController)sender;
+            origin.Close();
+            this.mainController.InitiateJump(e.jumpTo);
         }
 
         /* ==================================
@@ -103,7 +121,7 @@ namespace f21sc_coursework_1.Controller
             this.mainController.ShouldBeEnabled(false);
 
             this.urlController = new InputHomeUrlController(new FormInputHomeUrl());
-            this.urlController.UrlInputFormCancelledEvent += this.HomeUrlCancelledEventHandler;
+            this.urlController.ViewClosedEvent += this.HomeUrlCancelledEventHandler;
             this.urlController.UrlInputFormSubmittedEvent += this.HomeUrlSubmittedEventHandler;
 
             this.urlController.Show();
@@ -167,7 +185,7 @@ namespace f21sc_coursework_1.Controller
         /// </summary>
         private void FavInputSetup()
         {
-            this.favInputController.FavInputCanceledEvent += this.FavInputCancelledEventHandler;
+            this.favInputController.ViewClosedEvent += this.FavInputCancelledEventHandler;
             this.favInputController.FavInputSubmittedEvent += this.FavInputSubmittedEventHandler;
 
             this.favInputController.Show();
@@ -226,7 +244,8 @@ namespace f21sc_coursework_1.Controller
             this.mainController.ShouldBeEnabled(false);
 
             this.historyController = new HistoryPanelController(new FormHistoryPanel(), this.User.History);
-            this.historyController.FormHistoryPanelClosedEvent += this.HistoryPanelClosedEventHandler;
+            this.historyController.JumpAskedEvent += this.JumpAskedEventHandler;
+            this.historyController.ViewClosedEvent += this.HistoryPanelClosedEventHandler;
             this.historyController.HistoryUpdatedEvent += this.UserDataUpdated;
 
             this.historyController.Show();
@@ -260,7 +279,8 @@ namespace f21sc_coursework_1.Controller
             this.mainController.ShouldBeEnabled(false);
 
             this.favoritesController = new FavoritesPanelController(new FormFavoritesPanel(), this.User.Favorites);
-            this.favoritesController.FavoritesPanelFormClosedEvent += this.FavoritesPanelClosedEventHandler;
+            this.favoritesController.ViewClosedEvent += this.FavoritesPanelClosedEventHandler;
+            this.favoritesController.JumpAskedEvent += this.JumpAskedEventHandler;
             this.favoritesController.FavoriteModifiedEvent += this.FavModifAskedEventHandler;
             this.favoritesController.FavoritesUpdatedEvent += this.UserDataUpdated;
 

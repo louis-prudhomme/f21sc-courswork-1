@@ -34,6 +34,7 @@
             this.buttonDeselectAll = new System.Windows.Forms.Button();
             this.buttonSelectAll = new System.Windows.Forms.Button();
             this.buttonEdit = new System.Windows.Forms.Button();
+            this.buttonJump = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBoxFavorites
@@ -49,6 +50,7 @@
             this.listBoxFavorites.Size = new System.Drawing.Size(227, 337);
             this.listBoxFavorites.TabIndex = 1;
             this.listBoxFavorites.SelectedValueChanged += new System.EventHandler(this.listBoxFavorites_SelectedValueChanged);
+            this.listBoxFavorites.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxFavorites_MouseDoubleClick);
             // 
             // buttonRemove
             // 
@@ -112,12 +114,26 @@
             this.buttonEdit.UseVisualStyleBackColor = true;
             this.buttonEdit.Click += new System.EventHandler(this.buttonEdit_Click);
             // 
+            // buttonJump
+            // 
+            this.buttonJump.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonJump.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonJump.Enabled = false;
+            this.buttonJump.Location = new System.Drawing.Point(245, 297);
+            this.buttonJump.Name = "buttonJump";
+            this.buttonJump.Size = new System.Drawing.Size(132, 23);
+            this.buttonJump.TabIndex = 12;
+            this.buttonJump.Text = "Jump to";
+            this.buttonJump.UseVisualStyleBackColor = true;
+            this.buttonJump.Click += new System.EventHandler(this.buttonJump_Click);
+            // 
             // FormFavoritesPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonClose;
             this.ClientSize = new System.Drawing.Size(384, 361);
+            this.Controls.Add(this.buttonJump);
             this.Controls.Add(this.buttonEdit);
             this.Controls.Add(this.buttonDeselectAll);
             this.Controls.Add(this.buttonSelectAll);
@@ -139,5 +155,6 @@
         private System.Windows.Forms.Button buttonDeselectAll;
         private System.Windows.Forms.Button buttonSelectAll;
         private System.Windows.Forms.Button buttonEdit;
+        private System.Windows.Forms.Button buttonJump;
     }
 }

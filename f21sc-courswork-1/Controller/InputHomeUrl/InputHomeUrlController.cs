@@ -16,11 +16,15 @@ namespace f21sc_coursework_1.Controller.InputHomeUrl
         {
             this.view = view;
 
-            this.view.HomeUrlCancelledEvent += (s, e) => this.UrlInputFormCancelledEvent(this, EventArgs.Empty);
+            this.view.ViewClosedEvent += (s, e) => this.ViewClosedEvent(this, EventArgs.Empty);
             this.view.HomeUrlSubmittedEvent += this.UrlInputFormSubmittedEventHandler;
 
             this.view.UrlSentEvent += this.UrlSentEventHandler;
         }
+
+        /* ==================================
+         * INTERNAL METHODS
+         * ==================================*/
 
         /// <summary>
         /// Handles to user's request to test an URL
@@ -32,7 +36,6 @@ namespace f21sc_coursework_1.Controller.InputHomeUrl
         {
             if (HttpUriHelper.TryCreateHttpUri(e.Url, out Uri uri))
             {
-                this.view.ShouldEnableOk(true);
                 this.view.UpdateUrl(uri.AbsoluteUri);
                 this.view.SetUrlFeedback("The URL has been sucessfully verified !");
             }
@@ -59,6 +62,10 @@ namespace f21sc_coursework_1.Controller.InputHomeUrl
             }
         }
 
+        /* ==================================
+         * INHERITED METHODS
+         * ==================================*/
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
@@ -67,14 +74,30 @@ namespace f21sc_coursework_1.Controller.InputHomeUrl
             this.view.Show();
         }
 
-        /* ==================================
-         * EVENTS
-         * ==================================*/
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void Close()
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public event EventHandler UrlInputFormCancelledEvent;
+        /// <param name="should"></param>
+        public void ShouldBeEnabled(bool should)
+        {
+            throw new NotImplementedException();
+        }
+
+        /* ==================================
+         * EVENTS
+         * ==================================*/
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler ViewClosedEvent;
         /// <summary>
         /// <inheritdoc/>
         /// </summary>

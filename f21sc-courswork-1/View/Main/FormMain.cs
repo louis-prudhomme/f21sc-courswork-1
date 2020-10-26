@@ -92,6 +92,15 @@ namespace f21sc_coursework_1.View
                 MessageBoxIcon.Error);
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="hasHomeUrl"></param>
+        public void UpdateHomeUrl(bool hasHomeUrl)
+        {
+            this.buttonHome.Enabled = hasHomeUrl;
+        }
+
         /* ==================================
          * INTERNAL METHODS
          * ==================================*/
@@ -239,12 +248,12 @@ namespace f21sc_coursework_1.View
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.MainFormClosedEvent(this, EventArgs.Empty);
+            this.ViewClosedEvent(this, EventArgs.Empty);
         }
 
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.MainFormClosedEvent(this, EventArgs.Empty);
+            this.ViewClosedEvent(this, EventArgs.Empty);
         }
 
         private void textBoxUrlInput_KeyDown(object sender, KeyEventArgs e)
@@ -379,7 +388,7 @@ namespace f21sc_coursework_1.View
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public event EventHandler MainFormClosedEvent;
+        public event EventHandler ViewClosedEvent;
 
         /// <summary>
         /// <inheritdoc/>

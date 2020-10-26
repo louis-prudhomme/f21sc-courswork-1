@@ -5,6 +5,7 @@ using f21sc_courswork_1.Model.Favorites;
 using f21sc_courswork_1.Model.Favorites.Exceptions;
 using f21sc_courswork_1.View.InputFavInfos;
 using System;
+using System.Windows.Forms;
 
 namespace f21sc_coursework_1.Controller.InputFavInfos
 {
@@ -38,6 +39,10 @@ namespace f21sc_coursework_1.Controller.InputFavInfos
             this.FinishSetup(e.Modified.Name, e.Modified.Uri.AbsoluteUri);
         }
 
+        /* ==================================
+         * INTERNAL METHODS
+         * ==================================*/
+
         /// <summary>
         /// Finishes the setup of the controller, regardless of the mode
         /// </summary>
@@ -45,7 +50,7 @@ namespace f21sc_coursework_1.Controller.InputFavInfos
         /// <param name="presetUrl">Preset URL of the event</param>
         private void FinishSetup(string presetName, string presetUrl)
         {
-            this.view.FavInputCancelledEvent += this.FavInputCancelledEventHandler;
+            this.view.ViewClosedEvent += this.ViewClosedEventHandler;
             this.view.FavInputSubmittedEvent += this.FavInputSubmittedEventHandler;
 
             this.view.UrlSentEvent += this.UrlSentEventHandler;
@@ -106,9 +111,33 @@ namespace f21sc_coursework_1.Controller.InputFavInfos
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Empty</param>
-        public void FavInputCancelledEventHandler(object sender, EventArgs e)
+        public void ViewClosedEventHandler(object sender, EventArgs e)
         {
-            this.FavInputCanceledEvent(this, EventArgs.Empty);
+            this.ViewClosedEvent(this, EventArgs.Empty);
+        }
+
+        /* ==================================
+         * INHERITED METHODS
+         * ==================================*/
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="error"></param>
+        public void ErrorDialog(string error)
+        {
+            MessageBox.Show(error,
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void ShouldBeEnabled(bool should)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -119,6 +148,14 @@ namespace f21sc_coursework_1.Controller.InputFavInfos
             this.view.Show();
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void Close()
+        {
+            throw new NotImplementedException();
+        }
+
         /* ==================================
          * EVENTS
          * ==================================*/
@@ -126,7 +163,7 @@ namespace f21sc_coursework_1.Controller.InputFavInfos
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public event EventHandler FavInputCanceledEvent;
+        public event EventHandler ViewClosedEvent;
         /// <summary>
         /// <inheritdoc/>
         /// </summary>

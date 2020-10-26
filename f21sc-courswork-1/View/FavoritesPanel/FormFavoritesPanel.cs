@@ -1,5 +1,6 @@
 ﻿using f21sc_coursework_1.Events;
 using f21sc_coursework_1.Events.Favorites;
+using f21sc_courswork_1.Events;
 using f21sc_courswork_1.Model.Favorites;
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,17 @@ namespace f21sc_coursework_1.View.FavoritesPanel
             InitializeComponent();
         }
 
+        /* ==================================
+         * INTERNAL METHODS
+         * ==================================*/
+
         /// <summary>
         /// Enables or disables the listbox items-dependant controls 
         /// </summary>
         private void UpdateFavoritesDependantControls()
         {
             this.buttonRemove.Enabled = this.listBoxFavorites.SelectedItems.Count > 0;
+            this.buttonJump.Enabled = this.listBoxFavorites.SelectedItems.Count > 0;
             this.buttonEdit.Enabled = this.listBoxFavorites.SelectedItems.Count > 0;
             this.buttonSelectAll.Enabled = this.listBoxFavorites.Enabled && this.listBoxFavorites.SelectedItems.Count != this.listBoxFavorites.Items.Count;
             this.buttonDeselectAll.Enabled = this.listBoxFavorites.SelectedItems.Count > 0;
@@ -40,6 +46,10 @@ namespace f21sc_coursework_1.View.FavoritesPanel
             }
             this.listBoxFavorites.EndUpdate();
         }
+
+        /* ==================================
+         * INHERITED METHODS
+         * ==================================*/
 
         /// <summary>
         /// <inheritdoc/>
@@ -72,6 +82,52 @@ namespace f21sc_coursework_1.View.FavoritesPanel
             this.Enabled = should;
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="error"></param>
+        public void ErrorDialog(string error)
+        {
+            MessageBox.Show(error,
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+        }
+
+        /* ==================================
+         * CONTROL LISTENERS
+         * ==================================*/
+
+        private void buttonRemove_Click(object sender, EventArgs e)
+        {
+            this.FavoritesDeletedEvent(this, new FavoritesDeletedEventArgs(this.listBoxFavorites
+                .SelectedItems
+                .Cast<Fav>()
+                .ToList()));
+        }
+
+        private void buttonEdit_Click(object sender, EventArgs e)
+        {
+            if (this.listBoxFavorites.SelectedItems.Count > 1)
+            {
+                this.ErrorDialog("Only one favorite can be modified at a time.");
+            }
+            else
+            {
+                this.FavoriteModifiedEvent(this, new FavoriteModifiedEventArgs((Fav)this.listBoxFavorites.SelectedItem));
+            }
+        }
+        private void buttonJump_Click(object sender, EventArgs e)
+        {
+            if (this.listBoxFavorites.SelectedItems.Count > 1)
+            {
+                this.ErrorDialog("Only one page can be jumped to at a time.");
+            } if (this.listBoxFavorites.SelectedItems.Count != 0)
+            {
+                this.JumpAskedEvent(this, new JumpAskedEventArgs(((Fav)this.listBoxFavorites.SelectedItem).Uri));
+            }
+        }
+
         private void buttonClose_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -87,14 +143,6 @@ namespace f21sc_coursework_1.View.FavoritesPanel
             this.SetAllSelected(true);
         }
 
-        private void buttonRemove_Click(object sender, EventArgs e)
-        {
-            this.FavoritesDeletedEvent(this, new FavoritesDeletedEventArgs(this.listBoxFavorites
-                .SelectedItems
-                .Cast<Fav>()
-                .ToList()));
-        }
-
         private void listBoxFavorites_SelectedValueChanged(object sender, EventArgs e)
         {
             this.UpdateFavoritesDependantControls();
@@ -102,36 +150,22 @@ namespace f21sc_coursework_1.View.FavoritesPanel
 
         private void FormFavoritesPanel_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.FavoritesPanelFormClosedEvent(this, EventArgs.Empty);
+            this.ViewClosedEvent(this, EventArgs.Empty);
         }
 
-        /// <summary>
-        /// Displays an error dialog using <see cref="MessageBox"/>
-        /// </summary>
-        /// <param name="error">Error description to display</param>
-        public void ErrorDialog(string error)
+        private void listBoxFavorites_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            MessageBox.Show(error,
-                "Error",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
+            this.buttonJump_Click(this, EventArgs.Empty);
         }
 
-        private void buttonEdit_Click(object sender, EventArgs e)
-        {
-            if (this.listBoxFavorites.SelectedItems.Count > 1)
-            {
-                this.ErrorDialog("Only one favorite can be modified at a time.");
-            } else
-            {
-                this.FavoriteModifiedEvent(this, new FavoriteModifiedEventArgs((Fav)this.listBoxFavorites.SelectedItem));
-            }
-        }
+        /* ==================================
+         * EVENTS
+         * ==================================*/
 
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public event EventHandler FavoritesPanelFormClosedEvent;
+        public event EventHandler ViewClosedEvent;
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
@@ -140,5 +174,9 @@ namespace f21sc_coursework_1.View.FavoritesPanel
         /// <inheritdoc/>
         /// </summary>
         public event FavoriteModifiedEvent FavoriteModifiedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event JumpAskedEvent JumpAskedEvent;
     }
 }

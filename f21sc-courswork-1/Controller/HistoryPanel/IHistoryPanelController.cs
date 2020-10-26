@@ -1,21 +1,18 @@
-﻿using System;
+﻿using f21sc_courswork_1.Controller;
+using f21sc_courswork_1.Events;
+using System;
 
 namespace f21sc_coursework_1.Controller.HistoryPanel
 {
-    interface IHistoryPanelController
+    interface IHistoryPanelController : IController
     {
-        /// <summary>
-        /// Raised when history panel is closed
-        /// </summary>
-        event EventHandler FormHistoryPanelClosedEvent;
         /// <summary>
         /// Raised when history is updated
         /// </summary>
         event EventHandler HistoryUpdatedEvent;
-
         /// <summary>
-        /// Orders the control to show its view
+        /// Raised when the user asks to jump to a specific page
         /// </summary>
-        void Show();
+        event JumpAskedEvent JumpAskedEvent;
     }
 }

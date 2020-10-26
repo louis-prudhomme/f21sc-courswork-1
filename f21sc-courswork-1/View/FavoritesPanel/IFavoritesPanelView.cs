@@ -1,16 +1,18 @@
 ﻿using f21sc_coursework_1.Events.Favorites;
+using f21sc_courswork_1.Events;
 using f21sc_courswork_1.Model.Favorites;
+using f21sc_courswork_1.View;
 using System;
 using System.Collections.Generic;
 
 namespace f21sc_coursework_1.View.FavoritesPanel
 {
-    interface IFavoritesPanelView
+    interface IFavoritesPanelView : IView
     {
         /// <summary>
         /// Raised when the view is closed
         /// </summary>
-        event EventHandler FavoritesPanelFormClosedEvent;
+        event JumpAskedEvent JumpAskedEvent;
         /// <summary>
         /// Raised when user asks for the deletion of one or more favorites
         /// </summary>
@@ -25,23 +27,5 @@ namespace f21sc_coursework_1.View.FavoritesPanel
         /// </summary>
         /// <param name="favorites">New list to display</param>
         void UpdateFavoriteItems(List<Fav> favorites);
-        /// <summary>
-        /// Displays an error dialog using <see cref="MessageBox"/>
-        /// </summary>
-        /// <param name="error">Error description to display</param>
-        void ErrorDialog(string error);
-
-        /// <summary>
-        /// Order the view to show itself
-        /// </summary>
-        void Show();
-        /// <summary>
-        /// Order the view to close
-        /// </summary>
-        void Close();
-        /// <summary>
-        /// Whether the view should be enabled
-        /// </summary>
-        void ShouldBeEnabled(bool should);
     }
 }

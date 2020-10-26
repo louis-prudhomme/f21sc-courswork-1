@@ -2,18 +2,14 @@
 using f21sc_coursework_1.Events.Favorites;
 using f21sc_coursework_1.Model;
 using f21sc_coursework_1.Model.HttpCommunications;
+using f21sc_courswork_1.View;
 using System;
 using System.Collections.Generic;
 
 namespace f21sc_coursework_1.View
 {
-    interface IMainView
+    interface IMainView : IView
     {
-        /// <summary>
-        /// Raised when the main form is closed
-        /// </summary>
-        event EventHandler MainFormClosedEvent;
-
         /// <summary>
         /// Raised when the user asks for the favorites panel
         /// </summary>
@@ -79,20 +75,10 @@ namespace f21sc_coursework_1.View
         /// </summary>
         /// <param name="isFav"></param>
         void IsCurrentAFav(bool isFav);
-
         /// <summary>
-        /// Orders the view to show up
+        /// Update the view regarding the home url
         /// </summary>
-        void Show();
-        /// <summary>
-        /// Whether the view should be enabled
-        /// </summary>
-        /// <param name="should"></param>
-        void ShouldBeEnabled(bool should);
-        /// <summary>
-        /// Displays an error dialog using <see cref="MessageBox"/>
-        /// </summary>
-        /// <param name="error">Error description to display</param>
-        void ErrorDialog(string text);
+        /// <param name="hasHomeUrl"></param>
+        void UpdateHomeUrl(bool hasHomeUrl);
     }
 }

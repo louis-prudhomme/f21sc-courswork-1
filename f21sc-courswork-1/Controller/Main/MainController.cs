@@ -43,7 +43,7 @@ namespace f21sc_coursework_1.Controller.Main
 
             this.HomeAskedEventHandler(this, EventArgs.Empty);
 
-            this.view.MainFormClosedEvent += (s, e) => this.MainFormClosedEvent(this, EventArgs.Empty);
+            this.view.ViewClosedEvent += (s, e) => this.ViewClosedEvent(this, EventArgs.Empty);
 
             this.view.HomeUrlInputAskedEvent += (s, e) => this.HomeUrlInputAskedEvent(this, EventArgs.Empty);
             this.view.HistoryPanelAskedEvent += (s, e) => this.HistoryPanelAskedEvent(this, EventArgs.Empty);
@@ -200,7 +200,7 @@ namespace f21sc_coursework_1.Controller.Main
                 } catch (EntryAlreadyExistsException)
                 {
                     this.view.ErrorDialog("A problem occured. It should not have happened.");
-                    this.MainFormClosedEvent(this, EventArgs.Empty);
+                    this.ViewClosedEvent(this, EventArgs.Empty);
                 }
             }
             if (!this.navigation.HasCurrent || this.navigation.Current.Uri != query.Uri)
@@ -256,6 +256,31 @@ namespace f21sc_coursework_1.Controller.Main
             this.view.ErrorDialog(error);
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void InitiateJump(Uri target)
+        {
+            Task.Factory.StartNew(() => this.UrlQueriedEventHandlerAsync(this,
+                new UrlSentEventArgs(target.AbsoluteUri)));
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void UpdateHomeUrl()
+        {
+            this.view.UpdateHomeUrl(this.user.HomePage != null);
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void Close()
+        {
+            this.view.Close();
+        }
+
 
         /* ==================================
          * EVENTS
@@ -264,7 +289,7 @@ namespace f21sc_coursework_1.Controller.Main
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public event EventHandler MainFormClosedEvent;
+        public event EventHandler ViewClosedEvent;
 
         /// <summary>
         /// <inheritdoc/>

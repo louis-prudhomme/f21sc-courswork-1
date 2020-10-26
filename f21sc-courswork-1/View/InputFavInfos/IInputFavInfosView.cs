@@ -4,12 +4,8 @@ using System;
 
 namespace f21sc_courswork_1.View.InputFavInfos
 {
-    interface IInputFavInfosView
+    interface IInputFavInfosView : IView
     {
-        /// <summary>
-        /// Raised when the form is closed without any new <see cref="Fav"/> being submitted
-        /// </summary>
-        event EventHandler FavInputCancelledEvent;
         /// <summary>
         /// Raised when a new <see cref="Fav"/> is submitted
         /// </summary>
@@ -31,19 +27,5 @@ namespace f21sc_courswork_1.View.InputFavInfos
         /// </summary>
         /// <param name="url"></param>
         void UpdateUrl(string url);
-        /// <summary>
-        /// Orders the view to display an error dialog with the specified text as description
-        /// </summary>
-        /// <param name="error">Description of the error</param>
-        void ErrorDialog(string error);
-
-        /// <summary>
-        /// Orders the view to show itself
-        /// </summary>
-        void Show();
-        /// <summary>
-        /// Orders the view to close
-        /// </summary>
-        void Close();
     }
 }
