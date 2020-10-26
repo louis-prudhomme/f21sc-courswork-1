@@ -20,7 +20,7 @@ namespace f21sc_courswork_1.View.InputFavInfos
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public event FavAddedEvent FavInputSubmittedEvent;
+        public event FavSubmittedEvent FavInputSubmittedEvent;
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
@@ -86,7 +86,7 @@ namespace f21sc_courswork_1.View.InputFavInfos
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
-            this.FavInputSubmittedEvent(this, new FavAddedEventArgs(this.textBoxUrl.Text, this.textBoxName.Text));
+            this.FavInputSubmittedEvent(this, new FavSubmittedEventArgs(this.textBoxUrl.Text, this.textBoxName.Text));
             this.labelName.Focus();
         }
 

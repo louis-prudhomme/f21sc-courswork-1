@@ -33,6 +33,7 @@
             this.buttonClose = new System.Windows.Forms.Button();
             this.buttonDeselectAll = new System.Windows.Forms.Button();
             this.buttonSelectAll = new System.Windows.Forms.Button();
+            this.buttonEdit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBoxFavorites
@@ -99,12 +100,25 @@
             this.buttonSelectAll.UseVisualStyleBackColor = true;
             this.buttonSelectAll.Click += new System.EventHandler(this.buttonSelectAll_Click);
             // 
+            // buttonEdit
+            // 
+            this.buttonEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonEdit.Enabled = false;
+            this.buttonEdit.Location = new System.Drawing.Point(245, 41);
+            this.buttonEdit.Name = "buttonEdit";
+            this.buttonEdit.Size = new System.Drawing.Size(132, 23);
+            this.buttonEdit.TabIndex = 11;
+            this.buttonEdit.Text = "Edit favorite";
+            this.buttonEdit.UseVisualStyleBackColor = true;
+            this.buttonEdit.Click += new System.EventHandler(this.buttonEdit_Click);
+            // 
             // FormFavoritesPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonClose;
             this.ClientSize = new System.Drawing.Size(384, 361);
+            this.Controls.Add(this.buttonEdit);
             this.Controls.Add(this.buttonDeselectAll);
             this.Controls.Add(this.buttonSelectAll);
             this.Controls.Add(this.buttonClose);
@@ -124,5 +138,6 @@
         private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.Button buttonDeselectAll;
         private System.Windows.Forms.Button buttonSelectAll;
+        private System.Windows.Forms.Button buttonEdit;
     }
 }

@@ -22,6 +22,7 @@ namespace f21sc_coursework_1.Controller.FavoritesPanel
             this.view.UpdateFavoriteItems(favorites.ToList());
             this.view.FavoritesDeletedEvent += this.FavoritesDeletedEventHandler;
 
+            this.view.FavoriteModifiedEvent += (s, e) => this.FavoriteModifiedEvent(this, e);
             this.view.FavoritesPanelFormClosedEvent += (s, e) => this.FavoritesPanelFormClosedEvent(this, EventArgs.Empty);
         }
 
@@ -54,6 +55,21 @@ namespace f21sc_coursework_1.Controller.FavoritesPanel
         {
             this.view.Show();
         }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void UpdateFavorites()
+        {
+            this.view.UpdateFavoriteItems(this.favorites.ToList());
+        }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="should"></param>
+        public void ShouldBeEnabled(bool should)
+        {
+            this.view.ShouldBeEnabled(should);
+        }
 
         /* ==================================
          * EVENTS
@@ -63,6 +79,10 @@ namespace f21sc_coursework_1.Controller.FavoritesPanel
         /// <inheritdoc/>
         /// </summary>
         public event EventHandler FavoritesPanelFormClosedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event FavoriteModifiedEvent FavoriteModifiedEvent;
         /// <summary>
         /// <inheritdoc/>
         /// </summary>

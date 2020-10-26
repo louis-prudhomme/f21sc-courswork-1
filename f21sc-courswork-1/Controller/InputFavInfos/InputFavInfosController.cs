@@ -8,25 +8,55 @@ using System;
 
 namespace f21sc_coursework_1.Controller.InputFavInfos
 {
+    enum InputFavMode {
+        MODIFICATION,
+        CREATION,
+    }
+
     /// <summary>
     /// Controller for the <see cref="IInputFavInfosView"/>
     /// </summary>
     class InputFavInfosController : IInputFavInfosController
     {
+        private readonly InputFavMode mode;
         private readonly IInputFavInfosView view;
         private readonly FavoritesRepository favorites;
+
+        private readonly Fav toEdit;
 
         public InputFavInfosController(IInputFavInfosView view, FavoritesRepository favorites, FavInputAskedEventArgs e)
         {
             this.view = view;
             this.favorites = favorites;
 
+            this.mode = InputFavMode.CREATION;
+            this.FinishSetup(e.Name, e.Url);
+        }
+
+        public InputFavInfosController(IInputFavInfosView view, FavoritesRepository favorites, FavoriteModifiedEventArgs e)
+        {
+            this.view = view;
+            this.favorites = favorites;
+
+            this.mode = InputFavMode.MODIFICATION;
+            this.toEdit = e.Modified;
+            this.FinishSetup(e.Modified.Name, e.Modified.Uri.AbsoluteUri);
+        }
+
+        /// <summary>
+        /// Finishes the setup of the controller, regardless of the mode
+        /// </summary>
+        /// <param name="presetName">Preset name of the event</param>
+        /// <param name="presetUrl">Preset URL of the event</param>
+        private void FinishSetup(string presetName, string presetUrl)
+        {
             this.view.FavInputCancelledEvent += this.FavInputCancelledEventHandler;
             this.view.FavInputSubmittedEvent += this.FavInputSubmittedEventHandler;
 
-            this.view.PresetFav(e.Name, e.Url);
-            this.UrlSentEventHandler(this, new UrlSentEventArgs(e.Url));
             this.view.UrlSentEvent += this.UrlSentEventHandler;
+
+            this.view.PresetFav(presetName, presetUrl);
+            this.UrlSentEventHandler(this, new UrlSentEventArgs(presetUrl));
         }
 
         /// <summary>
@@ -52,12 +82,16 @@ namespace f21sc_coursework_1.Controller.InputFavInfos
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Contains the <see cref="Fav"/> to add</param>
-        public void FavInputSubmittedEventHandler(object sender, FavAddedEventArgs e)
+        public void FavInputSubmittedEventHandler(object sender, FavSubmittedEventArgs e)
         {
             if (HttpUriHelper.TryCreateHttpUri(e.Uri, out Uri uri))
             {
                 try
                 {
+                    if (this.mode == InputFavMode.MODIFICATION)
+                    {
+                        this.favorites.Remove(this.toEdit);
+                    }
                     this.favorites.Add(new Fav(uri, e.Name));
                     this.FavInputSubmittedEvent(this, EventArgs.Empty);
                     this.view.Close();

@@ -69,21 +69,15 @@ namespace f21sc_coursework_1.View.HistoryPanel
         {
             this.buttonWipeHistory.Enabled = this.listBoxHistory.Enabled;
 
-            this.buttonSelectAll.Enabled = this.listBoxHistory.SelectedItems.Count != this.listBoxHistory.Items.Count;
+            this.buttonSelectAll.Enabled = this.listBoxHistory.Enabled && this.listBoxHistory.SelectedItems.Count != this.listBoxHistory.Items.Count;
             this.buttonDeselectAll.Enabled = this.listBoxHistory.SelectedItems.Count > 0;
 
             this.buttonDelete.Enabled = this.listBoxHistory.SelectedItems.Count > 0;
-            this.buttonFav.Enabled = this.listBoxHistory.SelectedItems.Count > 0;
         }
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void buttonFav_Click(object sender, EventArgs e)
-        {
-            //todo
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
@@ -116,7 +110,6 @@ namespace f21sc_coursework_1.View.HistoryPanel
         private void listBoxHistory_SelectedValueChanged(object sender, EventArgs e)
         {
             this.buttonDelete.Enabled = this.listBoxHistory.SelectedItems.Count > 0;
-            this.buttonFav.Enabled = this.listBoxHistory.SelectedItems.Count > 0;
         }
 
         private void buttonSelectAll_Click(object sender, EventArgs e)

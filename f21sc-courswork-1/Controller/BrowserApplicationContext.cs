@@ -18,6 +18,9 @@ using System.Windows.Forms;
 
 namespace f21sc_coursework_1.Controller
 {
+    /// <summary>
+    /// Main organizing class of the program
+    /// </summary>
     class BrowserApplicationContext : ApplicationContext
     {
         /// <summary>
@@ -120,7 +123,6 @@ namespace f21sc_coursework_1.Controller
         private void HomeUrlSubmittedEventHandler(object sender, UrlSentEventArgs e)
         {
             this.user.HomePage = e.Uri;
-            //this.mainController.UpdateHomeUrl();
             this.mainController.ShouldBeEnabled(true);
         }
 
@@ -129,15 +131,34 @@ namespace f21sc_coursework_1.Controller
          * ==================================*/
 
         /// <summary>
-        /// Creates a new <see cref="IInputFavInfosController"/> to answer the demand
+        /// Creates a new <see cref="IInputFavInfosController"/> to answer the demand of favorite creation
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Emtpy</param>
         private void FavInputAskedEventHandler(object sender, FavInputAskedEventArgs e)
         {
+            this.favInputController = new InputFavInfosController(new FormInputFavInfos(), this.user.Favorites, e);
+            this.FavInputSetup();
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="IInputFavInfosController"/> to answer the demand of favorite edition
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Emtpy</param>
+        private void FavModifAskedEventHandler(object sender, FavoriteModifiedEventArgs e)
+        {
+            this.favInputController = new InputFavInfosController(new FormInputFavInfos(), this.user.Favorites, e);
+            this.FavInputSetup();
+        }
+
+        /// <summary>
+        /// Setups the <see cref="IInputFavInfosController"/> regardless of its mode
+        /// </summary>
+        private void FavInputSetup()
+        {
             this.mainController.ShouldBeEnabled(false);
 
-            this.favInputController = new InputFavInfosController(new FormInputFavInfos(), this.user.Favorites, e);
             this.favInputController.FavInputCanceledEvent += this.FavInputCancelledEventHandler;
             this.favInputController.FavInputSubmittedEvent += this.FavInputSubmittedEventHandler;
 
@@ -152,8 +173,11 @@ namespace f21sc_coursework_1.Controller
         /// <param name="e">Emtpy</param>
         private void FavInputCancelledEventHandler(object sender, EventArgs e)
         {
-            this.favInputController = null;
-            this.mainController.ShouldBeEnabled(true);
+            if (this.favoritesController == null)
+            {
+                this.favInputController = null;
+                this.mainController.ShouldBeEnabled(true);
+            }
         }
 
         /// <summary>
@@ -165,8 +189,15 @@ namespace f21sc_coursework_1.Controller
         /// <param name="e">Emtpy</param>
         private void FavInputSubmittedEventHandler(object sender, EventArgs e)
         {
-            this.mainController.UpdateFavorites();
-            this.mainController.ShouldBeEnabled(true);
+            if (this.favoritesController == null)
+            {
+                this.mainController.UpdateFavorites();
+                this.mainController.ShouldBeEnabled(true);
+            } else
+            {
+                this.favoritesController.UpdateFavorites();
+                this.favoritesController.ShouldBeEnabled(true);
+            }
         }
 
         /* ==================================
@@ -218,6 +249,7 @@ namespace f21sc_coursework_1.Controller
 
             this.favoritesController = new FavoritesPanelController(new FormFavoritesPanel(), this.user.Favorites);
             this.favoritesController.FavoritesPanelFormClosedEvent += this.FavoritesPanelClosedEventHandler;
+            this.favoritesController.FavoriteModifiedEvent += this.FavModifAskedEventHandler;
             this.favoritesController.FavoritesUpdatedEvent += this.FavoritesUpdateEventHandler;
 
             this.favoritesController.Show();
@@ -248,7 +280,13 @@ namespace f21sc_coursework_1.Controller
 
         private void FavoritesUpdateEventHandler(object sender, EventArgs e)
         {
-            this.mainController.UpdateFavorites();
+            if (this.favoritesController == null)
+            {
+                this.mainController.UpdateFavorites();
+            } else
+            {
+                this.favoritesController.UpdateFavorites();
+            }
         }
 
         /// <summary>

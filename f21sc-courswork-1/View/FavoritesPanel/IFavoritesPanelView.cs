@@ -15,6 +15,10 @@ namespace f21sc_coursework_1.View.FavoritesPanel
         /// Raised when user asks for the deletion of one or more favorites
         /// </summary>
         event FavoritesDeletedEvent FavoritesDeletedEvent;
+        /// <summary>
+        /// Raised when user asks for the modification of a favorite
+        /// </summary>
+        event FavoriteModifiedEvent FavoriteModifiedEvent;
 
         /// <summary>
         /// Updates the view's list of <see cref="Fav"/>
@@ -35,5 +39,9 @@ namespace f21sc_coursework_1.View.FavoritesPanel
         /// Order the view to close
         /// </summary>
         void Close();
+        /// <summary>
+        /// Whether the view should be enabled
+        /// </summary>
+        void ShouldBeEnabled(bool should);
     }
 }

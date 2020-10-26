@@ -13,7 +13,7 @@ namespace f21sc_courswork_1.View.InputFavInfos
         /// <summary>
         /// Raised when a new <see cref="Fav"/> is submitted
         /// </summary>
-        event FavAddedEvent FavInputSubmittedEvent;
+        event FavSubmittedEvent FavInputSubmittedEvent;
 
         /// <summary>
         /// Raised when the user tests an URL

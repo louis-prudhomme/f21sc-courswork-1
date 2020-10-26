@@ -30,7 +30,6 @@
         {
             this.listBoxHistory = new System.Windows.Forms.ListBox();
             this.buttonDelete = new System.Windows.Forms.Button();
-            this.buttonFav = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
             this.buttonWipeHistory = new System.Windows.Forms.Button();
             this.buttonDeselectAll = new System.Windows.Forms.Button();
@@ -63,18 +62,6 @@
             this.buttonDelete.UseVisualStyleBackColor = true;
             this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
             // 
-            // buttonFav
-            // 
-            this.buttonFav.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonFav.Enabled = false;
-            this.buttonFav.Location = new System.Drawing.Point(245, 41);
-            this.buttonFav.Name = "buttonFav";
-            this.buttonFav.Size = new System.Drawing.Size(132, 23);
-            this.buttonFav.TabIndex = 2;
-            this.buttonFav.Text = "Add to favorites";
-            this.buttonFav.UseVisualStyleBackColor = true;
-            this.buttonFav.Click += new System.EventHandler(this.buttonFav_Click);
-            // 
             // buttonClose
             // 
             this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -91,7 +78,7 @@
             // 
             this.buttonWipeHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonWipeHistory.Enabled = false;
-            this.buttonWipeHistory.Location = new System.Drawing.Point(245, 180);
+            this.buttonWipeHistory.Location = new System.Drawing.Point(245, 41);
             this.buttonWipeHistory.Name = "buttonWipeHistory";
             this.buttonWipeHistory.Size = new System.Drawing.Size(132, 23);
             this.buttonWipeHistory.TabIndex = 4;
@@ -136,7 +123,6 @@
             this.Controls.Add(this.buttonSelectAll);
             this.Controls.Add(this.buttonWipeHistory);
             this.Controls.Add(this.buttonClose);
-            this.Controls.Add(this.buttonFav);
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.listBoxHistory);
             this.MinimumSize = new System.Drawing.Size(400, 400);
@@ -151,7 +137,6 @@
 
         private System.Windows.Forms.ListBox listBoxHistory;
         private System.Windows.Forms.Button buttonDelete;
-        private System.Windows.Forms.Button buttonFav;
         private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.Button buttonWipeHistory;
         private System.Windows.Forms.Button buttonDeselectAll;

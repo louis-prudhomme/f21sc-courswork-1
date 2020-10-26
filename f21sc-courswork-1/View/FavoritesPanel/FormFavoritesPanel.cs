@@ -17,21 +17,13 @@ namespace f21sc_coursework_1.View.FavoritesPanel
         }
 
         /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public event EventHandler FavoritesPanelFormClosedEvent;
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public event FavoritesDeletedEvent FavoritesDeletedEvent;
-
-        /// <summary>
         /// Enables or disables the listbox items-dependant controls 
         /// </summary>
         private void UpdateFavoritesDependantControls()
         {
             this.buttonRemove.Enabled = this.listBoxFavorites.SelectedItems.Count > 0;
-            this.buttonSelectAll.Enabled = this.listBoxFavorites.SelectedItems.Count != this.listBoxFavorites.Items.Count;
+            this.buttonEdit.Enabled = this.listBoxFavorites.SelectedItems.Count > 0;
+            this.buttonSelectAll.Enabled = this.listBoxFavorites.Enabled && this.listBoxFavorites.SelectedItems.Count != this.listBoxFavorites.Items.Count;
             this.buttonDeselectAll.Enabled = this.listBoxFavorites.SelectedItems.Count > 0;
         }
 
@@ -69,6 +61,15 @@ namespace f21sc_coursework_1.View.FavoritesPanel
             }
             this.UpdateFavoritesDependantControls();
             this.listBoxFavorites.EndUpdate();
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="should"></param>
+        public void ShouldBeEnabled(bool should)
+        {
+            this.Enabled = should;
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
@@ -115,5 +116,29 @@ namespace f21sc_coursework_1.View.FavoritesPanel
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
         }
+
+        private void buttonEdit_Click(object sender, EventArgs e)
+        {
+            if (this.listBoxFavorites.SelectedItems.Count > 1)
+            {
+                this.ErrorDialog("Only one favorite can be modified at a time.");
+            } else
+            {
+                this.FavoriteModifiedEvent(this, new FavoriteModifiedEventArgs((Fav)this.listBoxFavorites.SelectedItem));
+            }
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler FavoritesPanelFormClosedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event FavoritesDeletedEvent FavoritesDeletedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event FavoriteModifiedEvent FavoriteModifiedEvent;
     }
 }
