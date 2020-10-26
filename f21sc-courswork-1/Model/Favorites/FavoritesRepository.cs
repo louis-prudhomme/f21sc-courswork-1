@@ -9,6 +9,7 @@ namespace f21sc_courswork_1.Model.Favorites
     /// Represents a repository for user’s favorites.
     /// No <see cref="Fav"/> can be referenced twice.
     /// </summary>
+    [Serializable]
     class FavoritesRepository
     {
         private readonly HashSet<Fav> favs;

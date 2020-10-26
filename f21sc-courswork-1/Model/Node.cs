@@ -1,5 +1,9 @@
 ﻿namespace f21sc_coursework_1.Model
 {
+    /// <summary>
+    /// Abstract representation of a node
+    /// </summary>
+    /// <typeparam name="T">Generic type</typeparam>
     public class Node<T>
     {
         public T Left { get; }

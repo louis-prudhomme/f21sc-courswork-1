@@ -81,7 +81,6 @@
     <Compile Include="Utils\Http\HttpQueryHelper.cs" />
     <Compile Include="Utils\Http\HttpStatusHelper.cs" />
     <Compile Include="Utils\Http\HttpUriHelper.cs" />
-    <Compile Include="Utils\Logger.cs" />
     <Compile Include="View\FavoritesPanel\FormFavoritesPanel.cs">
       <SubType>Form</SubType>
     </Compile>

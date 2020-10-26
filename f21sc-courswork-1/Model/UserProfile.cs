@@ -26,6 +26,13 @@ namespace f21sc_coursework_1.Model
         /// </summary>
         public FavoritesRepository Favorites { get; }
 
+        public UserProfile()
+        {
+            this.History = new GlobalHistory();
+            this.Favorites = new FavoritesRepository();
+            this.HomePage = new Uri("http://www.lingscars.com/");
+        }
+
         public UserProfile(GlobalHistory history, Uri homePage, FavoritesRepository favorites)
         {
             this.History = history;

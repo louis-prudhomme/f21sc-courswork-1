@@ -38,9 +38,9 @@ namespace f21sc_coursework_1.Controller.Main
 
         void ShouldBeEnabled(bool should);
         /// <summary>
-        /// Orders the controller to update the home URL
+        /// Orders the controller to prompt an error dialog
         /// </summary>
-        //void UpdateHomeUrl();
+        void ErrorDialog(string error);
         /// <summary>
         /// Orders the controller to update the history
         /// </summary>

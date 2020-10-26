@@ -19,31 +19,34 @@ namespace f21sc_coursework_1.Utils
         /// <summary>
         /// Filename of the backup
         /// </summary>
-        private string filename;
+        private readonly string filename;
 
         /// <summary>
         /// Semaphore to prevent concurrent access of the backup file
         /// </summary>
-        private Semaphore fileAccessSemaphore;
+        private readonly Semaphore fileAccessSemaphore;
 
         /// <summary>
         /// Formatter of the file
         /// </summary>
-        private IFormatter formatter;
+        private readonly IFormatter formatter;
 
-        public Backer(T target, string filename, IFormatter formatter)
+        public Backer(T target, IFormatter formatter)
         {
             this.Target = target;
-            this.filename = filename;
+            this.filename = this.Target.GetType().Name + ".data";
             this.formatter = formatter;
 
             this.fileAccessSemaphore = new Semaphore(1, 1);
+
+            this.Read();
         }
 
 
         /// <summary>
         /// Writes <see cref="Target"/> to the filesystem
         /// </summary>
+        /// <exception cref="BackerException">When a problem occurs</exception>
         public void Write()
         {
             this.fileAccessSemaphore.WaitOne();
@@ -52,11 +55,10 @@ namespace f21sc_coursework_1.Utils
             {
                 FileStream stream = new FileStream(this.filename, FileMode.Create);
                 this.formatter.Serialize(stream, this.Target);
-                Logger.Info("Backed up " + this.filename);
+                stream.Close();
             }
             catch (IOException e)
             {
-                Logger.Error(e.Message);
                 throw new BackerException("Could not write " + this.filename, e);
             }
             finally
@@ -68,6 +70,7 @@ namespace f21sc_coursework_1.Utils
         /// <summary>
         /// Reads <see cref="Target"/> from the filesystem
         /// </summary>
+        /// <exception cref="BackerException">When a problem occurs</exception>
         public void Read()
         {
             this.fileAccessSemaphore.WaitOne();
@@ -76,12 +79,10 @@ namespace f21sc_coursework_1.Utils
             {
                 FileStream stream = new FileStream(this.filename, FileMode.OpenOrCreate);
                 this.Target = stream.Length != 0 ? (T)this.formatter.Deserialize(stream) : Target;
-                Logger.Info("Read " + this.filename);
+                stream.Close();
             }
             catch (IOException e)
             {
-
-                Logger.Error(e.Message);
                 throw new BackerException("Could not write " + this.filename, e);
             }
             finally

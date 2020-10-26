@@ -9,6 +9,7 @@ namespace f21sc_coursework_1.Model.History
     /// <summary>
     /// Models user global navigation history
     /// </summary>
+    [Serializable]
     class GlobalHistory
     {
         private readonly SortedDictionary<long, HttpQuery> entries;

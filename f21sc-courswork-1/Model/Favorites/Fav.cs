@@ -9,6 +9,7 @@ namespace f21sc_courswork_1.Model.Favorites
     /// <summary>
     /// Represents a user favorite site
     /// </summary>
+    [Serializable]
     public class Fav
     {
         /// <summary>

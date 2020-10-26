@@ -297,7 +297,6 @@ namespace f21sc_coursework_1.View
             this.HomeUrlInputAskedEvent(this, EventArgs.Empty);
         }
 
-
         private void allHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.HistoryPanelAskedEvent(this, EventArgs.Empty);
@@ -325,6 +324,52 @@ namespace f21sc_coursework_1.View
 
             this.buttonFav.Enabled = false;
             this.favToolStripMenuItem.Enabled = false;
+        }
+
+        /// <summary>
+        /// Shortcuts management
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="keyData"></param>
+        /// <returns></returns>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                case (Keys.Control | Keys.H):
+                    this.HistoryPanelAskedEvent(this, EventArgs.Empty);
+                    return true;
+                case (Keys.Control | Keys.J):
+                    this.FavoritesPanelAskedEvent(this, EventArgs.Empty);
+                    return true;
+                case (Keys.Control | Keys.D):
+                    this.favToolStripMenuItem.PerformClick();
+                    return true;
+                case (Keys.Control | Keys.F):
+                    this.textBoxUrlInput.Focus();
+                    return true;
+                case (Keys.Control | Keys.Q):
+                    this.Close();
+                    return true;
+                case (Keys.Alt | Keys.Right):
+                    if (this.buttonForward.Enabled)
+                    {
+                        this.ForwardAskedEvent(this, EventArgs.Empty);
+                    }
+                    return true;
+                case (Keys.Alt | Keys.Left):
+                    if (this.buttonBackward.Enabled)
+                    {
+                        this.BackwardAskedEvent(this, EventArgs.Empty);
+                    }
+                    return true;
+                case Keys.F5:
+                case (Keys.Control | Keys.R):
+                    this.ReloadAskedEvent(this, EventArgs.Empty);
+                    return true;
+                default:
+                    return base.ProcessCmdKey(ref msg, keyData);
+            }
         }
 
         /* ==================================

@@ -147,6 +147,7 @@ namespace f21sc_coursework_1.Controller.Main
             try
             {
                 this.user.Favorites.Remove(this.user.Favorites.Find(this.navigation.Current.Uri));
+                this.view.IsCurrentAFav(false);
                 this.FavoritesUpdatedEvent(this, EventArgs.Empty);
             } catch (FavDoesntExistException)
             {
@@ -244,6 +245,15 @@ namespace f21sc_coursework_1.Controller.Main
         public void ShouldBeEnabled(bool should)
         {
             this.view.ShouldBeEnabled(should);
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="error"></param>
+        public void ErrorDialog(string error)
+        {
+            this.view.ErrorDialog(error);
         }
 
 

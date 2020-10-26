@@ -158,6 +158,7 @@
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
@@ -321,6 +322,7 @@
             this.Controls.Add(this.richTextBoxHtmlDisplay);
             this.Controls.Add(this.textBoxUrlInput);
             this.Controls.Add(this.buttonSearch);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStripUp;
             this.MinimumSize = new System.Drawing.Size(555, 555);
             this.Name = "FormMain";

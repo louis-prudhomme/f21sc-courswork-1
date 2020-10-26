@@ -8,11 +8,6 @@ using System;
 
 namespace f21sc_coursework_1.Controller.InputFavInfos
 {
-    enum InputFavMode {
-        MODIFICATION,
-        CREATION,
-    }
-
     /// <summary>
     /// Controller for the <see cref="IInputFavInfosView"/>
     /// </summary>
@@ -136,5 +131,11 @@ namespace f21sc_coursework_1.Controller.InputFavInfos
         /// <inheritdoc/>
         /// </summary>
         public event EventHandler FavInputSubmittedEvent;
+    }
+
+    enum InputFavMode
+    {
+        MODIFICATION,
+        CREATION,
     }
 }

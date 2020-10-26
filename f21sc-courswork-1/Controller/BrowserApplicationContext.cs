@@ -7,6 +7,8 @@ using f21sc_coursework_1.Events;
 using f21sc_coursework_1.Events.Favorites;
 using f21sc_coursework_1.Model;
 using f21sc_coursework_1.Model.History;
+using f21sc_coursework_1.Utils;
+using f21sc_coursework_1.Utils.Exceptions;
 using f21sc_coursework_1.View;
 using f21sc_coursework_1.View.FavoritesPanel;
 using f21sc_coursework_1.View.HistoryPanel;
@@ -14,6 +16,7 @@ using f21sc_coursework_1.View.InputHomeUrl;
 using f21sc_courswork_1.Model.Favorites;
 using f21sc_courswork_1.View.InputFavInfos;
 using System;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 
 namespace f21sc_coursework_1.Controller
@@ -48,19 +51,24 @@ namespace f21sc_coursework_1.Controller
         /// <summary>
         /// Represents the user data
         /// </summary>
-        private readonly UserProfile user;
+        private readonly Backer<UserProfile> user;
+        /// <summary>
+        /// Shortcut
+        /// </summary>
+        private UserProfile User => this.user.Target;
 
         /// <summary>
         /// Main constructor and real starting point of the application
         /// </summary>
         public BrowserApplicationContext()
         {
-            this.user = new UserProfile(new GlobalHistory(), new Uri("http://www.lingscars.com"), new FavoritesRepository());
+            this.user = new Backer<UserProfile>(new UserProfile(), new BinaryFormatter());
+            this.ThreadExit += this.OnApplicationExit;
 
-            this.mainController = new MainController(new FormMain(), this.user);
+            this.mainController = new MainController(new FormMain(), this.User);
             this.mainController.MainFormClosedEvent += this.MainFormClosedEventHandler;
-            this.mainController.GlobalHistoryUpdatedEvent += this.HistoryUpdatedEventHandler;
-            this.mainController.FavoritesUpdatedEvent += this.FavoritesUpdateEventHandler;
+            this.mainController.GlobalHistoryUpdatedEvent += this.UserDataUpdated;
+            this.mainController.FavoritesUpdatedEvent += this.UserDataUpdated;
 
             // handlers for new form demands
             this.mainController.HomeUrlInputAskedEvent += this.HomeUrlInputAskedEventHandler;
@@ -122,7 +130,7 @@ namespace f21sc_coursework_1.Controller
         /// <param name="e">Emtpy</param>
         private void HomeUrlSubmittedEventHandler(object sender, UrlSentEventArgs e)
         {
-            this.user.HomePage = e.Uri;
+            this.User.HomePage = e.Uri;
             this.mainController.ShouldBeEnabled(true);
         }
 
@@ -137,8 +145,9 @@ namespace f21sc_coursework_1.Controller
         /// <param name="e">Emtpy</param>
         private void FavInputAskedEventHandler(object sender, FavInputAskedEventArgs e)
         {
-            this.favInputController = new InputFavInfosController(new FormInputFavInfos(), this.user.Favorites, e);
+            this.favInputController = new InputFavInfosController(new FormInputFavInfos(), this.User.Favorites, e);
             this.FavInputSetup();
+            this.mainController.ShouldBeEnabled(false);
         }
 
         /// <summary>
@@ -148,8 +157,9 @@ namespace f21sc_coursework_1.Controller
         /// <param name="e">Emtpy</param>
         private void FavModifAskedEventHandler(object sender, FavoriteModifiedEventArgs e)
         {
-            this.favInputController = new InputFavInfosController(new FormInputFavInfos(), this.user.Favorites, e);
+            this.favInputController = new InputFavInfosController(new FormInputFavInfos(), this.User.Favorites, e);
             this.FavInputSetup();
+            this.favoritesController.ShouldBeEnabled(false);
         }
 
         /// <summary>
@@ -157,8 +167,6 @@ namespace f21sc_coursework_1.Controller
         /// </summary>
         private void FavInputSetup()
         {
-            this.mainController.ShouldBeEnabled(false);
-
             this.favInputController.FavInputCanceledEvent += this.FavInputCancelledEventHandler;
             this.favInputController.FavInputSubmittedEvent += this.FavInputSubmittedEventHandler;
 
@@ -173,10 +181,13 @@ namespace f21sc_coursework_1.Controller
         /// <param name="e">Emtpy</param>
         private void FavInputCancelledEventHandler(object sender, EventArgs e)
         {
+            this.favInputController = null;
             if (this.favoritesController == null)
             {
-                this.favInputController = null;
                 this.mainController.ShouldBeEnabled(true);
+            } else
+            {
+                this.favoritesController.ShouldBeEnabled(true);
             }
         }
 
@@ -189,6 +200,7 @@ namespace f21sc_coursework_1.Controller
         /// <param name="e">Emtpy</param>
         private void FavInputSubmittedEventHandler(object sender, EventArgs e)
         {
+            this.favInputController = null;
             if (this.favoritesController == null)
             {
                 this.mainController.UpdateFavorites();
@@ -213,9 +225,9 @@ namespace f21sc_coursework_1.Controller
         {
             this.mainController.ShouldBeEnabled(false);
 
-            this.historyController = new HistoryPanelController(new FormHistoryPanel(), this.user.History);
+            this.historyController = new HistoryPanelController(new FormHistoryPanel(), this.User.History);
             this.historyController.FormHistoryPanelClosedEvent += this.HistoryPanelClosedEventHandler;
-            this.historyController.HistoryUpdatedEvent += this.HistoryUpdatedEventHandler;
+            this.historyController.HistoryUpdatedEvent += this.UserDataUpdated;
 
             this.historyController.Show();
         }
@@ -247,10 +259,10 @@ namespace f21sc_coursework_1.Controller
         {
             this.mainController.ShouldBeEnabled(false);
 
-            this.favoritesController = new FavoritesPanelController(new FormFavoritesPanel(), this.user.Favorites);
+            this.favoritesController = new FavoritesPanelController(new FormFavoritesPanel(), this.User.Favorites);
             this.favoritesController.FavoritesPanelFormClosedEvent += this.FavoritesPanelClosedEventHandler;
             this.favoritesController.FavoriteModifiedEvent += this.FavModifAskedEventHandler;
-            this.favoritesController.FavoritesUpdatedEvent += this.FavoritesUpdateEventHandler;
+            this.favoritesController.FavoritesUpdatedEvent += this.UserDataUpdated;
 
             this.favoritesController.Show();
         }
@@ -273,28 +285,16 @@ namespace f21sc_coursework_1.Controller
          * USER FILES UPDATES
          * ==================================*/
 
-        private void HistoryUpdatedEventHandler(object sender, EventArgs e)
+        private void UserDataUpdated(object sender, EventArgs e)
         {
-            // todo
-        }
-
-        private void FavoritesUpdateEventHandler(object sender, EventArgs e)
-        {
-            if (this.favoritesController == null)
+            try
             {
-                this.mainController.UpdateFavorites();
-            } else
+                this.user.Write();
+            } catch (BackerException)
             {
-                this.favoritesController.UpdateFavorites();
+                this.mainController.ErrorDialog("A problem occured during data save. Exiting.");
+                this.ExitThread();
             }
-        }
-
-        /// <summary>
-        /// Get user data smh
-        /// </summary>
-        private void OnApplicationStartup()
-        {
-
         }
 
         /// <summary>
@@ -304,7 +304,13 @@ namespace f21sc_coursework_1.Controller
         /// <param name="e"></param>
         private void OnApplicationExit(object sender, EventArgs e)
         {
-
+            try
+            {
+                this.user.Write();
+            } catch
+            {
+                //goodbye data
+            }
         }
     }
 }
