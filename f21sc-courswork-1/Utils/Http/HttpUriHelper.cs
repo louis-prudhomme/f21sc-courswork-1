@@ -7,6 +7,7 @@ namespace f21sc_coursework_1.Utils.Http
     {
         /// <summary>
         /// If an URI is considered incorrect by <see cref="Uri.IsWellFormedUriString(string, UriKind)"/>, tries to append http:// or www. to it
+        /// The out structure was chosen out of consideration for not throwing too much <see cref="Exception"/>
         /// </summary>
         /// <param name="uri">URI to check</param>
         /// <returns>Return the URI or a correct version of it</returns>

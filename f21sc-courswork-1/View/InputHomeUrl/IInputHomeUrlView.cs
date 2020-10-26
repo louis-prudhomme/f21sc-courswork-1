@@ -1,12 +1,12 @@
-﻿using f21sc_coursework_1.Event;
+﻿using f21sc_coursework_1.Events;
 using System;
 
 namespace f21sc_coursework_1.View
 {
     interface IInputHomeUrlView
     {
-        event EventHandler UrlInputFormCanceledEvent;
-        event UrlInputFormSubmittedEvent UrlInputFormSubmittedEvent;
+        event EventHandler HomeUrlCancelledEvent;
+        event UrlSentEvent HomeUrlSubmittedEvent;
 
         event UrlSentEvent UrlSentEvent;
 
@@ -14,6 +14,7 @@ namespace f21sc_coursework_1.View
         void SetUrlFeedback(string feedback);
         void ShouldEnableOk(bool should);
 
+        void ErrorDialog(string error);
         void Show();
     }
 }

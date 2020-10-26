@@ -1,4 +1,4 @@
-﻿using f21sc_coursework_1.Event;
+﻿using f21sc_coursework_1.Events;
 using f21sc_coursework_1.Model.HttpCommunications;
 using System;
 using System.Collections.Generic;
@@ -14,9 +14,67 @@ namespace f21sc_coursework_1.View.HistoryPanel
             InitializeComponent();
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public event EventHandler HistoryPanelClosedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public event HistoryEntriesDeletedEvent HistoryEntriesDeletedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public event EventHandler HistoryWipedEvent;
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void UpdateHistoryEntries(List<HttpQuery> entries)
+        {
+            this.listBoxHistory.BeginUpdate();
+            this.listBoxHistory.Items.Clear();
+            if (entries.Count != 0)
+            {
+                this.listBoxHistory.Items.AddRange(entries.ToArray());
+                this.listBoxHistory.Enabled = true;
+            }
+            else
+            {
+                this.listBoxHistory.Items.Add("No history");
+                this.listBoxHistory.Enabled = false;
+            }
+            this.UpdateHistoryDependantControls();
+            this.listBoxHistory.EndUpdate();
+        }
+
+        /// <summary>
+        /// Selects or deselects all items of the list box
+        /// </summary>
+        /// <param name="selection">true if the items should be all selected, false if none</param>
+        private void SetAllSelected(bool selection)
+        {
+            this.listBoxHistory.BeginUpdate();
+            for (int i = 0; i < this.listBoxHistory.Items.Count; i++)
+            {
+                this.listBoxHistory.SetSelected(i, selection);
+            }
+            this.listBoxHistory.EndUpdate();
+        }
+
+        /// <summary>
+        /// Updates all the controls relying in some way on the history list box
+        /// </summary>
+        private void UpdateHistoryDependantControls()
+        {
+            this.buttonWipeHistory.Enabled = this.listBoxHistory.Enabled;
+
+            this.buttonSelectAll.Enabled = this.listBoxHistory.SelectedItems.Count != this.listBoxHistory.Items.Count;
+            this.buttonDeselectAll.Enabled = this.listBoxHistory.SelectedItems.Count > 0;
+
+            this.buttonDelete.Enabled = this.listBoxHistory.SelectedItems.Count > 0;
+            this.buttonFav.Enabled = this.listBoxHistory.SelectedItems.Count > 0;
+        }
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
@@ -30,7 +88,11 @@ namespace f21sc_coursework_1.View.HistoryPanel
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            this.HistoryEntriesDeletedEvent(this, new HistoryEntriesDeletedEventArgs(this.listBoxHistory.SelectedItems.Cast<HttpQuery>().ToList()));
+            this.HistoryEntriesDeletedEvent(this, new HistoryEntriesDeletedEventArgs(this
+                .listBoxHistory
+                .SelectedItems
+                .Cast<HttpQuery>()
+                .ToList()));
         }
 
         private void FormHistoryPanel_FormClosed(object sender, FormClosedEventArgs e)
@@ -40,48 +102,15 @@ namespace f21sc_coursework_1.View.HistoryPanel
 
         private void buttonDeleteAllHistory_Click(object sender, EventArgs e)
         {
-            DialogResult confirmResult = MessageBox.Show("Do you really want to wipe your history out ? This cannot be reverted.", "Confirm history deletion", MessageBoxButtons.YesNo);
+            DialogResult confirmResult = MessageBox.Show("Do you really want to wipe your history out ? " +
+                "This cannot be reverted.", 
+                "Confirm history deletion",
+                MessageBoxButtons.YesNo);
+
             if (confirmResult == DialogResult.Yes)
             {
                 this.HistoryWipedEvent(this, EventArgs.Empty);
             }
-        }
-
-        public void UpdateHistoryEntries(List<HttpQuery> entries)
-        {
-            this.listBoxHistory.Items.Clear();
-            if (entries.Count != 0)
-            {
-                this.listBoxHistory.Items.AddRange(entries.ToArray());
-                this.ShouldEnableHistoryDependantControls(true);
-            }
-            else
-            {
-                this.listBoxHistory.Items.Add("No history");
-                this.ShouldEnableHistoryDependantControls(false);
-            }
-        }
-
-        private void SetAllSelected(bool selection)
-        {
-            this.listBoxHistory.BeginUpdate();
-            for (int i = 0; i < this.listBoxHistory.Items.Count; i++)
-            {
-                this.listBoxHistory.SetSelected(i, selection);
-            }
-            this.listBoxHistory.EndUpdate();
-        }
-
-        private void ShouldEnableHistoryDependantControls(bool should)
-        {
-            this.listBoxHistory.Enabled = should;
-            this.buttonWipeHistory.Enabled = should;
-
-            this.buttonSelectAll.Enabled = should;
-            this.buttonDeselectAll.Enabled = should;
-
-            this.buttonDelete.Enabled = should && this.listBoxHistory.SelectedItems.Count > 0;
-            this.buttonFav.Enabled = should && this.listBoxHistory.SelectedItems.Count > 0;
         }
 
         private void listBoxHistory_SelectedValueChanged(object sender, EventArgs e)

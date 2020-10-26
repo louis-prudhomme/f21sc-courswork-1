@@ -1,4 +1,6 @@
 ﻿using f21sc_coursework_1.Model.HttpCommunications;
+using f21sc_courswork_1.Model.History.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,8 +22,18 @@ namespace f21sc_coursework_1.Model.History
         /// Add an <see cref="HttpQuery"/> to history
         /// </summary>
         /// <param name="entry"></param>
+        /// <exception cref="ArgumentNullException">When the provided <see cref="HttpQuery"/> is <see cref="null"/></exception>
+        /// <exception cref="EntryDoesntExistException">When the provided <see cref="HttpQuery"/> already exists in the history</exception>
         public void Add(HttpQuery entry)
         {
+            if (entry == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (this.entries.Keys.Contains(entry.TimestampIssuedAt))
+            {
+                throw new EntryAlreadyExistsException();
+            }
             this.entries.Add(entry.TimestampIssuedAt, entry);
         }
 
@@ -41,8 +53,18 @@ namespace f21sc_coursework_1.Model.History
         /// Removes an <see cref="HttpQuery"/> in the history
         /// </summary>
         /// <param name="entry">Entry to delete</param>
+        /// <exception cref="ArgumentNullException">When the provided <see cref="HttpQuery"/> is <see cref="null"/></exception>
+        /// <exception cref="EntryDoesntExistException">When the provided <see cref="HttpQuery"/> doesn't exist in the history</exception>
         public void Remove(HttpQuery entry)
         {
+            if (entry == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (!this.entries.Keys.Contains(entry.TimestampIssuedAt))
+            {
+                throw new EntryDoesntExistException();
+            }
             this.entries.Remove(entry.TimestampIssuedAt);
         }
 
@@ -50,8 +72,13 @@ namespace f21sc_coursework_1.Model.History
         /// Removes an <see cref="HttpQuery"/> in the history
         /// </summary>
         /// <param name="entry">Entry to delete</param>
+        /// <exception cref="ArgumentNullException">When the provided <see cref="HttpQuery"/> is <see cref="null"/></exception>
         public void RemoveAll(List<HttpQuery> entriesToDelete)
         {
+            if (entriesToDelete == null)
+            {
+                throw new ArgumentNullException();
+            }
             entriesToDelete.Select(entry => entry.TimestampIssuedAt).ToList().ForEach(timestamp => this.entries.Remove(timestamp));
         }
 

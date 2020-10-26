@@ -80,6 +80,7 @@
             this.textBoxUrlInput.Size = new System.Drawing.Size(138, 20);
             this.textBoxUrlInput.TabIndex = 0;
             this.textBoxUrlInput.Text = "lingscars.com";
+            this.textBoxUrlInput.TextChanged += new System.EventHandler(this.textBoxUrlInput_TextChanged);
             this.textBoxUrlInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxUrlInput_KeyDown);
             // 
             // richTextBoxHtmlDisplay

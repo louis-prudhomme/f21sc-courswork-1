@@ -1,8 +1,10 @@
 ﻿using f21sc_coursework_1.Controller.FavoritesPanel;
 using f21sc_coursework_1.Controller.HistoryPanel;
+using f21sc_coursework_1.Controller.InputFavInfos;
 using f21sc_coursework_1.Controller.InputHomeUrl;
 using f21sc_coursework_1.Controller.Main;
-using f21sc_coursework_1.Event;
+using f21sc_coursework_1.Events;
+using f21sc_coursework_1.Events.Favorites;
 using f21sc_coursework_1.Model;
 using f21sc_coursework_1.Model.History;
 using f21sc_coursework_1.View;
@@ -10,8 +12,8 @@ using f21sc_coursework_1.View.FavoritesPanel;
 using f21sc_coursework_1.View.HistoryPanel;
 using f21sc_coursework_1.View.InputHomeUrl;
 using f21sc_courswork_1.Model.Favorites;
+using f21sc_courswork_1.View.InputFavInfos;
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace f21sc_coursework_1.Controller
@@ -35,6 +37,10 @@ namespace f21sc_coursework_1.Controller
         /// Controller for the favorites panel 
         /// </summary>
         private IFavoritesPanelController favoritesController;
+        /// <summary>
+        /// Controller for the favorites input
+        /// </summary>
+        private IInputFavInfosController favInputController;
 
         /// <summary>
         /// Represents the user data
@@ -49,14 +55,15 @@ namespace f21sc_coursework_1.Controller
             this.user = new UserProfile(new GlobalHistory(), new Uri("http://www.lingscars.com"), new FavoritesRepository());
 
             this.mainController = new MainController(new FormMain(), this.user);
-
             this.mainController.MainFormClosedEvent += this.MainFormClosedEventHandler;
+            this.mainController.GlobalHistoryUpdatedEvent += this.HistoryUpdatedEventHandler;
+            this.mainController.FavoritesUpdatedEvent += this.FavoritesUpdateEventHandler;
+
+            // handlers for new form demands
             this.mainController.HomeUrlInputAskedEvent += this.HomeUrlInputAskedEventHandler;
             this.mainController.HistoryPanelAskedEvent += this.HistoryPanelAskedEventHandler;
             this.mainController.FavoritesPanelAskedEvent += this.FavoritesPanelAskedEventHandler;
-
-            this.mainController.GlobalHistoryUpdatedEvent += this.HistoryUpdatedEventHandler;
-            this.mainController.FavoritesUpdatedEvent += this.FavoritesUpdateEventHandler;
+            this.mainController.FavInputAskedEvent += this.FavInputAskedEventHandler;
 
             this.mainController.Show();
         }
@@ -75,48 +82,90 @@ namespace f21sc_coursework_1.Controller
          * INPUT HOME URL CONTROLLER
          * ==================================*/
 
+        /// <summary>
+        /// Creates a new <see cref="IInputHomeUrlController"/> to answer the demand
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Emtpy</param>
         private void HomeUrlInputAskedEventHandler(object sender, EventArgs e)
         {
             this.mainController.ShouldBeEnabled(false);
 
             this.urlController = new InputHomeUrlController(new FormInputHomeUrl());
-            this.urlController.UrlInputFormCanceledEvent += this.HomeUrlCancelledEventHandler;
+            this.urlController.UrlInputFormCancelledEvent += this.HomeUrlCancelledEventHandler;
             this.urlController.UrlInputFormSubmittedEvent += this.HomeUrlSubmittedEventHandler;
 
             this.urlController.Show();
         }
 
+        /// <summary>
+        /// Handles the <see cref="IInputHomeUrlController"/> closure
+        /// Gives back the focus to <see cref="IMainController"/> 
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Emtpy</param>
         private void HomeUrlCancelledEventHandler(object sender, EventArgs e)
         {
             this.urlController = null;
             this.mainController.ShouldBeEnabled(true);
         }
 
-        private void HomeUrlSubmittedEventHandler(object sender, UrlInputFormSubmittedEventArgs e)
+        /// <summary>
+        /// Handles the <see cref="IInputHomeUrlController"/> closure by home URL submission
+        /// Updates the home URL
+        /// Gives back the focus to <see cref="IMainController"/>  
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Emtpy</param>
+        private void HomeUrlSubmittedEventHandler(object sender, UrlSentEventArgs e)
         {
             this.user.HomePage = e.Uri;
-            this.mainController.UpdateHomeUri(this.user.HomePage);
+            //this.mainController.UpdateHomeUrl();
             this.mainController.ShouldBeEnabled(true);
         }
 
         /* ==================================
-         * FAVORITES PANEL CONTROLLER
+         * FAVORITES INPUT CONTROLLER
          * ==================================*/
 
-        private void FavoritesPanelAskedEventHandler(object sender, EventArgs e)
+        /// <summary>
+        /// Creates a new <see cref="IInputFavInfosController"/> to answer the demand
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Emtpy</param>
+        private void FavInputAskedEventHandler(object sender, FavInputAskedEventArgs e)
         {
             this.mainController.ShouldBeEnabled(false);
 
-            this.favoritesController = new FavoritesPanelController(new FormFavoritesPanel(), this.user.Favorites);
-            this.favoritesController.FavoritesPanelFormClosedEvent += this.FavoritesPanelClosedEventHandler;
-            this.favoritesController.FavoritesUpdatedEvent += this.FavoritesUpdateEventHandler;
+            this.favInputController = new InputFavInfosController(new FormInputFavInfos(), this.user.Favorites, e);
+            this.favInputController.FavInputCanceledEvent += this.FavInputCancelledEventHandler;
+            this.favInputController.FavInputSubmittedEvent += this.FavInputSubmittedEventHandler;
 
-            this.favoritesController.Show();
+            this.favInputController.Show();
         }
 
-        private void FavoritesPanelClosedEventHandler(object sender, EventArgs e)
+        /// <summary>
+        /// Handles the <see cref="IInputFavInfosController"/> closure
+        /// Gives back the focus to <see cref="IMainController"/> 
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Emtpy</param>
+        private void FavInputCancelledEventHandler(object sender, EventArgs e)
         {
-            this.favoritesController = null;
+            this.favInputController = null;
+            this.mainController.ShouldBeEnabled(true);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="IInputFavInfosController"/> closure by <see cref="Fav"/> submission
+        /// Updates the favorites
+        /// Gives back the focus to <see cref="IMainController"/>  
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Emtpy</param>
+        private void FavInputSubmittedEventHandler(object sender, EventArgs e)
+        {
+            this.mainController.UpdateFavorites();
             this.mainController.ShouldBeEnabled(true);
         }
 
@@ -124,6 +173,11 @@ namespace f21sc_coursework_1.Controller
          * HISTORY PANEL CONTROLLER
          * ==================================*/
 
+        /// <summary>
+        /// Creates a new <see cref="IHistoryPanelController"/> to answer the demand
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Emtpy</param>
         private void HistoryPanelAskedEventHandler(object sender, EventArgs e)
         {
             this.mainController.ShouldBeEnabled(false);
@@ -135,11 +189,52 @@ namespace f21sc_coursework_1.Controller
             this.historyController.Show();
         }
 
+        /// <summary>
+        /// Handles the <see cref="IHistoryPanelController"/> closure
+        /// Gives back the focus to <see cref="IMainController"/> 
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Emtpy</param>
         private void HistoryPanelClosedEventHandler(object sender, EventArgs e)
         {
             this.historyController = null;
             this.mainController.ShouldBeEnabled(true);
+            this.mainController.UpdateFavorites();
             this.mainController.UpdateHistory();
+        }
+
+        /* ==================================
+         * FAVORITES PANEL CONTROLLER
+         * ==================================*/
+
+        /// <summary>
+        /// Creates a new <see cref="IFavoritesPanelController"/> to answer the demand
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Emtpy</param>
+        private void FavoritesPanelAskedEventHandler(object sender, EventArgs e)
+        {
+            this.mainController.ShouldBeEnabled(false);
+
+            this.favoritesController = new FavoritesPanelController(new FormFavoritesPanel(), this.user.Favorites);
+            this.favoritesController.FavoritesPanelFormClosedEvent += this.FavoritesPanelClosedEventHandler;
+            this.favoritesController.FavoritesUpdatedEvent += this.FavoritesUpdateEventHandler;
+
+            this.favoritesController.Show();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="IFavoritesPanelController"/> closure
+        /// Gives back the focus to <see cref="IMainController"/> 
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Emtpy</param>
+        private void FavoritesPanelClosedEventHandler(object sender, EventArgs e)
+        {
+            this.favoritesController = null;
+            this.mainController.ShouldBeEnabled(true);
+            this.mainController.UpdateHistory();
+            this.mainController.UpdateFavorites();
         }
 
         /* ==================================
@@ -153,7 +248,7 @@ namespace f21sc_coursework_1.Controller
 
         private void FavoritesUpdateEventHandler(object sender, EventArgs e)
         {
-            // todo
+            this.mainController.UpdateFavorites();
         }
 
         /// <summary>

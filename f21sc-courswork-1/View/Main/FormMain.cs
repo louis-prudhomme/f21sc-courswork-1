@@ -1,8 +1,7 @@
-﻿using f21sc_coursework_1.Event;
+﻿using f21sc_coursework_1.Events;
 using f21sc_coursework_1.Events.Favorites;
 using f21sc_coursework_1.Model;
 using f21sc_coursework_1.Model.HttpCommunications;
-using f21sc_courswork_1.Model.Favorites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,30 +22,13 @@ namespace f21sc_coursework_1.View
             this.generatedToolTips = new List<ToolTip>();
         }
 
-        public event EventHandler MainFormClosedEvent;
-
-        public event EventHandler HomeUrlInputAskedEvent;
-        public event EventHandler HistoryPanelAskedEvent;
-        public event EventHandler FavoritesPanelAskedEvent;
-
-        public event UrlSentEvent UrlSentEvent;
-        public event EventHandler ReloadAskedEvent;
-
-        public event EventHandler WipeHistoryEvent;
-        public event EventHandler HomeAskedEvent;
-
-        public event EventHandler BackwardAskedEvent;
-        public event EventHandler ForwardAskedEvent;
-
-        public event FavAddedEvent FavAddedEvent;
-        public event FavRemovedEvent FavRemovedEvent;
-
+        /* ==================================
+         * IMPLEMENTED METHODS
+         * ==================================*/
 
         /// <summary>
-        /// Will trigger an update of the view controls 
+        /// <inheritdoc/>
         /// </summary>
-        /// <param name="answer">State of the HTML displayer</param>
-        /// <param name="current">State of the navigation</param>
         public void SetCurrentState(HttpAnswer answer, Node<HttpQuery> current)
         {
             if (this.InvokeRequired)
@@ -60,7 +42,63 @@ namespace f21sc_coursework_1.View
         }
 
         /// <summary>
-        /// Updates a lot of controls with the received information ; does the heavy-lifting for <see cref="SetCurrentState(HttpAnswer, Node{HttpQuery})"/>
+        /// <inheritdoc/>
+        /// </summary>
+        public void UpdateRecent(List<HttpQuery> recentQueries)
+        {
+            if (this.menuStripUp.InvokeRequired)
+            {
+                this.menuStripUp.Invoke(new Action(() => this.UpdateRecentToolStrip(recentQueries)));
+            }
+            else
+            {
+                this.UpdateRecentToolStrip(recentQueries);
+            }
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void IsCurrentAFav(bool isFav)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => this.UpdateFavoritesControls(isFav)));
+            }
+            else
+            {
+                this.UpdateFavoritesControls(isFav);
+            }
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="should"></param>
+        public void ShouldBeEnabled(bool should)
+        {
+            this.Enabled = should;
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="error"></param>
+        public void ErrorDialog(string error)
+        {
+            MessageBox.Show(error,
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+        }
+
+        /* ==================================
+         * INTERNAL METHODS
+         * ==================================*/
+
+        /// <summary>
+        /// Updates a lot of controls with the received information 
+        /// Does the heavy-lifting for <see cref="SetCurrentState(HttpAnswer, Node{HttpQuery})"/>
         /// </summary>
         /// <param name="answer">State of the HTML displayer</param>
         /// <param name="current">State of the navigation</param>
@@ -101,32 +139,18 @@ namespace f21sc_coursework_1.View
         }
 
         /// <summary>
-        /// Updates the recent history toolstrip with the five last <see cref="HttpQuery"/> issued by the user
+        /// Updates the recent tool strip menu item by clearing the previous entries and adding the new ones
+        /// Does the heavy-lifting for <see cref="UpdateRecent(List{HttpQuery})"/>
         /// </summary>
-        /// <param name="recentQueries">Five last <see cref="HttpQuery"/> issued by the user</param>
-        public void UpdateRecent(List<HttpQuery> recentQueries)
+        /// <param name="recentQueries">New entries to display</param>
+        private void UpdateRecentToolStrip(List<HttpQuery> recentQueries)
         {
-            if (this.menuStripUp.InvokeRequired)
-            {
-                this.menuStripUp.Invoke(new Action(() =>
-                {
-                    this.recentToolStripMenuItem.DropDownItems.Clear();
-                    this.recentToolStripMenuItem.DropDownItems
-                        .AddRange(recentQueries
-                        .Select(query => this.MakeRecentToolStripItem(query))
-                        .ToArray());
-                    this.ShouldHistoryControlsBeEnabled(this.recentToolStripMenuItem.DropDownItems.Count > 0);
-                }));
-            }
-            else
-            {
-                this.recentToolStripMenuItem.DropDownItems.Clear();
-                this.recentToolStripMenuItem.DropDownItems
-                    .AddRange(recentQueries
-                    .Select(query => this.MakeRecentToolStripItem(query))
-                    .ToArray());
-                this.ShouldHistoryControlsBeEnabled(this.recentToolStripMenuItem.DropDownItems.Count > 0);
-            }
+            this.recentToolStripMenuItem.DropDownItems.Clear();
+            this.recentToolStripMenuItem.DropDownItems
+                .AddRange(recentQueries
+                .Select(query => this.MakeRecentToolStripItem(query))
+                .ToArray());
+            this.ShouldHistoryControlsBeEnabled(this.recentToolStripMenuItem.DropDownItems.Count > 0);
         }
 
         /// <summary>
@@ -159,12 +183,53 @@ namespace f21sc_coursework_1.View
         }
 
         /// <summary>
-        /// Whether the form should be enabled or not
+        /// Updates the favorites-related controls depending on whether the current site is a favorite or not
+        /// Does the heavy-lifting for <see cref="IsCurrentAFav(bool)"/>
         /// </summary>
-        /// <param name="should"></param>
-        public void ShouldBeEnabled(bool should)
+        /// <param name="isFav">Whether the current site is a fav</param>
+        private void UpdateFavoritesControls(bool isFav)
         {
-            this.Enabled = should;
+            // remove all listeners on these controls
+            this.buttonFav.Click -= this.AddFavoriteEventHandler;
+            this.buttonFav.Click -= this.RemoveFavoriteEventHandler;
+            this.favToolStripMenuItem.Click -= this.AddFavoriteEventHandler;
+            this.favToolStripMenuItem.Click -= this.RemoveFavoriteEventHandler;
+
+            // change their text and functions
+            this.buttonFav.Text = !isFav ? "Make fav" : "Unfav";
+            this.favToolStripMenuItem.Text = !isFav ? "Add to favorites" : "Remove from favorites";
+            if (isFav)
+            {
+                this.buttonFav.Click += this.RemoveFavoriteEventHandler;
+                this.favToolStripMenuItem.Click += this.RemoveFavoriteEventHandler;
+            } else { 
+                this.buttonFav.Click += this.AddFavoriteEventHandler;
+                this.favToolStripMenuItem.Click += this.AddFavoriteEventHandler;
+            }
+        }
+
+        /* ==================================
+         * CONTROL LISTENERS
+         * ==================================*/
+
+        /// <summary>
+        /// Listener for user demand of adding the current site of favorites
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Empty</param>
+        private void AddFavoriteEventHandler(object sender, EventArgs e)
+        {
+            this.FavInputAskedEvent(this, new FavInputAskedEventArgs(this.textBoxUrlInput.Text));
+        }
+
+        /// <summary>
+        /// Listener for user demand of removing the current site of favorites
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Empty</param>
+        private void RemoveFavoriteEventHandler(object sender, EventArgs e)
+        {
+            this.RemoveFavEvent(this, EventArgs.Empty);
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
@@ -216,13 +281,6 @@ namespace f21sc_coursework_1.View
                 this.WipeHistoryEvent(this, EventArgs.Empty);
             }
         }
-        public void DisplayErrorDialog(string text)
-        {
-            MessageBox.Show(text,
-                "Error",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
-        }
 
         private void buttonReturn_Click(object sender, EventArgs e)
         {
@@ -255,50 +313,76 @@ namespace f21sc_coursework_1.View
             this.HomeAskedEvent(this, EventArgs.Empty);
         }
 
-        private void AddFavoriteEventHandler(object sender, EventArgs e)
-        {
-            this.FavAddedEvent(this, new FavAddedEventArgs(new Fav(new Uri(this.textBoxUrlInput.Text), this.textBoxUrlInput.Text)));
-        }
-
-        private void RemoveFavoriteEventHandler(object sender, EventArgs e)
-        {
-            this.FavRemovedEvent(this, new FavRemovedEventArgs(this.textBoxUrlInput.Text));
-        }
-
         private void seeAllFavoritesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.FavoritesPanelAskedEvent(this, EventArgs.Empty);
         }
 
-        public void IsCurrentAFav(bool isFav)
+        private void textBoxUrlInput_TextChanged(object sender, EventArgs e)
         {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action(() => this.UpdateFavoritesControls(isFav)));
-            } else
-            {
-                this.UpdateFavoritesControls(isFav);
-            }
+            this.reloadToolStripMenuItem.Enabled = false;
+            this.buttonReload.Enabled = false;
+
+            this.buttonFav.Enabled = false;
+            this.favToolStripMenuItem.Enabled = false;
         }
 
-        private void UpdateFavoritesControls(bool isFav)
-        {
-            this.buttonFav.Text = !isFav ? "Make fav" : "Unfav";
-            this.favToolStripMenuItem.Text = !isFav ? "Add to favorites" : "Remove from favorites";
+        /* ==================================
+         * EVENTS
+         * ==================================*/
 
-            this.buttonFav.Click -= isFav ?
-                new EventHandler(this.AddFavoriteEventHandler) :
-                new EventHandler(this.RemoveFavoriteEventHandler);
-            this.buttonFav.Click += isFav ?
-                new EventHandler(this.RemoveFavoriteEventHandler) :
-                new EventHandler(this.AddFavoriteEventHandler);
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler MainFormClosedEvent;
 
-            this.favToolStripMenuItem.Click -= isFav ?
-                new EventHandler(this.AddFavoriteEventHandler) :
-                new EventHandler(this.RemoveFavoriteEventHandler);
-            this.favToolStripMenuItem.Click += isFav ?
-                new EventHandler(this.RemoveFavoriteEventHandler) :
-                new EventHandler(this.AddFavoriteEventHandler);
-        }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler HomeUrlInputAskedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler HistoryPanelAskedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler FavoritesPanelAskedEvent;
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event UrlSentEvent UrlSentEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler ReloadAskedEvent;
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler WipeHistoryEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler HomeAskedEvent;
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler BackwardAskedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler ForwardAskedEvent;
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event FavInputAskedEvent FavInputAskedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler RemoveFavEvent;
     }
 }

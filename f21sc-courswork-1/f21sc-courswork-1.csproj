@@ -51,15 +51,19 @@
     <Compile Include="Controller\FavoritesPanel\IFavoritesPanelController.cs" />
     <Compile Include="Controller\HistoryPanel\HistoryPanelController.cs" />
     <Compile Include="Controller\HistoryPanel\IHistoryPanelController.cs" />
+    <Compile Include="Controller\InputFavInfos\IInputFavInfosController.cs" />
+    <Compile Include="Controller\InputFavInfos\InputFavInfosController.cs" />
     <Compile Include="Controller\InputHomeUrl\IInputHomeUrlController.cs" />
     <Compile Include="Controller\Main\IMainController.cs" />
     <Compile Include="Controller\InputHomeUrl\InputHomeUrlController.cs" />
     <Compile Include="Controller\Main\MainController.cs" />
+    <Compile Include="Events\Favorites\FavInputAskedEvent.cs" />
     <Compile Include="Events\Favorites\FavRemovedEvent.cs" />
     <Compile Include="Events\Favorites\FavAddedEvent.cs" />
     <Compile Include="Events\Favorites\FavoritesDeletedEvent.cs" />
     <Compile Include="Events\HistoryEntriesDeletedEvent.cs" />
-    <Compile Include="Events\UrlInputFormSubmittedEvent.cs" />
+    <Compile Include="Model\Favorites\Exceptions\FavDoesntExistException.cs" />
+    <Compile Include="Model\Favorites\Exceptions\FavAlreadyExistsException.cs" />
     <Compile Include="Model\Favorites\Fav.cs" />
     <Compile Include="Model\Favorites\FavoritesRepository.cs" />
     <Compile Include="Model\History\GlobalHistory.cs" />
@@ -83,6 +87,12 @@
       <DependentUpon>FormFavoritesPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="View\FavoritesPanel\IFavoritesPanelView.cs" />
+    <Compile Include="View\InputFavInfos\FormInputFavInfos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\InputFavInfos\FormInputFavInfos.Designer.cs">
+      <DependentUpon>FormInputFavInfos.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\HistoryPanel\FormHistoryPanel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +100,7 @@
       <DependentUpon>FormHistoryPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="View\HistoryPanel\IHistoryPanelView.cs" />
+    <Compile Include="View\InputFavInfos\IInputFavInfosView.cs" />
     <Compile Include="View\InputHomeUrl\FormInputHomeUrl.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +122,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\HistoryPanel\FormHistoryPanel.resx">
       <DependentUpon>FormHistoryPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\InputFavInfos\FormInputFavInfos.resx">
+      <DependentUpon>FormInputFavInfos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\InputHomeUrl\FormInputHomeUrl.resx">
       <DependentUpon>FormInputHomeUrl.cs</DependentUpon>

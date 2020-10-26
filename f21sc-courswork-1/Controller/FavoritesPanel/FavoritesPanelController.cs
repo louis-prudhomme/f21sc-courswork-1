@@ -1,12 +1,14 @@
-﻿using f21sc_coursework_1.Events;
-using f21sc_coursework_1.Events.Favorites;
+﻿using f21sc_coursework_1.Events.Favorites;
 using f21sc_coursework_1.View.FavoritesPanel;
 using f21sc_courswork_1.Model.Favorites;
+using f21sc_courswork_1.Model.Favorites.Exceptions;
 using System;
-using System.Collections.Generic;
 
 namespace f21sc_coursework_1.Controller.FavoritesPanel
 {
+    /// <summary>
+    /// Controller handling <see cref="IFavoritesPanelController"/>
+    /// </summary>
     class FavoritesPanelController : IFavoritesPanelController
     {
         private readonly FavoritesRepository favorites;
@@ -23,18 +25,47 @@ namespace f21sc_coursework_1.Controller.FavoritesPanel
             this.view.FavoritesPanelFormClosedEvent += (s, e) => this.FavoritesPanelFormClosedEvent(this, EventArgs.Empty);
         }
 
-        public event EventHandler FavoritesPanelFormClosedEvent;
-        public event EventHandler FavoritesUpdatedEvent;
-
+        /// <summary>
+        /// Handles user demand of favorites deletion by deleting the <see cref="Fav"/> and updating the view
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Contains the <see cref="Fav"/> to delete</param>
         private void FavoritesDeletedEventHandler(object sender, FavoritesDeletedEventArgs e)
         {
-            e.DeletedFavorites.ForEach(favToDel => this.favorites.Remove(favToDel));
-            this.FavoritesUpdatedEvent(this, EventArgs.Empty);
+            try
+            {
+                e.DeletedFavorites.ForEach(favToDel => this.favorites.Remove(favToDel));
+                this.view.UpdateFavoriteItems(this.favorites.ToList());
+            } catch (FavDoesntExistException)
+            {
+                this.view.ErrorDialog("A problem occured.");
+                this.view.Close();
+            } finally
+            {
+                // some favorites might have been deleted before the exception
+                this.FavoritesUpdatedEvent(this, EventArgs.Empty);
+            }
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void Show()
         {
             this.view.Show();
         }
+
+        /* ==================================
+         * EVENTS
+         * ==================================*/
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler FavoritesPanelFormClosedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler FavoritesUpdatedEvent;
     }
 }

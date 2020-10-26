@@ -1,10 +1,12 @@
-﻿using f21sc_coursework_1.Event;
+﻿using f21sc_coursework_1.Events;
 using f21sc_coursework_1.Events.Favorites;
 using f21sc_coursework_1.Model;
 using f21sc_coursework_1.Model.History;
 using f21sc_coursework_1.Model.HttpCommunications;
 using f21sc_coursework_1.Utils.Http;
 using f21sc_coursework_1.View;
+using f21sc_courswork_1.Model.Favorites.Exceptions;
+using f21sc_courswork_1.Model.History.Exceptions;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -18,18 +20,9 @@ namespace f21sc_coursework_1.Controller.Main
     {
         private readonly IMainView view;
 
-        private UserProfile user;
+        private readonly UserProfile user;
 
         private readonly LocalNavigation navigation;
-
-        public event EventHandler MainFormClosedEvent;
-
-        public event EventHandler GlobalHistoryUpdatedEvent;
-        public event EventHandler FavoritesUpdatedEvent;
-
-        public event EventHandler HomeUrlInputAskedEvent;
-        public event EventHandler HistoryPanelAskedEvent;
-        public event EventHandler FavoritesPanelAskedEvent;
 
         public MainController(IMainView view, UserProfile user)
         {
@@ -39,16 +32,14 @@ namespace f21sc_coursework_1.Controller.Main
             this.navigation = new LocalNavigation();
 
             this.view.UrlSentEvent += this.UrlQueriedEventHandlerAsync;
-            this.view.ReloadAskedEvent += this.ReloadQueriedEventHandler;
+            this.view.ReloadAskedEvent += this.ReloadAskedEventHandler;
             this.view.HomeAskedEvent += this.HomeAskedEventHandler;
 
+            this.view.RemoveFavEvent += this.RemoveFavEventHandler;
             this.view.WipeHistoryEvent += this.WipeHistoryEventHandler;
 
             this.view.BackwardAskedEvent += this.BackwardAskedEventHandlerAsync;
             this.view.ForwardAskedEvent += this.ForwardAskedEventHandlerAsync;
-
-            this.view.FavAddedEvent += this.FavAddedEventHandler;
-            this.view.FavRemovedEvent += this.FavRemovedEventHandler;
 
             this.HomeAskedEventHandler(this, EventArgs.Empty);
 
@@ -57,28 +48,77 @@ namespace f21sc_coursework_1.Controller.Main
             this.view.HomeUrlInputAskedEvent += (s, e) => this.HomeUrlInputAskedEvent(this, EventArgs.Empty);
             this.view.HistoryPanelAskedEvent += (s, e) => this.HistoryPanelAskedEvent(this, EventArgs.Empty);
             this.view.FavoritesPanelAskedEvent += (s, e) => this.FavoritesPanelAskedEvent(this, EventArgs.Empty);
+            this.view.FavInputAskedEvent += (s, e) => this.FavInputAskedEvent(this, new FavInputAskedEventArgs(e, this.navigation.Current.Title));
+        }
+
+        /* ==================================
+         * VIEW LISTENERS
+         * ==================================*/
+
+        /// <summary>
+        /// Asks for complete wipe of <see cref="GlobalHistory"/>
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Empty</param>
+        private void WipeHistoryEventHandler(object sender, EventArgs e)
+        {
+            this.user.History.RemoveAll();
+
+            this.UpdateHistory();
         }
 
         /// <summary>
-        /// Adds a query to <see cref="navigation"/> as well as <see cref="globalHistory"/>
+        /// Handler for when the forward button is pressed
+        /// Loads the <see cref="HttpQuery"/> before the current one
         /// </summary>
-        /// <param name="query">Query to add</param>
-        private void AddToHistory(HttpQuery query)
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Empty</param>
+        private async void BackwardAskedEventHandlerAsync(object sender, EventArgs e)
         {
-            // if the requested url is the same as the current one, do nothing history-wise
-            if (this.user.History.IsEmpty || this.user.History.Last.Uri != query.Uri)
-            {
-                this.user.History.Add(query);
-            }
-            if (!this.navigation.HasCurrent || this.navigation.Current.Uri != query.Uri)
-            {
-                this.navigation.Add(query);
-            }
+            this.navigation.Backward();
 
+            await Task.Factory.StartNew(() => this.UrlQueriedEventHandlerAsync(sender, new UrlSentEventArgs(this.navigation.Current.Uri.AbsoluteUri)));
+        }
+
+        /// <summary>
+        /// Handler for when the forward button is pressed
+        /// Loads the <see cref="HttpQuery"/> after the current one 
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Empty</param>
+        private async void ForwardAskedEventHandlerAsync(object sender, EventArgs e)
+        {
+            this.navigation.Forward();
+
+            await Task.Factory.StartNew(() => this.UrlQueriedEventHandlerAsync(sender, 
+                new UrlSentEventArgs(this.navigation.Current.Uri.AbsoluteUri)));
+        }
+
+        /// <summary>
+        /// Handler for when the reload button is pressed
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Empty</param>
+        private async void HomeAskedEventHandler(object sender, EventArgs e)
+        {
+            await Task.Factory.StartNew(() => this.UrlQueriedEventHandlerAsync(sender,
+                new UrlSentEventArgs(this.user.HomePage.AbsoluteUri)));
+        }
+
+        /// <summary>
+        /// Asks to reload the page
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Empty</param>
+        private async void ReloadAskedEventHandler(object sender, EventArgs e)
+        {
+            await Task.Factory.StartNew(() => this.UrlQueriedEventHandlerAsync(this,
+                new UrlSentEventArgs(this.navigation.Current.Uri.AbsoluteUri)));
         }
 
         /// <summary>
         /// Asks to load a page
+        /// Will sanitize the provided URI before calling the next method
         /// </summary>
         /// <param name="sender">Arguments containing the target URL</param>
         /// <param name="e">Empty</param>
@@ -93,35 +133,30 @@ namespace f21sc_coursework_1.Controller.Main
             }
             else
             {
-                this.view.DisplayErrorDialog("Invalid URL");
+                this.view.ErrorDialog("Invalid URL");
             }
         }
 
         /// <summary>
-        /// Handler for when the forward button is pressed
-        /// Loads the <see cref="HttpQuery"/> before the current one
+        /// Removes the current site from the favorites if it exists
         /// </summary>
         /// <param name="sender">Not important</param>
-        /// <param name="e">Empty</param>
-        private async void BackwardAskedEventHandlerAsync(object sender, EventArgs e)
+        /// <param name="e">Contains the URI to remove</param>
+        private void RemoveFavEventHandler(object sender, EventArgs e)
         {
-            this.navigation.Backward();
-
-            await Task.Factory.StartNew(() => this.LoadPageAsync(this.navigation.Current));
+            try
+            {
+                this.user.Favorites.Remove(this.user.Favorites.Find(this.navigation.Current.Uri));
+                this.FavoritesUpdatedEvent(this, EventArgs.Empty);
+            } catch (FavDoesntExistException)
+            {
+                this.view.ErrorDialog("This is not a favorite.");
+            }
         }
 
-        /// <summary>
-        /// Handler for when the forward button is pressed
-        /// Loads the <see cref="HttpQuery"/> after the current one 
-        /// </summary>
-        /// <param name="sender">Not important</param>
-        /// <param name="e">Empty</param>
-        private async void ForwardAskedEventHandlerAsync(object sender, EventArgs e)
-        {
-            this.navigation.Forward();
-
-            await Task.Factory.StartNew(() => this.LoadPageAsync(this.navigation.Current));
-        }
+        /* ==================================
+         * INTERNAL METHODS
+         * ==================================*/
 
         /// <summary>
         /// Executes the provied <paramref name="query"/> and updates the view with the result.
@@ -138,7 +173,7 @@ namespace f21sc_coursework_1.Controller.Main
             }
             catch (HttpRequestException)
             {
-                this.view.DisplayErrorDialog("Could not reach host " + query.Host);
+                this.view.ErrorDialog("Could not reach host " + query.Host);
                 answer = HttpAnswer.MakeErrorAnswer();
             }
 
@@ -150,7 +185,35 @@ namespace f21sc_coursework_1.Controller.Main
         }
 
         /// <summary>
-        /// Handles global history changes fallouts
+        /// Adds a query to <see cref="navigation"/> as well as <see cref="globalHistory"/>
+        /// </summary>
+        /// <param name="query">Query to add</param>
+        private void AddToHistory(HttpQuery query)
+        {
+            // if the requested url is the same as the current one, do nothing history-wise
+            if (this.user.History.IsEmpty || this.user.History.Last.Uri != query.Uri)
+            {
+                try 
+                { 
+                    this.user.History.Add(query); 
+                } catch (EntryAlreadyExistsException)
+                {
+                    this.view.ErrorDialog("A problem occured. It should not have happened.");
+                    this.MainFormClosedEvent(this, EventArgs.Empty);
+                }
+            }
+            if (!this.navigation.HasCurrent || this.navigation.Current.Uri != query.Uri)
+            {
+                this.navigation.Add(query);
+            }
+        }
+
+        /* ==================================
+         * INHERITED METHODS
+         * ==================================*/
+
+        /// <summary>
+        /// <inheritdoc/>
         /// </summary>
         public void UpdateHistory()
         {
@@ -160,43 +223,15 @@ namespace f21sc_coursework_1.Controller.Main
         }
 
         /// <summary>
-        /// Asks to reload the page
+        /// <inheritdoc/>
         /// </summary>
-        /// <param name="sender">Not important</param>
-        /// <param name="e">Empty</param>
-        private async void ReloadQueriedEventHandler(object sender, EventArgs e)
+        public void UpdateFavorites()
         {
-            await Task.Factory.StartNew(() => this.LoadPageAsync(this.navigation.Current));
-        }
-
-        /// <summary>
-        /// Asks for complete wipe of <see cref="GlobalHistory"/>
-        /// </summary>
-        /// <param name="sender">Not important</param>
-        /// <param name="e">Empty</param>
-        private void WipeHistoryEventHandler(object sender, EventArgs e)
-        {
-            this.user.History.RemoveAll();
-
-            this.UpdateHistory();
-        }
-
-        private void FavAddedEventHandler(object sender, FavAddedEventArgs e)
-        {
-            this.user.Favorites.Add(e.Fav);
-            this.FavoritesUpdatedEvent(this, EventArgs.Empty);
-            this.view.IsCurrentAFav(this.user.Favorites.Contains(this.navigation.Current.Uri));
-        }
-
-        private void FavRemovedEventHandler(object sender, FavRemovedEventArgs e)
-        {
-            this.user.Favorites.Remove(this.user.Favorites.Find(e.Uri));
-            this.FavoritesUpdatedEvent(this, EventArgs.Empty);
             this.view.IsCurrentAFav(this.user.Favorites.Contains(this.navigation.Current.Uri));
         }
 
         /// <summary>
-        /// Asks view to show the form
+        /// <inheritdoc/>
         /// </summary>
         public void Show()
         {
@@ -204,22 +239,47 @@ namespace f21sc_coursework_1.Controller.Main
         }
 
         /// <summary>
-        /// Blocks or unblocks the view
+        /// <inheritdoc/>
         /// </summary>
-        /// <param name="should"></param>
         public void ShouldBeEnabled(bool should)
         {
             this.view.ShouldBeEnabled(should);
         }
 
-        public void UpdateHomeUri(Uri homeUri)
-        {
-            this.user.HomePage = homeUri;
-        }
 
-        private async void HomeAskedEventHandler(object sender, EventArgs e)
-        {
-            await Task.Factory.StartNew(() => this.UrlQueriedEventHandlerAsync(sender, new UrlSentEventArgs(this.user.HomePage.AbsoluteUri)));
-        }
+        /* ==================================
+         * EVENTS
+         * ==================================*/
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler MainFormClosedEvent;
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler GlobalHistoryUpdatedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler FavoritesUpdatedEvent;
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler HomeUrlInputAskedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler HistoryPanelAskedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler FavoritesPanelAskedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event FavInputAskedEvent FavInputAskedEvent;
     }
 }

@@ -1,4 +1,4 @@
-﻿using f21sc_coursework_1.Event;
+﻿using f21sc_coursework_1.Events;
 using System;
 using System.Windows.Forms;
 
@@ -11,9 +11,10 @@ namespace f21sc_coursework_1.View.InputHomeUrl
             InitializeComponent();
         }
 
-        public event EventHandler UrlInputFormCanceledEvent;
+        public event EventHandler HomeUrlCancelledEvent;
+        public event UrlSentEvent HomeUrlSubmittedEvent;
+        
         public event UrlSentEvent UrlSentEvent;
-        public event UrlInputFormSubmittedEvent UrlInputFormSubmittedEvent;
 
         public void SetUrlFeedback(string feedback)
         {
@@ -41,7 +42,7 @@ namespace f21sc_coursework_1.View.InputHomeUrl
 
         private void FormInputHomeUrl_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.UrlInputFormCanceledEvent(this, EventArgs.Empty);
+            this.HomeUrlCancelledEvent(this, EventArgs.Empty);
         }
 
         private void textBoxInputUrl_TextChanged(object sender, EventArgs e)
@@ -52,7 +53,7 @@ namespace f21sc_coursework_1.View.InputHomeUrl
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
-            this.UrlInputFormSubmittedEvent(this, new UrlInputFormSubmittedEventArgs(new Uri(this.textBoxInputUrl.Text)));
+            this.HomeUrlSubmittedEvent(this, new UrlSentEventArgs(this.textBoxInputUrl.Text));
             this.Close();
         }
 
@@ -68,6 +69,18 @@ namespace f21sc_coursework_1.View.InputHomeUrl
                 this.UrlSentEvent(this, new UrlSentEventArgs(this.textBoxInputUrl.Text));
                 this.labelFeedback.Focus();
             }
+        }
+
+        /// <summary>
+        /// Displays an error dialog using <see cref="MessageBox"/>
+        /// </summary>
+        /// <param name="error">Error description to display</param>
+        public void ErrorDialog(string error)
+        {
+            MessageBox.Show(error,
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
     }
 }

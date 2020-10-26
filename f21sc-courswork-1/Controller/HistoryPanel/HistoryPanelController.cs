@@ -1,10 +1,13 @@
-﻿using f21sc_coursework_1.Event;
+﻿using f21sc_coursework_1.Events;
 using f21sc_coursework_1.Model.History;
 using f21sc_coursework_1.View.HistoryPanel;
 using System;
 
 namespace f21sc_coursework_1.Controller.HistoryPanel
 {
+    /// <summary>
+    /// Controller for the <see cref="IHistoryPanelView"/>
+    /// </summary>
     class HistoryPanelController : IHistoryPanelController
     {
         private readonly IHistoryPanelView view;
@@ -23,9 +26,11 @@ namespace f21sc_coursework_1.Controller.HistoryPanel
             this.view.HistoryPanelClosedEvent += (o, e) => this.FormHistoryPanelClosedEvent(this, EventArgs.Empty);
         }
 
-        public event EventHandler FormHistoryPanelClosedEvent;
-        public event EventHandler HistoryUpdatedEvent;
-
+        /// <summary>
+        /// Handler for when the history is wiped by the user
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Empty</param>
         public void HistoryWipedEventHandler(object sender, EventArgs e)
         {
             this.history.RemoveAll();
@@ -33,6 +38,11 @@ namespace f21sc_coursework_1.Controller.HistoryPanel
             this.HistoryUpdatedEvent(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Handler for when one or several entries are deleted by the user
+        /// </summary>
+        /// <param name="sender">Not important</param>
+        /// <param name="e">Contains entries to be deleted</param>
         public void HistoryEntriesDeletedEventHandler(object sender, HistoryEntriesDeletedEventArgs e)
         {
             this.history.RemoveAll(e.DeletedEntries);
@@ -40,9 +50,25 @@ namespace f21sc_coursework_1.Controller.HistoryPanel
             this.HistoryUpdatedEvent(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void Show()
         {
             this.view.Show();
         }
+
+        /* ==================================
+         * EVENTS
+         * ==================================*/
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler FormHistoryPanelClosedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler HistoryUpdatedEvent;
     }
 }

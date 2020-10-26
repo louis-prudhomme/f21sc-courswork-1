@@ -5,14 +5,17 @@ using System.Threading.Tasks;
 
 namespace f21sc_coursework_1.Utils.Http
 {
+    /// <summary>
+    /// Helps to execute <see cref="HttpQuery"/> and interpret the result
+    /// </summary>
     class HttpQueryHelper
     {
         private static readonly HttpClient client = new HttpClient();
 
         /// <summary>
-        /// Executes the query asynchronously and returns the corresponding answer
+        /// Executes the <see cref="HttpQuery"/> asynchronously and returns the corresponding <see cref="HttpAnswer"/>
         /// </summary>
-        /// <param name="query">Query to execute</param>
+        /// <param name="query"><see cref="HttpQuery"/> to execute</param>
         /// <returns></returns>
         public static async Task<HttpAnswer> ExecuteAsync(HttpQuery query)
         {

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace f21sc_coursework_1.Model.History
 {
+    /// <summary>
+    /// Represents the user's navigation ; bears not correlation with <see cref="GlobalHistory"/>
+    /// </summary>
     class LocalNavigation
     {
         private LinkedListNode<HttpQuery> current;

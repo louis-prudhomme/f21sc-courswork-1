@@ -16,19 +16,29 @@ namespace f21sc_coursework_1.View.FavoritesPanel
             InitializeComponent();
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public event EventHandler FavoritesPanelFormClosedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public event FavoritesDeletedEvent FavoritesDeletedEvent;
 
-        private void ShouldEnableFavoritesDependantControls(bool should)
+        /// <summary>
+        /// Enables or disables the listbox items-dependant controls 
+        /// </summary>
+        private void UpdateFavoritesDependantControls()
         {
-            this.listBoxFavorites.Enabled = should;
-
-            this.buttonSelectAll.Enabled = should;
-            this.buttonDeselectAll.Enabled = should;
-
-            this.buttonRemove.Enabled = should && this.listBoxFavorites.SelectedItems.Count > 0;
+            this.buttonRemove.Enabled = this.listBoxFavorites.SelectedItems.Count > 0;
+            this.buttonSelectAll.Enabled = this.listBoxFavorites.SelectedItems.Count != this.listBoxFavorites.Items.Count;
+            this.buttonDeselectAll.Enabled = this.listBoxFavorites.SelectedItems.Count > 0;
         }
 
+        /// <summary>
+        /// Selects or deselects all items of the list box
+        /// </summary>
+        /// <param name="selection">true if the items should be all selected, false if none</param>
         private void SetAllSelected(bool selection)
         {
             this.listBoxFavorites.BeginUpdate();
@@ -39,19 +49,25 @@ namespace f21sc_coursework_1.View.FavoritesPanel
             this.listBoxFavorites.EndUpdate();
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="favorites"></param>
         public void UpdateFavoriteItems(List<Fav> favorites)
         {
             this.listBoxFavorites.BeginUpdate();
+            this.listBoxFavorites.Items.Clear();
             if (favorites.Count != 0)
             {
                 this.listBoxFavorites.Items.AddRange(favorites.ToList().ToArray());
-                this.ShouldEnableFavoritesDependantControls(true);
+                this.listBoxFavorites.Enabled = true;
             }
             else
             {
                 this.listBoxFavorites.Items.Add("No favorites");
-                this.ShouldEnableFavoritesDependantControls(false);
+                this.listBoxFavorites.Enabled = false;
             }
+            this.UpdateFavoritesDependantControls();
             this.listBoxFavorites.EndUpdate();
         }
 
@@ -80,12 +96,24 @@ namespace f21sc_coursework_1.View.FavoritesPanel
 
         private void listBoxFavorites_SelectedValueChanged(object sender, EventArgs e)
         {
-            this.buttonRemove.Enabled = this.listBoxFavorites.SelectedItems.Count > 0;
+            this.UpdateFavoritesDependantControls();
         }
 
         private void FormFavoritesPanel_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.FavoritesPanelFormClosedEvent(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Displays an error dialog using <see cref="MessageBox"/>
+        /// </summary>
+        /// <param name="error">Error description to display</param>
+        public void ErrorDialog(string error)
+        {
+            MessageBox.Show(error,
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
     }
 }

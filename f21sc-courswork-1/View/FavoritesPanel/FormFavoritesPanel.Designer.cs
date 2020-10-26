@@ -44,6 +44,7 @@
             this.listBoxFavorites.IntegralHeight = false;
             this.listBoxFavorites.Location = new System.Drawing.Point(12, 12);
             this.listBoxFavorites.Name = "listBoxFavorites";
+            this.listBoxFavorites.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.listBoxFavorites.Size = new System.Drawing.Size(227, 337);
             this.listBoxFavorites.TabIndex = 1;
             this.listBoxFavorites.SelectedValueChanged += new System.EventHandler(this.listBoxFavorites_SelectedValueChanged);
@@ -63,6 +64,7 @@
             // buttonClose
             // 
             this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonClose.Location = new System.Drawing.Point(245, 326);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(132, 23);
@@ -101,6 +103,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.buttonClose;
             this.ClientSize = new System.Drawing.Size(384, 361);
             this.Controls.Add(this.buttonDeselectAll);
             this.Controls.Add(this.buttonSelectAll);
