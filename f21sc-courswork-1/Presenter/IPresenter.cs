@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace f21sc_courswork_1.Controller
+namespace f21sc_courswork_1.Presenter
 {
-    interface IController
+    interface IPresenter
     {
         /// <summary>
-        /// Raised when the user the view of this controller
+        /// Raised when the user the view of this presenter
         /// </summary>
         event EventHandler ViewClosedEvent;
 
         /// <summary>
-        /// Orders the controller to show itself
+        /// Orders the presenter to show itself
         /// </summary>
         void Show();
         /// <summary>
-        /// Orders the controller to close
+        /// Orders the presenter to close
         /// </summary>
         void Close();
 

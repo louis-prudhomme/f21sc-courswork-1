@@ -1,11 +1,11 @@
 ﻿using f21sc_coursework_1.Events.Favorites;
-using f21sc_courswork_1.Controller;
+using f21sc_courswork_1.Presenter;
 using f21sc_courswork_1.Events;
 using System;
 
-namespace f21sc_coursework_1.Controller.FavoritesPanel
+namespace f21sc_coursework_1.Presenter.FavoritesPanel
 {
-    interface IFavoritesPanelController : IController
+    interface IFavoritesPanelPresenter : IPresenter
     {
         /// <summary>
         /// Raised when the user asks for the modification of one favorite
@@ -21,7 +21,7 @@ namespace f21sc_coursework_1.Controller.FavoritesPanel
         event JumpAskedEvent JumpAskedEvent;
 
         /// <summary>
-        /// Order the controller to update its favorites
+        /// Order the presenter to update its favorites
         /// </summary>
         void UpdateFavorites();
     }

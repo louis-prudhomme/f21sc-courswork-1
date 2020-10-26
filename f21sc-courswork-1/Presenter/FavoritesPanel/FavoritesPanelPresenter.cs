@@ -5,17 +5,17 @@ using f21sc_courswork_1.Model.Favorites;
 using f21sc_courswork_1.Model.Favorites.Exceptions;
 using System;
 
-namespace f21sc_coursework_1.Controller.FavoritesPanel
+namespace f21sc_coursework_1.Presenter.FavoritesPanel
 {
     /// <summary>
-    /// Controller handling <see cref="IFavoritesPanelController"/>
+    /// Presenter handling <see cref="IFavoritesPanelPresenter"/>
     /// </summary>
-    class FavoritesPanelController : IFavoritesPanelController
+    class FavoritesPanelPresenter : IFavoritesPanelPresenter
     {
         private readonly FavoritesRepository favorites;
         private readonly IFavoritesPanelView view;
 
-        public FavoritesPanelController(IFavoritesPanelView view, FavoritesRepository favorites)
+        public FavoritesPanelPresenter(IFavoritesPanelView view, FavoritesRepository favorites)
         {
             this.view = view;
             this.favorites = favorites;

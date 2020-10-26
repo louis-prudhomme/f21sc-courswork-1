@@ -4,17 +4,17 @@ using f21sc_coursework_1.View.HistoryPanel;
 using f21sc_courswork_1.Events;
 using System;
 
-namespace f21sc_coursework_1.Controller.HistoryPanel
+namespace f21sc_coursework_1.Presenter.HistoryPanel
 {
     /// <summary>
-    /// Controller for the <see cref="IHistoryPanelView"/>
+    /// Presenter for the <see cref="IHistoryPanelView"/>
     /// </summary>
-    class HistoryPanelController : IHistoryPanelController
+    class HistoryPanelPresenter : IHistoryPanelPresenter
     {
         private readonly IHistoryPanelView view;
         private readonly GlobalHistory history;
 
-        public HistoryPanelController(IHistoryPanelView view, GlobalHistory history)
+        public HistoryPanelPresenter(IHistoryPanelView view, GlobalHistory history)
         {
             this.view = view;
             this.history = history;

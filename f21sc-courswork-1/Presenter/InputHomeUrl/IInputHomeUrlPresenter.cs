@@ -1,10 +1,10 @@
 ﻿using f21sc_coursework_1.Events;
-using f21sc_courswork_1.Controller;
+using f21sc_courswork_1.Presenter;
 using System;
 
-namespace f21sc_coursework_1.Controller.InputHomeUrl
+namespace f21sc_coursework_1.Presenter.InputHomeUrl
 {
-    interface IInputHomeUrlController : IController
+    interface IInputHomeUrlPresenter : IPresenter
     {
         /// <summary>
         /// Raised when the user submits an URL through the form

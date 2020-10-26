@@ -1,10 +1,10 @@
-﻿using f21sc_courswork_1.Controller;
+﻿using f21sc_courswork_1.Presenter;
 using f21sc_courswork_1.Events;
 using System;
 
-namespace f21sc_coursework_1.Controller.HistoryPanel
+namespace f21sc_coursework_1.Presenter.HistoryPanel
 {
-    interface IHistoryPanelController : IController
+    interface IHistoryPanelPresenter : IPresenter
     {
         /// <summary>
         /// Raised when history is updated

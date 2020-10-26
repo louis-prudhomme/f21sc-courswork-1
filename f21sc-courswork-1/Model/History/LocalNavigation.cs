@@ -1,4 +1,5 @@
 ﻿using f21sc_coursework_1.Model.HttpCommunications;
+using f21sc_courswork_1.Model.History.Exceptions;
 using System.Collections.Generic;
 
 namespace f21sc_coursework_1.Model.History
@@ -19,16 +20,16 @@ namespace f21sc_coursework_1.Model.History
         /// <summary>
         /// Returns the current entry
         /// </summary>
-        public HttpQuery Current { get => this.current.Value; }
+        public HttpQuery Current { get => this.HasCurrent ? this.current.Value : null; }
 
         /// <summary>
         /// Returns the previous entry
         /// </summary>
-        public HttpQuery Previous { get => this.current.Previous.Value; }
+        public HttpQuery Previous { get => this.HasPrevious ? this.current.Previous.Value : null; }
         /// <summary>
         /// Returns the next entry
         /// </summary>
-        public HttpQuery Next { get => this.current.Next.Value; }
+        public HttpQuery Next { get => this.HasNext ? this.current.Next.Value : null; }
 
         /// <summary>
         /// Returns true if the history is empty
@@ -59,8 +60,13 @@ namespace f21sc_coursework_1.Model.History
         /// <summary>
         /// Moves the pointer from the current query to the next one
         /// </summary>
+        /// <exception cref="ImpossibleNavigationException">When there is no next node to navigate to</exception>
         public void Forward()
         {
+            if (!this.HasNext)
+            {
+                throw new ImpossibleNavigationException();
+            }
             this.current = this.current.Next;
         }
 
@@ -68,8 +74,13 @@ namespace f21sc_coursework_1.Model.History
         /// <summary>
         /// Moves the pointer from the current query to the previous one
         /// </summary>
+        /// <exception cref="ImpossibleNavigationException">When there is no previous node to navigate to</exception>
         public void Backward()
         {
+            if (!this.HasPrevious)
+            {
+                throw new ImpossibleNavigationException();
+            }
             this.current = this.current.Previous;
         }
 

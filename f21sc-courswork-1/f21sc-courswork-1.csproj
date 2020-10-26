@@ -46,18 +46,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\BrowserApplicationContext.cs" />
-    <Compile Include="Controller\FavoritesPanel\FavoritesPanelController.cs" />
-    <Compile Include="Controller\FavoritesPanel\IFavoritesPanelController.cs" />
-    <Compile Include="Controller\HistoryPanel\HistoryPanelController.cs" />
-    <Compile Include="Controller\HistoryPanel\IHistoryPanelController.cs" />
-    <Compile Include="Controller\IController.cs" />
-    <Compile Include="Controller\InputFavInfos\IInputFavInfosController.cs" />
-    <Compile Include="Controller\InputFavInfos\InputFavInfosController.cs" />
-    <Compile Include="Controller\InputHomeUrl\IInputHomeUrlController.cs" />
-    <Compile Include="Controller\Main\IMainController.cs" />
-    <Compile Include="Controller\InputHomeUrl\InputHomeUrlController.cs" />
-    <Compile Include="Controller\Main\MainController.cs" />
+    <Compile Include="Model\History\Exceptions\ImpossibleNavigationException.cs" />
+    <Compile Include="Presenter\BrowserApplicationContext.cs" />
+    <Compile Include="Presenter\FavoritesPanel\FavoritesPanelPresenter.cs" />
+    <Compile Include="Presenter\FavoritesPanel\IFavoritesPanelPresenter.cs" />
+    <Compile Include="Presenter\HistoryPanel\HistoryPanelPresenter.cs" />
+    <Compile Include="Presenter\HistoryPanel\IHistoryPanelPresenter.cs" />
+    <Compile Include="Presenter\IPresenter.cs" />
+    <Compile Include="Presenter\InputFavInfos\IInputFavInfosPresenter.cs" />
+    <Compile Include="Presenter\InputFavInfos\InputFavInfosPresenter.cs" />
+    <Compile Include="Presenter\InputHomeUrl\IInputHomeUrlPresenter.cs" />
+    <Compile Include="Presenter\Main\IMainPresenter.cs" />
+    <Compile Include="Presenter\InputHomeUrl\InputHomeUrlPresenter.cs" />
+    <Compile Include="Presenter\Main\MainPresenter.cs" />
     <Compile Include="Events\Favorites\FavInputAskedEvent.cs" />
     <Compile Include="Events\Favorites\FavSubmittedEvent.cs" />
     <Compile Include="Events\Favorites\FavoriteModifiedEvent.cs" />

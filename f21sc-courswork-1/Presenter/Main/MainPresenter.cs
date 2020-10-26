@@ -11,12 +11,12 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace f21sc_coursework_1.Controller.Main
+namespace f21sc_coursework_1.Presenter.Main
 {
     /// <summary>
     /// Class to control the main view
     /// </summary>
-    class MainController : IMainController
+    class MainPresenter : IMainPresenter
     {
         private readonly IMainView view;
 
@@ -24,7 +24,7 @@ namespace f21sc_coursework_1.Controller.Main
 
         private readonly LocalNavigation navigation;
 
-        public MainController(IMainView view, UserProfile user)
+        public MainPresenter(IMainView view, UserProfile user)
         {
             this.view = view;
 

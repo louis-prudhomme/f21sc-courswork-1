@@ -3,16 +3,16 @@ using f21sc_coursework_1.Utils.Http;
 using f21sc_coursework_1.View;
 using System;
 
-namespace f21sc_coursework_1.Controller.InputHomeUrl
+namespace f21sc_coursework_1.Presenter.InputHomeUrl
 {
     /// <summary>
-    /// This is the controller for the <see cref="IInputHomeUrlView"/>
+    /// This is the presenter for the <see cref="IInputHomeUrlView"/>
     /// </summary>
-    class InputHomeUrlController : IInputHomeUrlController
+    class InputHomeUrlPresenter : IInputHomeUrlPresenter
     {
         private readonly IInputHomeUrlView view;
 
-        public InputHomeUrlController(IInputHomeUrlView view)
+        public InputHomeUrlPresenter(IInputHomeUrlView view)
         {
             this.view = view;
 

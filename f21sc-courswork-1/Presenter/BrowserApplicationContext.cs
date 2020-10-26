@@ -1,8 +1,8 @@
-﻿using f21sc_coursework_1.Controller.FavoritesPanel;
-using f21sc_coursework_1.Controller.HistoryPanel;
-using f21sc_coursework_1.Controller.InputFavInfos;
-using f21sc_coursework_1.Controller.InputHomeUrl;
-using f21sc_coursework_1.Controller.Main;
+﻿using f21sc_coursework_1.Presenter.FavoritesPanel;
+using f21sc_coursework_1.Presenter.HistoryPanel;
+using f21sc_coursework_1.Presenter.InputFavInfos;
+using f21sc_coursework_1.Presenter.InputHomeUrl;
+using f21sc_coursework_1.Presenter.Main;
 using f21sc_coursework_1.Events;
 using f21sc_coursework_1.Events.Favorites;
 using f21sc_coursework_1.Model;
@@ -13,7 +13,7 @@ using f21sc_coursework_1.View;
 using f21sc_coursework_1.View.FavoritesPanel;
 using f21sc_coursework_1.View.HistoryPanel;
 using f21sc_coursework_1.View.InputHomeUrl;
-using f21sc_courswork_1.Controller;
+using f21sc_courswork_1.Presenter;
 using f21sc_courswork_1.Events;
 using f21sc_courswork_1.Model.Favorites;
 using f21sc_courswork_1.View.InputFavInfos;
@@ -21,7 +21,7 @@ using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 
-namespace f21sc_coursework_1.Controller
+namespace f21sc_coursework_1.Presenter
 {
     /// <summary>
     /// Main organizing class of the program
@@ -32,23 +32,23 @@ namespace f21sc_coursework_1.Controller
         /// Main form controller
         /// Is readonly because it is always present
         /// </summary>
-        private readonly IMainController mainController;
+        private readonly IMainPresenter mainController;
         /// <summary>
         /// Controller for the home url input 
         /// </summary>
-        private IInputHomeUrlController urlController;
+        private IInputHomeUrlPresenter urlController;
         /// <summary>
         /// Controller for the history panel 
         /// </summary>
-        private IHistoryPanelController historyController;
+        private IHistoryPanelPresenter historyController;
         /// <summary>
         /// Controller for the favorites panel 
         /// </summary>
-        private IFavoritesPanelController favoritesController;
+        private IFavoritesPanelPresenter favoritesController;
         /// <summary>
         /// Controller for the favorites input
         /// </summary>
-        private IInputFavInfosController favInputController;
+        private IInputFavInfosPresenter favInputController;
 
         /// <summary>
         /// Represents the user data
@@ -67,7 +67,7 @@ namespace f21sc_coursework_1.Controller
             this.user = new Backer<UserProfile>(new UserProfile(), new BinaryFormatter());
             this.ThreadExit += this.OnApplicationExit;
 
-            this.mainController = new MainController(new FormMain(), this.User);
+            this.mainController = new MainPresenter(new FormMain(), this.User);
             this.mainController.ViewClosedEvent += this.MainFormClosedEventHandler;
             this.mainController.GlobalHistoryUpdatedEvent += this.UserDataUpdated;
             this.mainController.FavoritesUpdatedEvent += this.UserDataUpdated;
@@ -96,13 +96,13 @@ namespace f21sc_coursework_1.Controller
         }
 
         /// <summary>
-        /// Handles the jump to an URL initiated by the user through either <see cref="IHistoryPanelController"/> or <see cref="IFavoritesPanelController"/>
+        /// Handles the jump to an URL initiated by the user through either <see cref="IHistoryPanelPresenter"/> or <see cref="IFavoritesPanelPresenter"/>
         /// </summary>
         /// <param name="sender">Sender of the event</param>
         /// <param name="e">Contains the URL to jump to</param>
         private void JumpAskedEventHandler(object sender, JumpAskedEventArgs e)
         {
-            IController origin = (IController)sender;
+            IPresenter origin = (IPresenter)sender;
             origin.Close();
             this.mainController.InitiateJump(e.jumpTo);
         }
@@ -112,7 +112,7 @@ namespace f21sc_coursework_1.Controller
          * ==================================*/
 
         /// <summary>
-        /// Creates a new <see cref="IInputHomeUrlController"/> to answer the demand
+        /// Creates a new <see cref="IInputHomeUrlPresenter"/> to answer the demand
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Emtpy</param>
@@ -120,7 +120,7 @@ namespace f21sc_coursework_1.Controller
         {
             this.mainController.ShouldBeEnabled(false);
 
-            this.urlController = new InputHomeUrlController(new FormInputHomeUrl());
+            this.urlController = new InputHomeUrlPresenter(new FormInputHomeUrl());
             this.urlController.ViewClosedEvent += this.HomeUrlCancelledEventHandler;
             this.urlController.UrlInputFormSubmittedEvent += this.HomeUrlSubmittedEventHandler;
 
@@ -128,8 +128,8 @@ namespace f21sc_coursework_1.Controller
         }
 
         /// <summary>
-        /// Handles the <see cref="IInputHomeUrlController"/> closure
-        /// Gives back the focus to <see cref="IMainController"/> 
+        /// Handles the <see cref="IInputHomeUrlPresenter"/> closure
+        /// Gives back the focus to <see cref="IMainPresenter"/> 
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Emtpy</param>
@@ -140,9 +140,9 @@ namespace f21sc_coursework_1.Controller
         }
 
         /// <summary>
-        /// Handles the <see cref="IInputHomeUrlController"/> closure by home URL submission
+        /// Handles the <see cref="IInputHomeUrlPresenter"/> closure by home URL submission
         /// Updates the home URL
-        /// Gives back the focus to <see cref="IMainController"/>  
+        /// Gives back the focus to <see cref="IMainPresenter"/>  
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Emtpy</param>
@@ -158,31 +158,31 @@ namespace f21sc_coursework_1.Controller
          * ==================================*/
 
         /// <summary>
-        /// Creates a new <see cref="IInputFavInfosController"/> to answer the demand of favorite creation
+        /// Creates a new <see cref="IInputFavInfosPresenter"/> to answer the demand of favorite creation
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Emtpy</param>
         private void FavInputAskedEventHandler(object sender, FavInputAskedEventArgs e)
         {
-            this.favInputController = new InputFavInfosController(new FormInputFavInfos(), this.User.Favorites, e);
+            this.favInputController = new InputFavInfosPresenter(new FormInputFavInfos(), this.User.Favorites, e);
             this.FavInputSetup();
             this.mainController.ShouldBeEnabled(false);
         }
 
         /// <summary>
-        /// Creates a new <see cref="IInputFavInfosController"/> to answer the demand of favorite edition
+        /// Creates a new <see cref="IInputFavInfosPresenter"/> to answer the demand of favorite edition
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Emtpy</param>
         private void FavModifAskedEventHandler(object sender, FavoriteModifiedEventArgs e)
         {
-            this.favInputController = new InputFavInfosController(new FormInputFavInfos(), this.User.Favorites, e);
+            this.favInputController = new InputFavInfosPresenter(new FormInputFavInfos(), this.User.Favorites, e);
             this.FavInputSetup();
             this.favoritesController.ShouldBeEnabled(false);
         }
 
         /// <summary>
-        /// Setups the <see cref="IInputFavInfosController"/> regardless of its mode
+        /// Setups the <see cref="IInputFavInfosPresenter"/> regardless of its mode
         /// </summary>
         private void FavInputSetup()
         {
@@ -193,8 +193,8 @@ namespace f21sc_coursework_1.Controller
         }
 
         /// <summary>
-        /// Handles the <see cref="IInputFavInfosController"/> closure
-        /// Gives back the focus to <see cref="IMainController"/> 
+        /// Handles the <see cref="IInputFavInfosPresenter"/> closure
+        /// Gives back the focus to <see cref="IMainPresenter"/> 
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Emtpy</param>
@@ -211,9 +211,9 @@ namespace f21sc_coursework_1.Controller
         }
 
         /// <summary>
-        /// Handles the <see cref="IInputFavInfosController"/> closure by <see cref="Fav"/> submission
+        /// Handles the <see cref="IInputFavInfosPresenter"/> closure by <see cref="Fav"/> submission
         /// Updates the favorites
-        /// Gives back the focus to <see cref="IMainController"/>  
+        /// Gives back the focus to <see cref="IMainPresenter"/>  
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Emtpy</param>
@@ -236,7 +236,7 @@ namespace f21sc_coursework_1.Controller
          * ==================================*/
 
         /// <summary>
-        /// Creates a new <see cref="IHistoryPanelController"/> to answer the demand
+        /// Creates a new <see cref="IHistoryPanelPresenter"/> to answer the demand
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Emtpy</param>
@@ -244,7 +244,7 @@ namespace f21sc_coursework_1.Controller
         {
             this.mainController.ShouldBeEnabled(false);
 
-            this.historyController = new HistoryPanelController(new FormHistoryPanel(), this.User.History);
+            this.historyController = new HistoryPanelPresenter(new FormHistoryPanel(), this.User.History);
             this.historyController.JumpAskedEvent += this.JumpAskedEventHandler;
             this.historyController.ViewClosedEvent += this.HistoryPanelClosedEventHandler;
             this.historyController.HistoryUpdatedEvent += this.UserDataUpdated;
@@ -253,8 +253,8 @@ namespace f21sc_coursework_1.Controller
         }
 
         /// <summary>
-        /// Handles the <see cref="IHistoryPanelController"/> closure
-        /// Gives back the focus to <see cref="IMainController"/> 
+        /// Handles the <see cref="IHistoryPanelPresenter"/> closure
+        /// Gives back the focus to <see cref="IMainPresenter"/> 
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Emtpy</param>
@@ -271,7 +271,7 @@ namespace f21sc_coursework_1.Controller
          * ==================================*/
 
         /// <summary>
-        /// Creates a new <see cref="IFavoritesPanelController"/> to answer the demand
+        /// Creates a new <see cref="IFavoritesPanelPresenter"/> to answer the demand
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Emtpy</param>
@@ -279,7 +279,7 @@ namespace f21sc_coursework_1.Controller
         {
             this.mainController.ShouldBeEnabled(false);
 
-            this.favoritesController = new FavoritesPanelController(new FormFavoritesPanel(), this.User.Favorites);
+            this.favoritesController = new FavoritesPanelPresenter(new FormFavoritesPanel(), this.User.Favorites);
             this.favoritesController.ViewClosedEvent += this.FavoritesPanelClosedEventHandler;
             this.favoritesController.JumpAskedEvent += this.JumpAskedEventHandler;
             this.favoritesController.FavoriteModifiedEvent += this.FavModifAskedEventHandler;
@@ -289,8 +289,8 @@ namespace f21sc_coursework_1.Controller
         }
 
         /// <summary>
-        /// Handles the <see cref="IFavoritesPanelController"/> closure
-        /// Gives back the focus to <see cref="IMainController"/> 
+        /// Handles the <see cref="IFavoritesPanelPresenter"/> closure
+        /// Gives back the focus to <see cref="IMainPresenter"/> 
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Emtpy</param>

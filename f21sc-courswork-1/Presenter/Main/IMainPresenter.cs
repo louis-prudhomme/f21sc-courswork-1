@@ -1,10 +1,10 @@
 ﻿using f21sc_coursework_1.Events.Favorites;
-using f21sc_courswork_1.Controller;
+using f21sc_courswork_1.Presenter;
 using System;
 
-namespace f21sc_coursework_1.Controller.Main
+namespace f21sc_coursework_1.Presenter.Main
 {
-    interface IMainController : IController
+    interface IMainPresenter : IPresenter
     {
         /// <summary>
         /// Raised when the user asks to alter the home url
@@ -33,24 +33,24 @@ namespace f21sc_coursework_1.Controller.Main
         event EventHandler FavoritesUpdatedEvent;
 
         /// <summary>
-        /// Orders the controller to load a page
+        /// Orders the presenter to load a page
         /// </summary>
         /// <param name="should"></param>
         void InitiateJump(Uri target);
         /// <summary>
-        /// Orders the controller to prompt an error dialog
+        /// Orders the presenter to prompt an error dialog
         /// </summary>
         void ErrorDialog(string error);
         /// <summary>
-        /// Orders the controller to update the history
+        /// Orders the presenter to update the history
         /// </summary>
         void UpdateHistory();
         /// <summary>
-        /// Orders the controller to update the favorites
+        /// Orders the presenter to update the favorites
         /// </summary>
         void UpdateFavorites();
         /// <summary>
-        /// Orders the controller to update the home url
+        /// Orders the presenter to update the home url
         /// </summary>
         void UpdateHomeUrl();
     }

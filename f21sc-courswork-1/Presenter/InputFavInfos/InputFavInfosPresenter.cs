@@ -7,12 +7,12 @@ using f21sc_courswork_1.View.InputFavInfos;
 using System;
 using System.Windows.Forms;
 
-namespace f21sc_coursework_1.Controller.InputFavInfos
+namespace f21sc_coursework_1.Presenter.InputFavInfos
 {
     /// <summary>
-    /// Controller for the <see cref="IInputFavInfosView"/>
+    /// Presenter for the <see cref="IInputFavInfosView"/>
     /// </summary>
-    class InputFavInfosController : IInputFavInfosController
+    class InputFavInfosPresenter : IInputFavInfosPresenter
     {
         private readonly InputFavMode mode;
         private readonly IInputFavInfosView view;
@@ -20,7 +20,7 @@ namespace f21sc_coursework_1.Controller.InputFavInfos
 
         private readonly Fav toEdit;
 
-        public InputFavInfosController(IInputFavInfosView view, FavoritesRepository favorites, FavInputAskedEventArgs e)
+        public InputFavInfosPresenter(IInputFavInfosView view, FavoritesRepository favorites, FavInputAskedEventArgs e)
         {
             this.view = view;
             this.favorites = favorites;
@@ -29,7 +29,7 @@ namespace f21sc_coursework_1.Controller.InputFavInfos
             this.FinishSetup(e.Name, e.Url);
         }
 
-        public InputFavInfosController(IInputFavInfosView view, FavoritesRepository favorites, FavoriteModifiedEventArgs e)
+        public InputFavInfosPresenter(IInputFavInfosView view, FavoritesRepository favorites, FavoriteModifiedEventArgs e)
         {
             this.view = view;
             this.favorites = favorites;
@@ -44,7 +44,7 @@ namespace f21sc_coursework_1.Controller.InputFavInfos
          * ==================================*/
 
         /// <summary>
-        /// Finishes the setup of the controller, regardless of the mode
+        /// Finishes the setup of the presenter, regardless of the mode
         /// </summary>
         /// <param name="presetName">Preset name of the event</param>
         /// <param name="presetUrl">Preset URL of the event</param>
@@ -107,7 +107,7 @@ namespace f21sc_coursework_1.Controller.InputFavInfos
         }
 
         /// <summary>
-        /// Informs the controller of its closure
+        /// Informs the presenter of its closure
         /// </summary>
         /// <param name="sender">Not important</param>
         /// <param name="e">Empty</param>
